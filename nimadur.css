@@ -1,0 +1,1748 @@
+/* ==========================================
+   1. GLOBAL SOZLAMALAR VA VARIABLES
+   ========================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Ranglar assets/theme.css dan keladi. Bu sahifa o'sha
+     tushunchalarni boshqa nom bilan ataydi, shuning uchun bu yerda
+     faqat alias beriladi — 250 ta var() chaqiruvi o'zgarishsiz
+     qoladi va temaga avtomatik bo'ysunadi.
+     DIQQAT: bu aliaslar atayin global theme.css da emas. Ular
+     u yerda bo'lsa, boshqa sahifalardagi (masalan museyHaqida.css)
+     hozir e'lon qilinmagan --border-color ishlatadigan uxlab
+     yotgan qoidalar birdan ishlab ketardi. */
+  --color-dark: var(--primary);
+  --border-color: var(--border);
+  --accent-red-hover: #a00000;
+
+  /* Eksponat kartasidagi rasm o'rni (fondan bir pog'ona to'qroq) */
+  --artifact-surface: #e5e2d9;
+  --artifact-surface-hover: #dad5c7;
+
+  /* Bu sahifada matn soyasi 0.6 emas, 0.7 shaffoflikda */
+  --text-muted: rgba(var(--text-rgb), 0.7);
+
+  /* Shriftlar */
+  --font-heading: "Georgia", "Times New Roman", serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Effektlar va Soyalar */
+  --shadow-hard: 4px 4px 0px var(--border-color);
+  --shadow-hard-lg: 7px 7px 0px var(--border-color);
+  --shadow-accent: 7px 7px 0px var(--accent-red);
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+[data-theme="dark"] {
+  --accent-red-hover: #e06860;
+  --artifact-surface: #2b251d;
+  --artifact-surface-hover: #362f25;
+}
+
+/* Matn ajratilganda vintage uslubi */
+::selection {
+  background-color: var(--accent-red);
+  color: #ffffff;
+}
+
+/* Scrollbar dizayni */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-red);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   2. HEADER VA NAVIGATSIYA
+   ========================================== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  z-index: 1000;
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 3px double var(--border-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--border-color);
+  font-size: 16px;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
+  font-family: var(--font-heading);
+  font-weight: bold;
+}
+
+.logo-container:hover .logo-icon {
+  transform: rotate(180deg);
+  background: var(--border-color);
+  color: var(--bg-dark);
+}
+
+.logo-text {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  min-width: 0;
+}
+
+.nav-link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+  padding: 6px 0;
+  transition: color var(--transition-fast);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--accent-red);
+  transition: width var(--transition-fast);
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: var(--accent-red);
+}
+
+.nav-link.active::after,
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Bu sahifa assets/site-header.css ni yuklamaydi, shuning uchun
+   tema tugmasi guruhi shu yerda uslublanadi. */
+.header-right-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.sound-toggle-btn {
+  background: transparent;
+  border: 2px solid var(--border-color);
+  color: var(--border-color);
+  padding: 8px 16px;
+  height: 40px;
+  gap: 8px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 3px 3px 0px var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.sound-toggle-btn:hover {
+  background: var(--border-color);
+  color: var(--bg-dark);
+  box-shadow: 4px 4px 0px var(--accent-red);
+  transform: translate(-1px, -1px);
+}
+
+.sound-toggle-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+
+/* ==========================================
+   3. HERO & TIMELINE TRACK
+   ========================================== */
+.hero-intro {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.hero-intro.hidden {
+  opacity: 0;
+}
+
+.hero-tagline {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent-red);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.scroll-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-main);
+  text-transform: uppercase;
+  font-weight: 700;
+  background: var(--card-bg);
+  padding: 6px 14px;
+  border-radius: 2px;
+  border: 1.5px solid var(--border-color);
+  box-shadow: 3px 3px 0px var(--border-color);
+}
+
+.timeline-pin {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.timeline-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+}
+
+.era {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 100px 7vw 60px 7vw;
+  overflow: hidden;
+  border-right: 2px dashed rgba(var(--ink-rgb), 0.2);
+}
+
+.era--egypt, .era--rome, .era--modern { background: var(--bg-dark); }
+.era--greece, .era--renaissance { background: var(--sidebar-bg); }
+
+.era__bg-year {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  font-family: var(--font-heading);
+  font-size: clamp(14vw, 22vw, 28vw);
+  font-weight: 800;
+  color: rgba(var(--ink-rgb), 0.04);
+  user-select: none;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.era__grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(var(--ink-rgb), 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--ink-rgb), 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.era__info {
+  position: relative;
+  z-index: 5;
+  max-width: 440px;
+}
+
+.era__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: transparent;
+  border: 1.5px solid var(--accent-red);
+  color: var(--accent-red);
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+
+.era__title {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 4vw, 56px);
+  margin-bottom: 16px;
+  color: var(--text-main);
+  border-bottom: 3px double var(--border-color);
+  padding-bottom: 8px;
+  line-height: 1.1;
+}
+
+.era__desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-bottom: 20px;
+}
+
+.era__quote {
+  font-style: italic;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  color: var(--text-muted);
+  padding-left: 14px;
+  border-left: 3px solid var(--accent-red);
+  margin-bottom: 24px;
+}
+
+/* ==========================================
+   4. ARTIFACT CARDS (EKSPONATLAR)
+   ========================================== */
+.era__artifacts {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  gap: 20px;
+}
+
+.artifact-card {
+  width: 290px;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 2px;
+  padding: 20px;
+  /* Animatsiyalar uchun yangilangan transition */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  box-shadow: var(--shadow-hard);
+  cursor: pointer;
+}
+
+/* YANGILANGAN: Qiyshayish va qalinroq soya effekti */
+.artifact-card:hover {
+  transform: translateY(-8px) rotate(-1.5deg);
+  box-shadow: 10px 10px 0px var(--accent-red);
+}
+
+.artifact-img-wrap {
+  width: 100%;
+  height: 160px;
+  border-radius: 2px;
+  margin-bottom: 14px;
+  background: var(--artifact-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--border-color);
+  transition: background-color var(--transition-fast);
+}
+
+.artifact-card:hover .artifact-img-wrap {
+  background: var(--artifact-surface-hover);
+}
+
+.artifact-img-wrap i {
+  font-size: 54px;
+  color: var(--border-color);
+  transition: transform var(--transition-fast);
+}
+
+.artifact-card:hover .artifact-img-wrap i {
+  transform: scale(1.08);
+}
+
+.artifact-meta {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--accent-red);
+  margin-bottom: 4px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.artifact-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.artifact-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.artifact-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0px var(--border-color);
+}
+
+.artifact-btn:hover {
+  background: var(--border-color);
+  color: var(--card-bg);
+  box-shadow: 3px 3px 0px var(--accent-red);
+}
+
+.artifact-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+
+/* ==========================================
+   5. INTERAKTIV VIDJETLAR
+   ========================================== */
+.fact-box,
+.hieroglyph-widget,
+.greek-widget,
+.quote-generator-box,
+.columns-widget {
+  width: 100%;
+  max-width: 400px;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  padding: 20px;
+  margin-top: 16px;
+  box-shadow: var(--shadow-hard);
+  border-radius: 2px;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.fact-box { background: var(--sidebar-bg); }
+
+/* YANGILANGAN: Vidjetlar uchun hover effekti */
+.fact-box:hover,
+.hieroglyph-widget:hover,
+.greek-widget:hover {
+  transform: translateY(-6px) rotate(1.5deg);
+  box-shadow: -8px 8px 0px var(--border-color); /* Soya teskari tomonga */
+}
+
+.widget-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent-red);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.widget-title,
+.fact-box h3 {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.widget-desc,
+.fact-box p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Input va Natija maydonlari */
+.hieroglyph-widget input,
+.greek-widget input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 8px;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-dark);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.hieroglyph-widget input:focus,
+.greek-widget input:focus {
+  border-color: var(--accent-red);
+}
+
+.result-area,
+.greek-result-area {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  letter-spacing: 4px;
+  margin-top: 12px;
+  min-height: 56px;
+  color: var(--accent-red);
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sidebar-bg);
+  border: 1.5px dashed var(--border-color);
+  border-radius: 2px;
+  padding: 8px;
+}
+
+/* Tugmalar (Fact & Quote) */
+.fact-box button,
+.quote-btn {
+  background: var(--accent-red);
+  color: #fff;
+  border: 1.5px solid var(--border-color);
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-top: 14px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0px var(--border-color);
+  transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.fact-box button:hover,
+.quote-btn:hover {
+  background: var(--border-color);
+  color: var(--bg-dark);
+  box-shadow: 3px 3px 0px var(--accent-red);
+  transform: translate(-1px, -1px);
+}
+
+.fact-box button:active,
+.quote-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+
+/* Antik Ustun Tablari */
+.tab-buttons {
+  display: flex;
+  gap: 6px;
+  margin: 12px 0;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  padding: 5px 10px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: var(--accent-red);
+  color: #fff;
+  border-color: var(--accent-red);
+}
+
+.column-content-box {
+  background: var(--sidebar-bg);
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+}
+
+.column-content-box h4 {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  color: var(--accent-red);
+  margin-bottom: 4px;
+}
+
+.column-content-box p {
+  font-size: 12px;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+/* ==========================================
+   6. TIMELINE NAVIGATSIYA & PROGRESS BAR
+   ========================================== */
+.timeline-nav {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: var(--sidebar-bg);
+  border: 2px solid var(--border-color);
+  padding: 10px 24px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-hard);
+}
+
+.nav-dots {
+  display: flex;
+  gap: 12px;
+}
+
+.dot-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: all var(--transition-fast);
+  border: 1px solid var(--border-color);
+}
+
+.dot-label {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  color: var(--text-muted);
+  display: none;
+}
+
+.dot-item.active .dot {
+  background: var(--accent-red);
+  transform: scale(1.3);
+  border-color: var(--accent-red);
+}
+
+.dot-item.active .dot-label {
+  display: block;
+  color: var(--accent-red);
+  font-weight: 700;
+}
+
+.nav-progress-line {
+  width: 80px;
+  height: 4px;
+  background: rgba(var(--ink-rgb), 0.15);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.nav-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--accent-red);
+  transition: width 0.2s ease-out;
+}
+
+/* ==========================================
+   7. MODAL OYNASI
+   ========================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--ink-rgb), 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-smooth);
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--bg-dark);
+  border: 3px double var(--border-color);
+  border-radius: 2px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 8px 8px 0px rgba(var(--ink-rgb), 0.95);
+  transform: translateY(15px);
+  transition: transform var(--transition-smooth);
+}
+
+.modal-overlay.active .modal-container {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  color: var(--text-main);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+  background: var(--accent-red);
+  color: #fff;
+  border-color: var(--accent-red);
+  transform: rotate(90deg);
+}
+
+.modal-header-tag {
+  color: var(--accent-red);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.modal-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  color: var(--text-main);
+  margin-bottom: 14px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 6px;
+}
+
+.modal-body {
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.modal-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background: var(--card-bg);
+  padding: 14px;
+  border-radius: 2px;
+  border: 1.5px solid var(--border-color);
+  box-shadow: 2px 2px 0px var(--border-color);
+}
+
+.modal-info-item span {
+  display: block;
+  font-size: 10px;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.modal-info-item strong {
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+/* ==========================================
+   8. CURSOR GLOW
+   ========================================== */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 350px;
+  margin-top: -175px;
+  margin-left: -175px;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transition: transform 0.08s ease-out;
+}
+
+/* ==========================================
+   9. ANIMATSIYALAR VA EFFEKTLAR
+   ========================================== */
+
+/* Matn yozish animatsiyasi */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Kursorning miltillashi */
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--accent-red); }
+}
+
+/* Yozilayotgan matn klassi */
+.typing-effect {
+  display: inline-block;
+  overflow: hidden; 
+  white-space: nowrap; 
+  border-right: 4px solid var(--accent-red); 
+  width: fit-content;
+  animation: 
+    typing 2.5s steps(40, end),
+    blink-caret 0.75s step-end infinite;
+}
+
+.typing-effect-slow {
+  display: inline-block;
+  overflow: hidden; 
+  white-space: nowrap; 
+  border-right: 4px solid var(--accent-red); 
+  width: fit-content;
+  animation: 
+    typing 4s steps(60, end),
+    blink-caret 0.75s step-end infinite;
+}
+
+/* Pastdan yuqoriga sekin chiqish */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+/* Kechikishlar (Delay) */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+/* ==========================================
+   AUDIOGID VIDJETI (Vintage / Brutalist)
+   ========================================== */
+.audio-guide-card {
+  width: 100%;
+  max-width: 340px;
+  background: var(--sidebar-bg);
+  border: 2px solid var(--border-color);
+  padding: 20px;
+  margin-top: 16px;
+  border-radius: 2px;
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sichqoncha olib borilganda (Hover) effekti */
+.audio-guide-card:hover {
+  transform: translateY(-6px) rotate(-1deg);
+  box-shadow: 8px 8px 0px var(--accent-red);
+}
+
+/* Sarlavha qismi (Badge va Taymer) */
+.audio-guide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1.5px dashed var(--border-color);
+  padding-bottom: 8px;
+}
+
+.audio-guide-header .widget-badge {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent-red);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.audio-time {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  padding: 2px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+}
+
+/* Audiogid mavzusi sarlavhasi */
+.audio-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+/* Boshqaruv tugmasi qismi */
+.audio-controls {
+  display: flex;
+  align-items: center;
+}
+
+.audio-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  color: var(--text-main);
+  padding: 10px 16px;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 100%;
+  justify-content: center;
+  box-shadow: 3px 3px 0px var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.audio-btn i {
+  font-size: 11px;
+  color: var(--accent-red);
+  transition: transform var(--transition-fast);
+}
+
+/* Tugma hover holati */
+.audio-btn:hover {
+  background: var(--accent-red);
+  color: #fff;
+  border-color: var(--accent-red);
+  box-shadow: 4px 4px 0px var(--border-color);
+  transform: translate(-2px, -2px);
+}
+
+.audio-btn:hover i {
+  color: #fff;
+  transform: scale(1.2);
+}
+
+/* Tugma bosilganda (Active) */
+.audio-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+.img{
+  width: 100%;
+  height: 100%  ;
+  object-fit: cover;
+}
+
+/* ==========================================
+   10. MOBIL VA RESPONSIVE MOSLASHUVCHANLIK
+   ========================================== */
+@media (max-width: 992px) {
+  .header {
+    padding: 14px 20px;
+  }
+  .nav-links {
+    display: none; 
+  }
+}
+
+@media (max-width: 768px) {
+  .timeline-pin {
+    height: auto;
+    overflow: visible;
+  }
+
+  .timeline-track {
+    flex-direction: column;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .era {
+    width: 100vw;
+    height: auto;
+    padding: 90px 20px 60px 20px;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .era__bg-year {
+    font-size: 30vw;
+    left: 0;
+  }
+
+  .era__info, 
+  .artifact-card, 
+  .fact-box, 
+  .greek-widget, 
+  .columns-widget {
+    max-width: 100%;
+  }
+
+  .era__artifacts {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .artifact-card {
+    width: 100%;
+  }
+
+  .timeline-nav,
+  .cursor-glow {
+    display: none; 
+  }
+  
+  .modal-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* ==========================================
+   11. BURGER MENYU (mobil navigatsiya)
+   ========================================== */
+.burger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.burger-btn span {
+  width: 100%;
+  height: 3px;
+  background: var(--text-main);
+  border-radius: 2px;
+  transition: all var(--transition-smooth);
+}
+
+.burger-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.burger-btn.open span:nth-child(2) { opacity: 0; }
+.burger-btn.open span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+.mobile-nav-ticket { display: none; }
+
+/* Bu sahifada logo katta, menyu 1250px dan tor ekranda sig'maydi */
+@media (max-width: 1250px) {
+  .header { padding: 18px 22px; }
+  .sound-toggle-btn { display: none; }
+  .burger-btn { display: flex; }
+  .mobile-nav-ticket { display: block; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    padding: 10px 22px 22px;
+    background: var(--sidebar-bg);
+    border-bottom: 3px double var(--border-color);
+  }
+  .nav-links.active { display: flex; }
+  .nav-links li { padding: 12px 0; border-bottom: 1px solid rgba(var(--ink-rgb), 0.15); }
+  .nav-links li:last-child { border-bottom: none; }
+}
+
+.aylan {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================
+   12. VAQT MASHINASI — XRONO-KONSOL
+   ========================================== */
+
+/* Konsol ochiq turganda sahifa aylanmasin */
+body.console-open {
+  overflow: hidden;
+}
+
+.chrono-console {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  /* Markazlash `margin: auto` orqali: past ekranlarda konsolning yuqori qismi
+     kesilib qolmaydi, o'rniga ichida aylantirish mumkin bo'ladi. */
+  overflow-y: auto;
+  padding: 24px;
+  background:
+    repeating-linear-gradient(0deg, rgba(var(--ink-rgb), 0.035) 0px, rgba(var(--ink-rgb), 0.035) 1px, transparent 1px, transparent 4px),
+    var(--bg-dark);
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.chrono-console.closed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.console-plate {
+  margin: auto;
+  width: 100%;
+  max-width: 880px;
+  background: var(--card-bg);
+  border: 3px solid var(--border-color);
+  box-shadow: var(--shadow-hard-lg);
+  animation: plate-in 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+
+@keyframes plate-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* --- Konsol yuqori paneli --- */
+.console-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 20px;
+  background: var(--color-dark);
+  color: var(--bg-dark);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.console-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.85;
+}
+
+.status-lamp {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6ad06a;
+  box-shadow: 0 0 8px #6ad06a;
+  animation: lamp-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes lamp-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+/* --- Konsol ichki qismi --- */
+.console-body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 28px;
+  padding: 28px 26px;
+}
+
+/* Sana ko'rsatkichi */
+.console-readout {
+  border: 2px solid var(--border-color);
+  background: var(--sidebar-bg);
+  padding: 18px 16px;
+  text-align: center;
+  box-shadow: inset 0 0 0 4px var(--card-bg);
+}
+
+.readout-caption,
+.hud-caption,
+.dial-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.readout-year {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 6px;
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.year-prefix {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent-red);
+}
+
+.year-digits {
+  font-size: clamp(38px, 7vw, 60px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.readout-era {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.readout-range {
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+/* --- Vaqt shkalasi (dial) --- */
+.console-dial {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dial-label {
+  margin-bottom: 12px;
+}
+
+.year-dial {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--border-color) 0px, var(--border-color) 1px, transparent 1px, transparent 12px), var(--sidebar-bg);
+  border: 2px solid var(--border-color);
+  cursor: pointer;
+}
+
+.year-dial::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 30px;
+  background: var(--accent-red);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0 var(--border-color);
+  cursor: grab;
+}
+
+.year-dial::-moz-range-thumb {
+  width: 20px;
+  height: 30px;
+  border-radius: 0;
+  background: var(--accent-red);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0 var(--border-color);
+  cursor: grab;
+}
+
+.year-dial:active::-webkit-slider-thumb { cursor: grabbing; }
+.year-dial:active::-moz-range-thumb     { cursor: grabbing; }
+
+.year-dial:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 4px;
+}
+
+.dial-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+/* --- Tez tanlash tugmalari --- */
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.preset-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+}
+
+.preset-chip:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-hard);
+}
+
+.preset-chip.active {
+  background: var(--color-dark);
+  color: var(--bg-dark);
+  border-color: var(--color-dark);
+}
+
+/* --- Ishga tushirish richagi --- */
+.console-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 18px 26px 24px;
+  border-top: 2px dashed rgba(var(--ink-rgb), 0.25);
+}
+
+.launch-lever {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 26px;
+  background: var(--accent-red);
+  color: #fff;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-hard);
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.launch-lever:hover {
+  background: var(--accent-red-hover);
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-hard-lg);
+}
+
+.launch-lever:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--border-color);
+}
+
+.lever-knob {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  border: 2px solid var(--border-color);
+}
+
+.console-skip {
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--border-color);
+  padding: 4px 2px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.console-skip:hover {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+/* ==========================================
+   13. PARVOZ (WARP) EKRANI
+   ========================================== */
+.warp-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-dark);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.warp-screen.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.warp-streaks {
+  position: absolute;
+  inset: -20%;
+  background: repeating-linear-gradient(90deg,
+      rgba(var(--paper-rgb), 0.55) 0px, rgba(var(--paper-rgb), 0.55) 2px,
+      transparent 2px, transparent 90px);
+  opacity: 0.16;
+  filter: blur(1px);
+}
+
+.warp-screen.active .warp-streaks {
+  animation: streak-rush 0.55s linear infinite;
+}
+
+@keyframes streak-rush {
+  from { transform: translateX(0);     opacity: 0.16; }
+  50%  {                               opacity: 0.42; }
+  to   { transform: translateX(-90px); opacity: 0.16; }
+}
+
+.warp-core {
+  position: relative;
+  text-align: center;
+  color: var(--bg-dark);
+  padding: 0 24px;
+}
+
+.warp-caption,
+.warp-note {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.warp-year {
+  margin: 14px 0 18px;
+  font-family: var(--font-heading);
+  font-size: clamp(56px, 14vw, 130px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 3px 0 var(--accent-red), -3px 0 rgba(var(--paper-rgb), 0.35);
+  animation: warp-jitter 0.14s steps(2) infinite;
+}
+
+@keyframes warp-jitter {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-2px, 1px); }
+  100% { transform: translate(2px, -1px); }
+}
+
+.warp-bar {
+  width: min(340px, 70vw);
+  height: 8px;
+  margin: 0 auto 16px;
+  border: 2px solid var(--bg-dark);
+}
+
+.warp-bar span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: var(--accent-red);
+}
+
+.warp-note {
+  letter-spacing: 2px;
+  opacity: 0.55;
+}
+
+/* ==========================================
+   14. BORT XRONOMETRI (HUD)
+   ========================================== */
+.hud-chrono {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 16px;
+  border-right: 2px solid rgba(var(--ink-rgb), 0.2);
+}
+
+.hud-console-btn {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  color: var(--text-main);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.hud-console-btn:hover {
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: #fff;
+}
+
+.hud-readout {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.hud-year {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-red);
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-era {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* ==========================================
+   15. QO'NISH SHTAMPI
+   ========================================== */
+.arrival-stamp {
+  position: absolute;
+  top: 96px;
+  right: 40px;
+  z-index: 6;
+  padding: 8px 18px;
+  border: 3px double var(--accent-red);
+  color: var(--accent-red);
+  background: rgba(var(--paper-rgb), 0.65);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: rotate(-8deg) scale(1.6);
+  pointer-events: none;
+}
+
+.era.arrived .arrival-stamp {
+  animation: stamp-hit 2.4s ease-out both;
+}
+
+@keyframes stamp-hit {
+  0%   { opacity: 0; transform: rotate(-8deg) scale(1.6); }
+  14%  { opacity: 1; transform: rotate(-8deg) scale(0.95); }
+  22%  { transform: rotate(-8deg) scale(1); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ==========================================
+   16. VAQT MASHINASI — RESPONSIVE
+   ========================================== */
+@media (max-width: 860px) {
+  .console-body {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px 18px;
+  }
+
+  .console-footer {
+    padding: 16px 18px 20px;
+  }
+
+  .launch-lever {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .hud-era {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .console-topbar {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .preset-chip {
+    flex: 1 1 calc(50% - 8px);
+    justify-content: center;
+  }
+
+  .arrival-stamp {
+    right: 20px;
+    top: 88px;
+    font-size: 11px;
+  }
+}
+
+/* Mobilda ham bort xronometri ko'rinib tursin (nuqtalar o'rniga) */
+@media (max-width: 768px) {
+  .timeline-nav {
+    display: flex;
+    bottom: 16px;
+    padding: 8px 14px;
+    gap: 10px;
+  }
+
+  .nav-dots,
+  .nav-progress-line {
+    display: none;
+  }
+
+  .hud-chrono {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .hud-era {
+    display: inline;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hud-era {
+    display: none;
+  }
+}
+
+/* Konsol sarlavhasi va richag matni */
+.console-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.lever-text {
+  white-space: nowrap;
+}

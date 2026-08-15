@@ -1,0 +1,120 @@
+==================================================================
+IMPERIUM MUZEYI — YANGI SAHIFA REJASI #2
+"OLDIN / KEYIN" RESTAVRATSIYA SLAYDERI (restavratsiya.html)
+==================================================================
+
+MAQSAD
+------
+Har bir eksponatning "vaqt o'tishi bilan buzilgan/eskirgan" holati
+bilan "restavratsiyadan keyingi/asl" holatini bitta rasm ustida
+sichqoncha bilan suriladigan chiziq (slider) orqali solishtirish.
+Bu effekt vizual jihatdan juda kuchli ta'sir qiladi va texnik
+jihatdan eng oson/tez amalga oshiriladigan variant (frameworksiz,
+kutubxonasiz, sof CSS clip-path + JS bilan bir necha soatda tayyor
+bo'ladi).
+
+QANDAY ISHLAYDI (texnik g'oya)
+-------------------------------
+Klassik "before/after image comparison slider" texnikasi:
+
+1. Bitta konteyner ichida ikkita bir xil o'lchamdagi rasm
+   ustma-ust joylashtiriladi (position: relative / absolute):
+
+   <div class="compare">
+     <img class="compare__after" src="...restavratsiyadan-keyin.jpg">
+     <div class="compare__before-wrap">
+       <img class="compare__before" src="...eskirgan-holat.jpg">
+     </div>
+     <input type="range" class="compare__handle" min="0" max="100" value="50">
+   </div>
+
+2. CSS: "before" rasm o'ralgan div clip-path yoki width bilan
+   kesiladi, shunda faqat chap tomoni ko'rinadi:
+
+   .compare { position: relative; overflow: hidden; }
+   .compare__after, .compare__before { position: absolute; inset: 0;
+     width: 100%; height: 100%; object-fit: cover; }
+   .compare__before-wrap {
+     position: absolute; inset: 0;
+     width: 50%;              /* JS bu qiymatni o'zgartiradi */
+     overflow: hidden;
+   }
+   .compare__before { width: var(--compare-width, 100%); }
+      /* before-wrap eni kichrayganda, ichidagi rasm eni
+         100vw ga teng qolishi kerak, aks holda proporsiya buziladi —
+         shuning uchun before rasm eniga konteynerning to'liq
+         kengligi beriladi va faqat tashqi wrap kesadi */
+
+3. JS: <input type="range"> harakatlanganda before-wrap.style.width
+   va slider chizig'ining pozitsiyasini yangilaydi:
+
+   const range = compare.querySelector('input[type="range"]');
+   const beforeWrap = compare.querySelector('.compare__before-wrap');
+   range.addEventListener('input', () => {
+     beforeWrap.style.width = range.value + '%';
+   });
+
+   Qo'shimcha effekt: chiziq ustida "◀▶" belgili doira tugma
+   bo'lib, uni pointermove bilan ham sudrab bo'ladigan qilish
+   mumkin (input[range] shunchaki fallback/accessibility uchun
+   ham qoldiriladi — klaviatura bilan ham boshqarish imkonini
+   beradi, bu ochiq muhim accessibility yaxshilanishi).
+
+4. Vizual "wow" uchun qo'shimchalar:
+   - Slider tepasida "1503" / "2026" kabi yil belgilari, sichqoncha
+     surilganda fade bilan almashadi.
+   - before rasmga CSS filter: sepia(0.6) grayscale(0.3) contrast(0.9)
+     berilib, "eski/rangi o'chgan" ko'rinish yaratiladi (agar haqiqiy
+     "oldin" rasm topilmasa, shu CSS filter orqali sun'iy "eski holat"
+     effekti hosil qilinishi ham mumkin — real restavratsiya rasmi
+     shart emas, filter orqali ham ishonarli natija chiqadi).
+
+FAYL TUZILISHI
+---------------
+- restavratsiya.html -> header/nav/footer (boshqa sahifalar bilan bir xil)
+                         + har bir asar uchun bitta .compare bloki
+- restavratsiya.css  -> vintage o'zgaruvchilar + .compare stillari
+- restavratsiya.js   -> har bir .compare elementini topib,
+                         range input eventlarini bog'lash (bitta
+                         umumiy funksiya barcha kartalar uchun ishlaydi)
+
+QADAMLAR (amalga oshirish tartibi)
+------------------------------------
+1. index.html dagi collection-grid asarlaridan 4-6 tasini tanlash
+   (masalan Mona Lisa, Rosetta toshi, Tutankhamun niqobi — "vaqt
+   ta'siri" tushunchasiga mos keladiganlari eng ta'sirli chiqadi).
+2. Har biri uchun "asl/tiniq" versiya (mavjud index.html rasmlari
+   ishlatilsa bo'ladi) va "eski/xira" versiya kerak:
+   - Eng oson yo'l: bitta rasmni ikki marta ishlatib, "before"
+     versiyaga CSS filter (sepia/grayscale/blur) qo'llash — alohida
+     ikkinchi rasm izlash shart emas.
+3. restavratsiya.html yaratish: header/nav (boshqa sahifalardagi
+   bilan bir xil, + "Galereya" linki kabi yangi "Restavratsiya" link
+   qo'shiladi navga).
+4. restavratsiya.css: .compare, .compare__before-wrap,
+   .compare__handle uchun stillar, mobil uchun handle o'lchamini
+   kattaroq qilish (barmoq bilan aniq bosish uchun min 44px).
+5. restavratsiya.js: barcha .compare elementlarini
+   querySelectorAll bilan olib, har biriga input eventini bog'lash;
+   pointermove orqali handle ustida sudrab boshqarishni ham
+   qo'shish (ixtiyoriy, lekin "wow" ni oshiradi).
+6. Sahifa yuqorisiga index.html uslubidagi kicker/h1 qo'shish:
+   masalan "Vaqt qoldirgan iz — chiziqni suring."
+
+MOBIL / RESPONSIVE
+-------------------
+- input[type=range] mobil brauzerlarda tabiiy touch bilan ishlaydi,
+  qo'shimcha kod kerak emas — bu variantning eng katta afzalligi:
+  hech qanday maxsus touch-event yozmasdan ham mobilda ishlaydi.
+- Rasm aspect-ratio: 4/3 yoki 16/9 belgilab qo'yish, turli ekranda
+  bir xil ko'rinish uchun.
+
+TEST QILISH
+-----------
+- Slayderni 0% va 100% ga surib, ikkala chekka holatda ham rasm
+  proporsiyasi buzilmasligini tekshirish.
+- Klaviatura bilan (Tab + Arrow keys) input[range] orqali
+  boshqarish ishlashini tekshirish (accessibility).
+- Bir sahifada bir nechta .compare bloki bo'lganda har biri
+  mustaqil ishlashini tekshirish (event listenerlar bir-biriga
+  ta'sir qilmasligi kerak).

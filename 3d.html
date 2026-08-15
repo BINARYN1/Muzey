@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raqamli Muzey - 3D Eksponatlar</title>
+    <!-- Google Fonts Baloo 2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome iconlari uchun -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Toastify CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <!-- Asosiy CSS -->
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/lenis.css">
+    <link rel="stylesheet" href="assets/site-header.css">
+    <link rel="stylesheet" href="3d.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+      <span class="brand-mark">I</span>
+      <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+    </a>
+    <nav aria-label="Asosiy navigatsiya" id="navMenu">
+      <a href="museyHaqida.html">Muzey haqida</a>
+      <a href="3d.html">3D Eksponatlar</a>
+      <a href="galereya.html">Galereya</a>
+      <a href="victarina.html">Viktorina</a>
+      <a href="360zal.html">360 zallar</a>
+      <a href="nimadur.html">Vaqt mashinasi</a>
+      <a href="museylar.html">Milliy muzey</a>
+      <a href="zallar.html">Zallar</a>
+      <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    </nav>
+    <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="header-right-group">
+      <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+    <!-- ASOSIY LAYOUT -->
+    <div class="app-layout">
+        <!-- SIDEBAR (Qidiruv qismi) -->
+        <aside class="sidebar">
+            <div class="header-box">
+                <p>Dunyo muzeylaridagi haqiqiy haykallar va eksponatlarni jonli 3D formatda qidiring.</p>
+            </div>
+
+            <div class="search-container">
+                <div class="search-group">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="museumInput" class="search-input" placeholder="Masalan: Greek Statue...">
+                </div>
+                <button id="searchBtn" class="search-btn">
+                    <i class="fa-solid fa-compass"></i> Haykallarni topish
+                </button>
+            </div>
+
+            <div class="quick-tags">
+                <h4>Ommabop haykallar:</h4>
+                <div class="tags-container">
+                    <span class="tag" onclick="quickSearch('Greek Statues')">Gretsiya haykallari</span>
+                    <span class="tag" onclick="quickSearch('Roman Bust')">Rim bustlari</span>
+                    <span class="tag" onclick="quickSearch('Egyptian Artifact')">Misr topilmalari</span>
+                    <span class="tag" onclick="quickSearch('Renaissance Art')">Renessans</span>
+                    <span class="tag" onclick="quickSearch('Medieval Armor')">O'rta asr sovutlari</span>
+                    <span class="tag" onclick="quickSearch('Buddha Statue')">Budda haykali</span>
+                    <span class="tag" onclick="quickSearch('Ancient Temple')">Qadimiy ibodatxonalar</span>
+                    <span class="tag" onclick="quickSearch('Nefertiti Bust')">Nefertiti busti</span>
+                </div>
+            </div>
+
+            <!-- Loader & Progress -->
+            <div id="loader" class="loader">
+                <div class="spinner"></div>
+                <span>Eksponatlar yuklanmoqda...</span>
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN GALLERY (3D Modellar chiqadigan joy) -->
+        <main class="main-gallery">
+            <div class="gallery-header">
+                <h1 id="galleryTitle">"Greek Statue" eksponatlari</h1>
+                <p id="gallerySub">Sketchfab tizimidan olingan interaktiv 3D modellar</p>
+            </div>
+
+            <div id="exhibitsContainer" class="exhibits-grid">
+                <!-- 3D Kartalar shu yerga dinamik qo'shiladi -->
+            </div>
+        </main>
+    </div>
+
+    <!-- AI Chat Burchak Vidjeti (Unified Imperium AI) -->
+    <div id="aiChatWidget" class="ai-chat-widget">
+        <div id="aiWelcomeBubble" class="ai-welcome-bubble">
+            Imperium muzey saytiga xush kelibsiz! ✨
+        </div>
+        <button id="aiToggleBtn" class="ai-toggle-btn" aria-label="AI Yordamchi">
+            <i class="fa-solid fa-robot"></i>
+        </button>
+        <div id="aiChatWindow" class="ai-chat-window">
+            <div class="ai-chat-header">
+                <div class="ai-header-title">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Imperium AI Yordamchi</span>
+                </div>
+                <button id="aiCloseBtn" class="ai-close-btn">&times;</button>
+            </div>
+            <div id="aiChatBody" class="ai-chat-body">
+                <div class="ai-message bot">
+                    Assalomu alaykum! Men Imperium muzeyining aqlli AI yordamchisiman. Sizga qanday yordam bera olaman?
+                </div>
+                <div class="ai-quick-suggestions">
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Luvr muzeyi haqida aytib ber')">🏛️ Luvr muzeyi</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('3D eksponatlarni ko\'rsat')">🗿 3D Haykallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('360 zallar qaysilar?')">🌐 360 Zallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Sayt mualliflari kim?')">👨‍💻 Mualliflar</span>
+                </div>
+            </div>
+            <div class="ai-chat-footer">
+                <input type="text" id="aiUserInput" placeholder="Savolingizni yozing...">
+                <button id="aiSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toastify JS kutubxonasi -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Asosiy JS -->
+    <script src="vendor/lenis.min.js"></script>
+    <script src="assets/site.js"></script>
+    <script src="3d.js"></script>
+</body>
+
+</html>

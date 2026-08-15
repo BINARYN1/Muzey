@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restavratsiya Imperium Museum</title>
+    <meta name="description" content="Imperium Museum restavratsiya galereyasi — vaqt o'tishi bilan eskirgan qadimiy asarlarning asl holatini kashf eting. Slayderni suring va o'zgarishni his eting.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 100:'#FFF7D6', 300:'#E6CA65', 400:'#D4AF37', 500:'#C5A059', 600:'#A37F2C', 800:'#5C440D' },
+                        obsidian: { 900:'#0B0C10', 800:'#14161D', 700:'#1F222E', 600:'#2A2E3D' }
+                    },
+                    fontFamily: { serif:['Cinzel','serif'], sans:['Plus Jakarta Sans','sans-serif'] },
+                    animation: { 'pulse-slow':'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite', 'float':'float 6s ease-in-out infinite' },
+                    keyframes: { float:{ '0%,100%':{transform:'translateY(0)'}, '50%':{transform:'translateY(-12px)'} } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color:#0B0C10; color:#EAEAEA; font-family:'Plus Jakarta Sans',sans-serif; overflow-x:hidden; }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg,#FFF7D6 0%,#D4AF37 50%,#A37F2C 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        .glass-card { background:rgba(20,22,29,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); }
+        .gold-border-glow { border:1px solid rgba(212,175,55,0.25); box-shadow:0 0 20px rgba(212,175,55,0.06); }
+        .bg-grid-pattern {
+            background-image: linear-gradient(rgba(212,175,55,0.03) 1px,transparent 1px), linear-gradient(90deg,rgba(212,175,55,0.03) 1px,transparent 1px);
+            background-size:40px 40px;
+        }
+        .section-divider { height:1px; background:linear-gradient(90deg,transparent,rgba(212,175,55,0.3) 30%,rgba(212,175,55,0.3) 70%,transparent); }
+        .nav-scrolled { background:rgba(11,12,16,0.97)!important; border-bottom-color:rgba(212,175,55,0.15)!important; }
+        .hero-bg-glow { background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(212,175,55,0.12) 0%,transparent 70%); }
+
+        /* в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ Compare Slider в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ */
+        .compare {
+            position:relative; overflow:hidden; border-radius:16px;
+            cursor:ew-resize; user-select:none; aspect-ratio:4/3;
+            background:#0B0C10; touch-action:pan-y;
+        }
+        /* AFTER = eskirgan/old — full background layer */
+        .compare__after {
+            position:absolute; inset:0; width:100%; height:100%;
+            object-fit:cover; pointer-events:none; display:block; z-index:1;
+            filter:sepia(0.75) grayscale(0.45) contrast(0.82) brightness(0.78) saturate(0.6);
+        }
+        /* BEFORE = restavratsiya — clipped on top */
+        .compare__before-wrap {
+            position:absolute; inset:0; width:50%;
+            overflow:hidden; z-index:2;
+        }
+        .compare__before {
+            position:absolute; left:0; top:0;
+            width:var(--cw,100%); height:100%;
+            object-fit:cover; pointer-events:none; display:block; filter:none;
+        }
+        /* Gold divider line */
+        .compare__divider {
+            position:absolute; top:0; bottom:0; left:50%;
+            transform:translateX(-50%); width:3px; z-index:10; pointer-events:none;
+            background:linear-gradient(180deg,transparent,#D4AF37 15%,#fff8 50%,#D4AF37 85%,transparent);
+            box-shadow:0 0 12px rgba(212,175,55,0.6);
+        }
+        /* Circular handle */
+        .compare__handle-btn {
+            position:absolute; top:50%; left:50%;
+            transform:translate(-50%,-50%);
+            width:54px; height:54px; border-radius:50%;
+            background:linear-gradient(135deg,#D4AF37,#A37F2C);
+            border:3px solid #FFF7D6;
+            box-shadow:0 0 0 6px rgba(212,175,55,0.28),0 8px 32px rgba(0,0,0,0.7);
+            display:flex; align-items:center; justify-content:center;
+            color:#0B0C10; font-size:15px; font-weight:900; z-index:11; pointer-events:none;
+            transition:box-shadow 0.2s,transform 0.15s;
+        }
+        .compare:hover .compare__handle-btn,
+        .compare.is-dragging .compare__handle-btn {
+            box-shadow:0 0 0 12px rgba(212,175,55,0.35),0 12px 40px rgba(0,0,0,0.8);
+            transform:translate(-50%,-50%) scale(1.1);
+        }
+        /* Invisible range — keyboard + mobile fallback */
+        .compare__range {
+            position:absolute; inset:0; width:100%; height:100%;
+            opacity:0; cursor:ew-resize; z-index:20; margin:0; padding:0;
+            -webkit-appearance:none; appearance:none;
+        }
+        /* Labels */
+        .compare__label {
+            position:absolute; top:14px; z-index:9;
+            padding:4px 13px; border-radius:999px;
+            font-size:10px; font-weight:700; letter-spacing:0.14em;
+            text-transform:uppercase; backdrop-filter:blur(8px);
+        }
+        .compare__label--before { left:12px; background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.45); color:#D4AF37; }
+        .compare__label--after  { right:12px; background:rgba(15,15,20,0.75); border:1px solid rgba(255,255,255,0.12); color:#999; }
+
+        /* Shimmer loading bg */
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        .compare::before {
+            content:''; position:absolute; inset:0; z-index:0;
+            background:linear-gradient(90deg,#14161D 0%,#1F222E 50%,#14161D 100%);
+            background-size:200% 100%; animation:shimmer 2s infinite linear;
+        }
+
+        /* Artifact card hover */
+        .artifact-card { transition:transform 0.35s ease, box-shadow 0.35s ease; }
+        .artifact-card:hover { transform:translateY(-6px); box-shadow:0 24px 64px rgba(212,175,55,0.13); }
+
+        /* Pulse indicator */
+        @keyframes pulse-ring { 0%{transform:scale(0.8);opacity:0.8} 100%{transform:scale(1.6);opacity:0} }
+        .pulse-ring { position:relative; display:inline-block; }
+        .pulse-ring::after {
+            content:''; position:absolute; inset:0; border-radius:50%;
+            background:#10b981; animation:pulse-ring 1.6s ease-out infinite;
+        }
+
+        ::-webkit-scrollbar { width:6px; }
+        ::-webkit-scrollbar-track { background:#0B0C10; }
+        ::-webkit-scrollbar-thumb { background:#D4AF37; border-radius:3px; }
+    </style>
+</head>
+
+<body class="selection:bg-gold-500 selection:text-obsidian-900">
+
+<!-- ══════════════ NAVIGATION ══════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4 px-6 md:px-12 glass-card border-b border-white/5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="imperium_museum_awakening.html" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-full border border-gold-400/50 flex items-center justify-center bg-obsidian-800 group-hover:border-gold-400 transition-colors">
+                <i class="fa-solid fa-monument text-gold-400 text-lg group-hover:scale-110 transition-transform"></i>
+            </div>
+            <div>
+                <span class="font-serif text-xl tracking-wider font-bold gold-gradient-text block leading-none">IMPERIUM</span>
+                <span class="text-[10px] tracking-[0.25em] text-gray-400 uppercase font-medium">Muzey Passaji</span>
+            </div>
+        </a>
+
+        <div class="hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide">
+            <a href="index.html" class="text-gray-300 hover:text-gold-400 transition-colors">Bosh Sahifa</a>
+            <a href="zallar.html" class="text-gray-300 hover:text-gold-400 transition-colors">Zallar</a>
+            <a href="imperium_museum_awakening.html" class="text-gray-300 hover:text-gold-400 transition-colors">Uyg'onish</a>
+            <a href="restavratsiya.html" class="text-gold-400 border-b border-gold-400/60 pb-0.5">Restavratsiya</a>
+            <a href="#about" class="text-gray-300 hover:text-gold-400 transition-colors">Jarayon</a>
+            <a href="#contact" class="text-gray-300 hover:text-gold-400 transition-colors">Aloqa</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400">
+                <span class="pulse-ring w-2 h-2 rounded-full bg-emerald-400 block"></span>
+                <span>Ochiq: 09:00 20:00</span>
+            </div>
+            <a href="zallar.html" class="relative group overflow-hidden px-5 py-2.5 rounded-lg bg-gradient-to-r from-gold-500 to-gold-600 text-obsidian-900 font-semibold text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-gold-500/10 hover:shadow-gold-500/25">
+                <span class="relative z-10 flex items-center gap-2"><i class="fa-solid fa-ticket"></i> Chipta Olish</span>
+                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            </a>
+            <button id="menuBtn" class="lg:hidden text-gray-300 hover:text-gold-400 text-xl p-2"><i class="fa-solid fa-bars-staggered"></i></button>
+        </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden lg:hidden flex-col gap-3 pt-5 pb-2 border-t border-white/10 mt-4 text-center text-sm">
+        <a href="index.html" class="text-gray-300 hover:text-gold-400 py-2 block">Bosh Sahifa</a>
+        <a href="zallar.html" class="text-gray-300 hover:text-gold-400 py-2 block">Zallar</a>
+        <a href="imperium_museum_awakening.html" class="text-gray-300 hover:text-gold-400 py-2 block">Uyg'onish</a>
+        <a href="restavratsiya.html" class="text-gold-400 py-2 block">Restavratsiya</a>
+        <a href="#about" class="text-gray-300 hover:text-gold-400 py-2 block">Jarayon</a>
+        <a href="#contact" class="text-gray-300 hover:text-gold-400 py-2 block">Aloqa</a>
+    </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="relative pt-36 pb-20 px-6 bg-grid-pattern overflow-hidden">
+    <div class="hero-bg-glow absolute inset-0 pointer-events-none"></div>
+    <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-gold-500/8 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-amber-700/6 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-card gold-border-glow text-gold-400 text-xs uppercase tracking-widest mb-8">
+            <i class="fa-solid fa-wand-magic-sparkles text-[11px]"></i>
+            <span>Imperium Restavratsiya Markazi 2026</span>
+            <i class="fa-solid fa-wand-magic-sparkles text-[11px]"></i>
+        </div>
+
+        <h1 class="font-serif text-5xl sm:text-6xl xl:text-7xl font-bold leading-tight tracking-tight mb-6">
+            Vaqt Qoldirgan Iz<br>
+            <span class="gold-gradient-text">Chiziqni Suring</span>
+        </h1>
+
+        <p class="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed font-light mb-12">
+            Yuz yillar davomida eskirgan, rangini yo'qotgan va buzilgan asarlarning restavratsiyadan
+            keyingi asl holatini his eting. Slayderni chapga yoki o'ngga suring.
+        </p>
+
+        <!-- Instruction visual -->
+        <div class="flex items-center justify-center gap-6 text-sm text-gray-400 flex-wrap">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-full bg-obsidian-700 border border-white/10 flex items-center justify-center text-gray-500">
+                    <i class="fa-solid fa-clock-rotate-left text-xs"></i>
+                </div>
+                <span>Eskirgan holat</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-14 h-0.5 bg-gradient-to-r from-gray-700 to-gold-400 rounded"></div>
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-obsidian-900 shadow-xl shadow-gold-500/40 text-xs select-none">
+                    <i class="fa-solid fa-left-right"></i>
+                </div>
+                <div class="w-14 h-0.5 bg-gradient-to-l from-gray-700 to-gold-400 rounded"></div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-full bg-gold-500/20 border border-gold-400/30 flex items-center justify-center text-gold-400">
+                    <i class="fa-solid fa-star text-xs"></i>
+                </div>
+                <span>Asl holat</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500 text-xs animate-bounce pointer-events-none">
+        <span class="tracking-widest uppercase">Pastga</span>
+        <i class="fa-solid fa-chevron-down text-gold-400/60"></i>
+    </div>
+</section>
+
+<div class="section-divider mx-6"></div>
+
+<!-- ══════════════ STATS ══════════════ -->
+<section class="py-10 px-6">
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-card gold-border-glow rounded-2xl p-5 text-center">
+            <div class="font-serif text-3xl font-bold gold-gradient-text">6</div>
+            <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Restavratsiya qilingan asar</div>
+        </div>
+        <div class="glass-card gold-border-glow rounded-2xl p-5 text-center">
+            <div class="font-serif text-3xl font-bold gold-gradient-text">3,500+</div>
+            <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Soat sarflangan</div>
+        </div>
+        <div class="glass-card gold-border-glow rounded-2xl p-5 text-center">
+            <div class="font-serif text-3xl font-bold gold-gradient-text">12</div>
+            <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Mutaxassis restavrator</div>
+        </div>
+        <div class="glass-card gold-border-glow rounded-2xl p-5 text-center">
+            <div class="font-serif text-3xl font-bold gold-gradient-text">100%</div>
+            <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Asl material saqlanadi</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════ COMPARE GRID ══════════════ -->
+<section class="py-16 px-6" id="gallery">
+    <div class="max-w-7xl mx-auto">
+
+        <div class="text-center mb-14">
+            <div class="inline-flex items-center gap-2 text-gold-400 text-xs uppercase tracking-widest mb-4">
+                <div class="w-12 h-px bg-gold-400/40"></div>
+                <span>Oldin / Keyin Galereyasi</span>
+                <div class="w-12 h-px bg-gold-400/40"></div>
+            </div>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold">
+                <span class="gold-gradient-text">Zamon</span> Sinovi
+            </h2>
+            <p class="text-gray-400 text-sm mt-3 max-w-lg mx-auto">Har bir kartada slayderni tortib, asarning qanday o'zgarganini ko'ring</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+            <!-- в”Ђв”Ђ 1: Dendur Ibodatxonasi в”Ђв”Ђ -->
+            <div class="artifact-card glass-card gold-border-glow rounded-3xl overflow-hidden">
+                <div class="p-6 pb-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-amber-400 flex-shrink-0">
+                            <i class="fa-solid fa-khanda"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-serif text-lg font-semibold text-white leading-tight">Dendur Ibodatxonasi</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Misr · Mil.avv. 10-yil · Augustus davri</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 flex-shrink-0">Sandstone</span>
+                    </div>
+                </div>
+                <div class="compare mx-6 my-4">
+                    <img class="compare__after" src="images/artifact_egypt_temple.jpg" alt="Dendur ibodatxonasi eskirgan holat" loading="lazy">
+                    <div class="compare__before-wrap">
+                        <img class="compare__before" src="images/artifact_egypt_temple.jpg" alt="Dendur ibodatxonasi restavratsiya" loading="lazy">
+                    </div>
+                    <div class="compare__divider"></div>
+                    <div class="compare__handle-btn"><i class="fa-solid fa-left-right text-obsidian-900 text-xs font-bold"></i></div>
+                    <div class="compare__label compare__label--before">Eskirgan</div>
+                    <div class="compare__label compare__label--after">Restavratsiya</div>
+                    <input type="range" class="compare__range" min="0" max="100" value="50" aria-label="Solishtirish slayderi">
+                </div>
+                <p class="px-6 pb-6 text-sm text-gray-400 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-gold-400/60 mr-1.5"></i>
+                    Nil daryosi bo'yida topilgan qumtosh ibodatxona 1965 yilda AQShga hadya etilgan. Met Museum da saqlanadi.
+                </p>
+            </div>
+
+            <!-- в”Ђв”Ђ 2: Rim Bronza Haykali в”Ђв”Ђ -->
+            <div class="artifact-card glass-card gold-border-glow rounded-3xl overflow-hidden">
+                <div class="p-6 pb-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-blue-500/15 border border-blue-500/25 flex items-center justify-center text-blue-400 flex-shrink-0">
+                            <i class="fa-solid fa-person-rays"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-serif text-lg font-semibold text-white leading-tight">Imperator Bronza Haykali</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Rim · Mil. 251-253 CE · Trebonianus Gallus</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex-shrink-0">Bronze</span>
+                    </div>
+                </div>
+                <div class="compare mx-6 my-4">
+                    <img class="compare__after" src="images/artifact_rome_armor.jpg" alt="Rim haykali eskirgan" loading="lazy">
+                    <div class="compare__before-wrap">
+                        <img class="compare__before" src="images/artifact_rome_armor.jpg" alt="Rim haykali restavratsiya" loading="lazy">
+                    </div>
+                    <div class="compare__divider"></div>
+                    <div class="compare__handle-btn"><i class="fa-solid fa-left-right text-obsidian-900 text-xs font-bold"></i></div>
+                    <div class="compare__label compare__label--before">Eskirgan</div>
+                    <div class="compare__label compare__label--after">Restavratsiya</div>
+                    <input type="range" class="compare__range" min="0" max="100" value="50" aria-label="Solishtirish slayderi">
+                </div>
+                <p class="px-6 pb-6 text-sm text-gray-400 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-gold-400/60 mr-1.5"></i>
+                    Rim imperiyasida saqlanib qolgan eng yirik bronza haykallaridan biri. Balandligi 241 sm, Met Museum.
+                </p>
+            </div>
+
+            <!-- в”Ђв”Ђ 3: Khnumhotep Haykalchasi в”Ђв”Ђ -->
+            <div class="artifact-card glass-card gold-border-glow rounded-3xl overflow-hidden">
+                <div class="p-6 pb-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-amber-700/15 border border-amber-700/25 flex items-center justify-center text-amber-600 flex-shrink-0">
+                            <i class="fa-solid fa-ankh"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-serif text-lg font-semibold text-white leading-tight">Khnumhotep Haykalchasi</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Misr · Mil.avv. 1850 · O'rta Sulola 12-13</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-amber-700/10 border border-amber-700/20 text-amber-600 flex-shrink-0">Diorite</span>
+                    </div>
+                </div>
+                <div class="compare mx-6 my-4">
+                    <img class="compare__after" src="images/artifact_egypt_diorite.jpg" alt="Khnumhotep haykali eskirgan" loading="lazy">
+                    <div class="compare__before-wrap">
+                        <img class="compare__before" src="images/artifact_egypt_diorite.jpg" alt="Khnumhotep haykali restavratsiya" loading="lazy">
+                    </div>
+                    <div class="compare__divider"></div>
+                    <div class="compare__handle-btn"><i class="fa-solid fa-left-right text-obsidian-900 text-xs font-bold"></i></div>
+                    <div class="compare__label compare__label--before">Eskirgan</div>
+                    <div class="compare__label compare__label--after">Restavratsiya</div>
+                    <input type="range" class="compare__range" min="0" max="100" value="50" aria-label="Solishtirish slayderi">
+                </div>
+                <p class="px-6 pb-6 text-sm text-gray-400 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-gold-400/60 mr-1.5"></i>
+                    Qora diorit toshdan ishlangan, iyerogliflar bilan bezatilgan noyob Misr haykalchasi.
+                </p>
+            </div>
+
+            <!-- в”Ђв”Ђ 4: Eirene Marmar Haykali в”Ђв”Ђ -->
+            <div class="artifact-card glass-card gold-border-glow rounded-3xl overflow-hidden">
+                <div class="p-6 pb-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-slate-500/15 border border-slate-500/25 flex items-center justify-center text-slate-400 flex-shrink-0">
+                            <i class="fa-solid fa-venus"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-serif text-lg font-semibold text-white leading-tight">Eirene Marmar Haykali</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Rim · Mil. 14-68 CE · Kephisodotos asosida</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-slate-500/10 border border-slate-500/20 text-slate-400 flex-shrink-0">Marble</span>
+                    </div>
+                </div>
+                <div class="compare mx-6 my-4">
+                    <img class="compare__after" src="images/artifact_greece_marble.jpg" alt="Eirene haykali eskirgan" loading="lazy">
+                    <div class="compare__before-wrap">
+                        <img class="compare__before" src="images/artifact_greece_marble.jpg" alt="Eirene haykali restavratsiya" loading="lazy">
+                    </div>
+                    <div class="compare__divider"></div>
+                    <div class="compare__handle-btn"><i class="fa-solid fa-left-right text-obsidian-900 text-xs font-bold"></i></div>
+                    <div class="compare__label compare__label--before">Eskirgan</div>
+                    <div class="compare__label compare__label--after">Restavratsiya</div>
+                    <input type="range" class="compare__range" min="0" max="100" value="50" aria-label="Solishtirish slayderi">
+                </div>
+                <p class="px-6 pb-6 text-sm text-gray-400 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-gold-400/60 mr-1.5"></i>
+                    Tinchlik ma'budasi Eirene. Yunon Kephisodotos asliga asoslangan Rim nusxasi, 177 sm.
+                </p>
+            </div>
+
+            <!-- в”Ђв”Ђ 5: Islomiy Luster Kafeli в”Ђв”Ђ -->
+            <div class="artifact-card glass-card gold-border-glow rounded-3xl overflow-hidden">
+                <div class="p-6 pb-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/15 border border-teal-500/25 flex items-center justify-center text-teal-400 flex-shrink-0">
+                            <i class="fa-solid fa-star-and-crescent"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-serif text-lg font-semibold text-white leading-tight">Eron Islomiy Kafeli</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Eron · XIII asr · Takht-i Sulayman</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 flex-shrink-0">Luster</span>
+                    </div>
+                </div>
+                <div class="compare mx-6 my-4">
+                    <img class="compare__after" src="images/artifact_islamic_tile.jpg" alt="Islomiy kafel eskirgan" loading="lazy">
+                    <div class="compare__before-wrap">
+                        <img class="compare__before" src="images/artifact_islamic_tile.jpg" alt="Islomiy kafel restavratsiya" loading="lazy">
+                    </div>
+                    <div class="compare__divider"></div>
+                    <div class="compare__handle-btn"><i class="fa-solid fa-left-right text-obsidian-900 text-xs font-bold"></i></div>
+                    <div class="compare__label compare__label--before">Eskirgan</div>
+                    <div class="compare__label compare__label--after">Restavratsiya</div>
+                    <input type="range" class="compare__range" min="0" max="100" value="50" aria-label="Solishtirish slayderi">
+                </div>
+                <p class="px-6 pb-6 text-sm text-gray-400 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-gold-400/60 mr-1.5"></i>
+                    Feruza va ko'k rangli zarhal ustida feniks (Zumrud qush) tasviri. Luster texnikasi, Eron, XIII asr.
+                </p>
+            </div>
+
+            <!-- ── 6: Heqanakht Papiruslari ── -->
+            <div class="artifact-card glass-card gold-border-glow rounded-3xl overflow-hidden">
+                <div class="p-6 pb-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-yellow-700/15 border border-yellow-700/25 flex items-center justify-center text-yellow-600 flex-shrink-0">
+                            <i class="fa-solid fa-scroll"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-serif text-lg font-semibold text-white leading-tight">Heqanakht Papiruslari</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Misr · Mil.avv. 1961–1917 · Sulola 12</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-yellow-700/10 border border-yellow-700/20 text-yellow-600 flex-shrink-0">Papyrus</span>
+                    </div>
+                </div>
+                <div class="compare mx-6 my-4">
+                    <img class="compare__after" src="images/artifact_egypt_papyrus.jpg" alt="Misr papiruslari eskirgan" loading="lazy">
+                    <div class="compare__before-wrap">
+                        <img class="compare__before" src="images/artifact_egypt_papyrus.jpg" alt="Misr papiruslari restavratsiya" loading="lazy">
+                    </div>
+                    <div class="compare__divider"></div>
+                    <div class="compare__handle-btn"><i class="fa-solid fa-left-right text-obsidian-900 text-xs font-bold"></i></div>
+                    <div class="compare__label compare__label--before">Eskirgan</div>
+                    <div class="compare__label compare__label--after">Restavratsiya</div>
+                    <input type="range" class="compare__range" min="0" max="100" value="50" aria-label="Solishtirish slayderi">
+                </div>
+                <p class="px-6 pb-6 text-sm text-gray-400 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-gold-400/60 mr-1.5"></i>
+                    Misr tarixidagi eng qadimgi shaxsiy xatlar. Deir el-Bahri qabridan 1921–22 yillarda topilgan.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="section-divider mx-6 my-2"></div>
+
+<!-- ══════════════ PROCESS (RESTORATION PIPELINE) ══════════════ -->
+<section class="py-24 px-6 relative overflow-hidden" id="about">
+    <!-- Glowing background elements -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full glass-card border border-gold-400/30 text-gold-400 text-xs uppercase tracking-widest mb-4">
+                <i class="fa-solid fa-microscope text-xs"></i>
+                <span>Imperium High-Tech Laboratoriyasi</span>
+            </div>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight">
+                Restavratsiya <span class="gold-gradient-text">Ilmiy Jarayoni</span>
+            </h2>
+            <p class="text-gray-400 text-sm sm:text-base mt-4 max-w-2xl mx-auto font-light">
+                Har bir nodir eksponat zamonaviy nanotexnologiyalar va 3D lazer tahlillari orqali bosqichma-bosqich asl ko'rinishiga qaytariladi.
+            </p>
+        </div>
+
+        <!-- Interactive Pipeline Navigation Tabs -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
+            <button onclick="switchProcessStep(1)" id="stepTab1" class="process-tab active group relative p-5 rounded-2xl glass-card border border-gold-400/60 text-left transition-all duration-300 hover:border-gold-400 bg-gold-500/10">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-serif text-xs font-bold text-gold-400 uppercase tracking-widest">Bosqich 01</span>
+                    <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span>
+                </div>
+                <h4 class="font-serif text-base font-bold text-white group-hover:text-gold-300 transition-colors">1. 3D Diagnostika</h4>
+                <p class="text-xs text-gray-400 mt-1 line-clamp-1">Lazer skanerlash va mikro-xaritalash</p>
+                <div class="tab-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-gold-400 rounded-full"></div>
+            </button>
+
+            <button onclick="switchProcessStep(2)" id="stepTab2" class="process-tab group relative p-5 rounded-2xl glass-card border border-white/10 text-left transition-all duration-300 hover:border-gold-400/50">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-serif text-xs font-bold text-gray-500 uppercase tracking-widest">Bosqich 02</span>
+                    <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                </div>
+                <h4 class="font-serif text-base font-bold text-white group-hover:text-gold-300 transition-colors">2. Spektroskopiya</h4>
+                <p class="text-xs text-gray-400 mt-1 line-clamp-1">Rentgen va kimyoviy pigment tahlili</p>
+                <div class="tab-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-transparent rounded-full"></div>
+            </button>
+
+            <button onclick="switchProcessStep(3)" id="stepTab3" class="process-tab group relative p-5 rounded-2xl glass-card border border-white/10 text-left transition-all duration-300 hover:border-gold-400/50">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-serif text-xs font-bold text-gray-500 uppercase tracking-widest">Bosqich 03</span>
+                    <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                </div>
+                <h4 class="font-serif text-base font-bold text-white group-hover:text-gold-300 transition-colors">3. Nano-Tozalash</h4>
+                <p class="text-xs text-gray-400 mt-1 line-clamp-1">Selektiv lazer va molekulyar tiklash</p>
+                <div class="tab-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-transparent rounded-full"></div>
+            </button>
+
+            <button onclick="switchProcessStep(4)" id="stepTab4" class="process-tab group relative p-5 rounded-2xl glass-card border border-white/10 text-left transition-all duration-300 hover:border-gold-400/50">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-serif text-xs font-bold text-gray-500 uppercase tracking-widest">Bosqich 04</span>
+                    <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                </div>
+                <h4 class="font-serif text-base font-bold text-white group-hover:text-gold-300 transition-colors">4. Vakuum Konservatsiya</h4>
+                <p class="text-xs text-gray-400 mt-1 line-clamp-1">Inert gazli mikroklimat kapsulasi</p>
+                <div class="tab-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-transparent rounded-full"></div>
+            </button>
+        </div>
+
+        <!-- Dynamic Detailed Content Showcase Card -->
+        <div id="processDetailCard" class="glass-card gold-border-glow rounded-3xl p-8 lg:p-12 relative overflow-hidden transition-all duration-500">
+
+            <!-- Background decorative HUD grid -->
+            <div class="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+
+                <!-- Left Content Info -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span id="stepNumberBadge" class="w-10 h-10 rounded-xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 font-serif font-bold text-lg">01</span>
+                        <span id="stepCategoryTag" class="text-xs tracking-widest uppercase text-gold-400/80 font-semibold">Optik & Raqamli Tahlil</span>
+                    </div>
+
+                    <h3 id="stepTitle" class="font-serif text-2xl sm:text-3xl font-bold text-white">
+                        3D Lazer Skanerlash va Mikro-Xaritalash
+                    </h3>
+
+                    <p id="stepDescription" class="text-gray-300 text-sm sm:text-base leading-relaxed font-light">
+                        Asar sirtidagi eng kichik (0.01 mm aniqlikdagi) darslar, mikro-yoriqlar va eroziya nuqtalari yuqori aniqlikdagi 3D lidar skanerlar yordamida to'liq xaritalashtiriladi. Bu jarayon asarga mutlaqo tegmasdan amaldagi holatini 100% aniq raqamlashtiradi.
+                    </p>
+
+                    <!-- Tech Specs Highlights -->
+                    <div id="stepTechGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-white/10">
+                        <div class="p-3.5 rounded-xl bg-obsidian-900/60 border border-white/5">
+                            <div class="text-xs text-gray-400">Skanerlash Aniqligi</div>
+                            <div class="font-serif text-lg font-bold text-gold-400 mt-0.5">0.005 mm</div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-obsidian-900/60 border border-white/5">
+                            <div class="text-xs text-gray-400">Vaqt Sarfi</div>
+                            <div class="font-serif text-lg font-bold text-gold-400 mt-0.5">12–48 Soat</div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-obsidian-900/60 border border-white/5 col-span-2 sm:col-span-1">
+                            <div class="text-xs text-gray-400">Texnologiya</div>
+                            <div class="font-serif text-lg font-bold text-gold-400 mt-0.5">Sub-mm LiDAR</div>
+                        </div>
+                    </div>
+
+                    <!-- Checklist -->
+                    <div class="space-y-2 pt-2">
+                        <div class="flex items-center gap-3 text-xs sm:text-sm text-gray-300">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-xs"></i>
+                            <span id="checkPoint1">Topografik qatlamlar 3D modelini yaratish</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs sm:text-sm text-gray-300">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-xs"></i>
+                            <span id="checkPoint2">Ichki mikro-yoriqlarni ultravaffos tahlili</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Visual Interactive HUD / Artifact Preview -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-2xl overflow-hidden border border-gold-400/30 shadow-2xl group">
+
+                        <!-- Main Illustration Image -->
+                        <img id="stepVisualImage"
+                            src="images/artifact_rome_armor.jpg"
+                            alt="Restavratsiya laboratoriyasi jarayoni"
+                            class="w-full h-80 sm:h-96 object-cover transform group-hover:scale-105 transition-transform duration-700">
+
+                        <!-- Scanning Line Animation Effect -->
+                        <div id="scanLineEffect" class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent shadow-[0_0_15px_#D4AF37] animate-[pulse_2s_infinite]"></div>
+
+                        <!-- Corner HUD Accents -->
+                        <div class="absolute top-3 left-3 px-3 py-1 rounded-md bg-obsidian-900/80 backdrop-filter blur-sm border border-gold-400/30 text-[10px] font-mono text-gold-400 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span id="hudStatusText">LIVE LAB SCANNING: 98.4%</span>
+                        </div>
+
+                        <div class="absolute bottom-3 right-3 px-3 py-1 rounded-md bg-obsidian-900/80 backdrop-filter blur-sm border border-white/10 text-[10px] font-mono text-gray-300">
+                            ID: #REST-2026-X9
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="glass-card border-t border-white/5 py-12 px-6 mt-4" id="contact">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full border border-gold-400/50 flex items-center justify-center bg-obsidian-800">
+                        <i class="fa-solid fa-monument text-gold-400"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-xl font-bold gold-gradient-text block leading-none">IMPERIUM</span>
+                        <span class="text-[10px] tracking-[0.25em] text-gray-400 uppercase">Muzey Passaji</span>
+                    </div>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed">Dunyo merosini kelajak avlodlar uchun asrab-avaylash va restavratsiya qilish missiyamizdir.</p>
+            </div>
+            <div>
+                <h5 class="font-serif text-sm font-semibold text-white mb-4 uppercase tracking-wider">Sahifalar</h5>
+                <div class="flex flex-col gap-2 text-sm text-gray-400">
+                    <a href="imperium_museum_awakening.html" class="hover:text-gold-400 transition-colors">🏛️ Bosh Sahifa</a>
+                    <a href="zallar.html" class="hover:text-gold-400 transition-colors">🚪 Muzey Zallari</a>
+                    <a href="restavratsiya.html" class="text-gold-400">🎨 Restavratsiya</a>
+                </div>
+            </div>
+            <div>
+                <h5 class="font-serif text-sm font-semibold text-white mb-4 uppercase tracking-wider">Aloqa</h5>
+                <div class="flex flex-col gap-3 text-sm text-gray-400">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-location-dot text-gold-400 w-4"></i><span>Toshkent, Amir Temur xiyoboni, 1</span></div>
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-phone text-gold-400 w-4"></i><span>+998 71 200 00 01</span></div>
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-clock text-gold-400 w-4"></i><span>Du–Sha: 09:00–20:00</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-divider mb-6"></div>
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <span>© 2026 Imperium Museum. Barcha huquqlar himoyalangan.</span>
+            <span class="flex items-center gap-1">Tarix asrab-avaylanadi <i class="fa-solid fa-heart text-gold-400 mx-1"></i> Imperium jamoasi tomonidan</span>
+        </div>
+    </div>
+</footer>
+
+<!-- ══════════════ JAVASCRIPT ══════════════ -->
+<script>
+    // Nav scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('nav-scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Mobile menu
+    document.getElementById('menuBtn').addEventListener('click', () => {
+        const m = document.getElementById('mobileMenu');
+        m.classList.toggle('hidden');
+        m.classList.toggle('flex');
+    });
+
+    // в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ Compare Slider Engine в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+    // Each .compare element is independent. Uses Pointer Events API for
+    // smooth mouse + touch dragging. Range input stays as keyboard/a11y fallback.
+    document.querySelectorAll('.compare').forEach(compare => {
+        const beforeWrap = compare.querySelector('.compare__before-wrap');
+        const divider    = compare.querySelector('.compare__divider');
+        const handle     = compare.querySelector('.compare__handle-btn');
+        const range      = compare.querySelector('.compare__range');
+
+        // Sync all elements to a percentage position (0–100)
+        function setPos(pct) {
+            pct = Math.max(0, Math.min(100, pct));
+            beforeWrap.style.width = pct + '%';
+            divider.style.left     = pct + '%';
+            handle.style.left      = pct + '%';
+            range.value            = pct;
+        }
+
+        // Convert pointer clientX to percentage within the compare container
+        function toPercent(clientX) {
+            const r = compare.getBoundingClientRect();
+            return ((clientX - r.left) / r.width) * 100;
+        }
+
+        // Initialise at 50%
+        setPos(50);
+
+        // в”Ђв”Ђ Range input: keyboard (Tab+Arrow) and mobile native в”Ђв”Ђ
+        range.addEventListener('input', () => setPos(+range.value));
+
+        // в”Ђв”Ђ Pointer events: mouse + touch unified в”Ђв”Ђ
+        let dragging = false;
+
+        compare.addEventListener('pointerdown', e => {
+            dragging = true;
+            compare.setPointerCapture(e.pointerId); // keeps events flowing even outside element
+            compare.classList.add('is-dragging');
+            setPos(toPercent(e.clientX));
+        });
+
+        compare.addEventListener('pointermove', e => {
+            if (!dragging) return;
+            setPos(toPercent(e.clientX));
+        });
+
+        const stopDrag = () => {
+            dragging = false;
+            compare.classList.remove('is-dragging');
+        };
+        compare.addEventListener('pointerup',     stopDrag);
+        compare.addEventListener('pointercancel', stopDrag);
+
+        // Prevent browser drag on images
+        compare.querySelectorAll('img').forEach(img =>
+            img.addEventListener('dragstart', e => e.preventDefault())
+        );
+    });
+
+    // в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ Scroll-in animation for artifact cards в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity   = '1';
+                entry.target.style.transform = 'translateY(0)';
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.artifact-card').forEach((card, i) => {
+        card.style.opacity    = '0';
+        card.style.transform  = 'translateY(48px)';
+        card.style.transition = `opacity 0.65s ease ${i * 0.08}s, transform 0.65s ease ${i * 0.08}s`;
+        io.observe(card);
+    });
+
+    // ─────── Interactive Restoration Pipeline Tabs ───────
+    const processStepsData = {
+        1: {
+            badge: "01",
+            category: "Optik & Raqamli Tahlil",
+            title: "3D Lazer Skanerlash va Mikro-Xaritalash",
+            desc: "Asar sirtidagi eng kichik (0.01 mm aniqlikdagi) darslar, mikro-yoriqlar va eroziya nuqtalari yuqori aniqlikdagi 3D lidar skanerlar yordamida to'liq xaritalashtiriladi. Bu jarayon asarga mutlaqo tegmasdan amaldagi holatini 100% aniq raqamlashtiradi.",
+            metric1Label: "Skanerlash Aniqligi", metric1Val: "0.005 mm",
+            metric2Label: "Vaqt Sarfi", metric2Val: "12–48 Soat",
+            metric3Label: "Texnologiya", metric3Val: "Sub-mm LiDAR",
+            check1: "Topografik qatlamlar 3D modelini yaratish",
+            check2: "Ichki mikro-yoriqlarni ultravaffos tahlili",
+            image: "images/artifact_rome_armor.jpg",
+            status: "LIVE LAB SCANNING: 98.4%"
+        },
+        2: {
+            badge: "02",
+            category: "Molekulyar & Kimyoviy Tahlil",
+            title: "Spektroskopik Tahlil va Pigment Identifikatsiyasi",
+            desc: "Rentgen-flyuorestsent (XRF) va Infraqizil spektroskopiya orqali asarning asl bo'yoq formulalari, metall qotishmasi va kimyoviy tarkibi o'rganiladi. Bu asarning aynan qaysi asrda va qanday moddalardan ishlanganini tasdiqlaydi.",
+            metric1Label: "Rentgen Spektr", metric1Val: "XRF Multi-layer",
+            metric2Label: "Pigment Aniqlik", metric2Val: "99.9% Asl",
+            metric3Label: "Tahlil Chuqurligi", metric3Val: "15 Qatlam",
+            check1: "Asl kimyoviy elementlar jadvalini tuzish",
+            check2: "Keyinchalik qo'shilgan soxta bo'yoqlarni ajratish",
+            image: "images/artifact_islamic_tile.jpg",
+            status: "SPECTRO ANALYSIS: COMPLETE"
+        },
+        3: {
+            badge: "03",
+            category: "Nanotexnologik Tiklash",
+            title: "Selektiv Lazer va Molekulyar Tozalash",
+            desc: "Imkoni boricha asl sirtga zarar yetkazmagan holda, yuz yillar davomida to'plangan tutun, zang, kir va oksidlanish qatlamlari tozalash lazeri hamda neytral fermentativ formulalar bilan tozalab chiqiladi.",
+            metric1Label: "Lazer chastotasi", metric1Val: "1064 nm Nd:YAG",
+            metric2Label: "Sirt Harorati", metric2Val: "< 28°C Xavfsiz",
+            metric3Label: "Tozalash darajasi", metric3Val: "Selektiv 100%",
+            check1: "Organik va inorganik zang qatlamlarini eritish",
+            check2: "Asl mikro-faktura va bo'yoqni to'liq saqlash",
+            image: "images/artifact_egypt_diorite.jpg",
+            status: "NANO-CLEANING IN PROGRESS"
+        },
+        4: {
+            badge: "04",
+            category: "Kelajak Uchun Muhofaza",
+            title: "Inert Gazli Mikroklimat Kapsulasi",
+            desc: "Restavratsiya yakunlangach, asar kislorodsiz, namligi va harorati avtomatik boshqariladigan argon gazli maxsus germetik vitrinaga joylashtiriladi. Bu kelgusi 500 yil davomida qayta yemirilishning oldini oladi.",
+            metric1Label: "Atmosfera", metric1Val: "99.9% Argon",
+            metric2Label: "UV Muhofaza", metric2Val: "100% Bloking",
+            metric3Label: "Saqlash Muddat", metric3Val: "500+ Yil",
+            check1: "Kislorodsiz va zamburug'siz steril muhit yaratish",
+            check2: "Avtomatik iqlim va namlik nazorati sensorlari",
+            image: "images/artifact_greece_marble.jpg",
+            status: "CAPSULE SEALED & PROTECTED"
+        }
+    };
+
+    function switchProcessStep(stepNum) {
+        const data = processStepsData[stepNum];
+        if (!data) return;
+
+        document.querySelectorAll('.process-tab').forEach((tab, index) => {
+            const isCurrent = (index + 1) === stepNum;
+            const badge = tab.querySelector('.font-serif');
+            const dot = tab.querySelector('.rounded-full');
+            const indicator = tab.querySelector('.tab-indicator');
+
+            if (isCurrent) {
+                tab.className = "process-tab active group relative p-5 rounded-2xl glass-card border border-gold-400/60 text-left transition-all duration-300 hover:border-gold-400 bg-gold-500/10";
+                if (badge) badge.className = "font-serif text-xs font-bold text-gold-400 uppercase tracking-widest";
+                if (dot) dot.className = "w-2 h-2 rounded-full bg-gold-400 animate-ping";
+                if (indicator) indicator.className = "tab-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-gold-400 rounded-full";
+            } else {
+                tab.className = "process-tab group relative p-5 rounded-2xl glass-card border border-white/10 text-left transition-all duration-300 hover:border-gold-400/50";
+                if (badge) badge.className = "font-serif text-xs font-bold text-gray-500 uppercase tracking-widest";
+                if (dot) dot.className = "w-2 h-2 rounded-full bg-gray-600";
+                if (indicator) indicator.className = "tab-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-transparent rounded-full";
+            }
+        });
+
+        const detailCard = document.getElementById('processDetailCard');
+        if (!detailCard) return;
+
+        detailCard.style.opacity = '0.4';
+        detailCard.style.transform = 'scale(0.99)';
+
+        setTimeout(() => {
+            document.getElementById('stepNumberBadge').innerText = data.badge;
+            document.getElementById('stepCategoryTag').innerText = data.category;
+            document.getElementById('stepTitle').innerText = data.title;
+            document.getElementById('stepDescription').innerText = data.desc;
+
+            const techGrid = document.getElementById('stepTechGrid');
+            if (techGrid) {
+                techGrid.children[0].children[0].innerText = data.metric1Label;
+                techGrid.children[0].children[1].innerText = data.metric1Val;
+                techGrid.children[1].children[0].innerText = data.metric2Label;
+                techGrid.children[1].children[1].innerText = data.metric2Val;
+                techGrid.children[2].children[0].innerText = data.metric3Label;
+                techGrid.children[2].children[1].innerText = data.metric3Val;
+            }
+
+            document.getElementById('checkPoint1').innerText = data.check1;
+            document.getElementById('checkPoint2').innerText = data.check2;
+
+            document.getElementById('stepVisualImage').src = data.image;
+            document.getElementById('hudStatusText').innerText = data.status;
+
+            detailCard.style.opacity = '1';
+            detailCard.style.transform = 'scale(1)';
+        }, 150);
+    }
+</script>
+</body>
+</html>
+

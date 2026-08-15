@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPQR - Qadimgi Rim Imperiyasi Xronikasi</title>
+
+    <!-- Google Fonts: Baloo 2 umumiy header uchun, qolganlari gazeta uslubi uchun -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Temani CSS dan OLDIN o'rnatadi — tungi rejimda oq chaqnash bo'lmasin -->
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/lenis.css">
+    <link rel="stylesheet" href="assets/site-header.css">
+    <link rel="stylesheet" href="rim.css">
+</head>
+
+<body>
+
+    <!-- LIQUID DISTORTION SVG FILTER -->
+    <svg class="liquid-svg-filters">
+        <filter id="liquid-distortion-filter" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="2" result="noise" id="liquid-turbulence">
+                <animate attributeName="baseFrequency" dur="8s" values="0.015 0.025; 0.03 0.015; 0.015 0.025" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="liquid-displacement" />
+        </filter>
+    </svg>
+
+    <!-- FULL PAGE BACKGROUND VIDEO CONTAINER (SCROLL-SYNCED) -->
+    <div class="bg-video-container">
+        <video muted playsinline preload="auto" id="hero-video" class="hero-video">
+            <source src="./rim ideo.mp4" type="video/mp4">
+        </video>
+        <div class="video-vignette"></div>
+    </div>
+
+    <!-- UMUMIY SAYT HEADERI (barcha sahifalarda bir xil) -->
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+        <span class="brand-mark">I</span>
+        <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+      </a>
+      <nav aria-label="Asosiy navigatsiya" id="navMenu">
+        <a href="museyHaqida.html">Muzey haqida</a>
+        <a href="3d.html">3D Eksponatlar</a>
+        <a href="galereya.html">Galereya</a>
+        <a href="victarina.html">Viktorina</a>
+        <a href="360zal.html">360 zallar</a>
+        <a href="nimadur.html">Vaqt mashinasi</a>
+        <a href="museylar.html">Milliy muzey</a>
+        <a href="zallar.html">Zallar</a>
+        <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+      </nav>
+      <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+      <div class="header-right-group">
+        <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+        <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- IMPERIAL TICKER BAR -->
+    <div class="gazette-ticker-bar">
+        <div class="ticker-wrapper">
+            <span class="badge"><i class="fa-solid fa-shield-halved"></i> SPQR IMPERIAL</span>
+            <div class="ticker-marquee">
+                <span class="ticker-text"><i class="fa-solid fa-bolt"></i> SHOSHILINCH XABAR: Kolizey amfiteatrida buyuk gladiatorlar janglari boshlandi! • Yuliy Sezar galdagi g'alabani qo'lga kiritdi • Panteon ibodatxonasi gumbazi bitkazildi</span>
+            </div>
+        </div>
+        <div class="ticker-meta">
+            <span><i class="fa-solid fa-calendar-days"></i> EST. 753 B.C.</span>
+            <span><i class="fa-solid fa-coins"></i> 10 ROMAN DENARII</span>
+        </div>
+    </div>
+
+    <!-- MAIN ROMAN IMPERIAL GAZETTE MASTHEAD / HEADER -->
+    <header class="gazette-header">
+        <div class="header-top-info">
+            <div class="date-issue">
+                <span>SENATUS POPULUSQUE ROMANUS</span>
+                <span>ROMA • IMPERIUM</span>
+            </div>
+            <div class="header-seal">
+                <i class="fa-solid fa-crown"></i> IMPERIAL ARCHIVE
+            </div>
+            <div class="weather-info">
+                <span>ROME FORUM: 29°C</span>
+                <span>TIBER DARYOSI: TINSCH</span>
+            </div>
+        </div>
+
+        <div class="masthead-main">
+            <div class="masthead-title">
+                <h1>THE ROMAN GAZETTE</h1>
+                <p class="masthead-subtitle">
+                    <span class="typewriter-target" data-words='["QADIMGI RIM, QAYSARLAR VA GLADIATORLAR XRONIKASI", "SENATUS POPULUSQUE ROMANUS", "FLAVIY AMFITEATRI VA SPQR TARIXI"]'></span><span class="typewriter-cursor">|</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Sahifa ichidagi bo'limlarga o'tish. Saytlararo navigatsiya
+             yuqoridagi umumiy .site-header da. -->
+        <nav class="gazette-nav">
+            <a href="#hero-section" class="active"><i class="fa-solid fa-newspaper"></i> BOSH SAHIFA</a>
+            <a href="#history"><i class="fa-solid fa-landmark"></i> IMPERIYA TARIXI</a>
+            <a href="#colosseum"><i class="fa-solid fa-shield-cat"></i> KOLIZEY ARENA</a>
+            <a href="#latin-mottoes"><i class="fa-solid fa-scroll"></i> LOTIN SHIORLARI</a>
+            <a href="#timeline"><i class="fa-solid fa-timeline"></i> TARIX YO'LI</a>
+        </nav>
+    </header>
+
+    <main class="gazette-content-wrapper">
+
+        <!-- FRONT PAGE HERO ARTICLE SECTION -->
+        <section class="gazette-hero-section reveal" id="hero-section">
+            <div class="hero-article-grid">
+                
+                <!-- Main Lead Story -->
+                <article class="lead-story-card">
+                    <div class="article-category-tag">BOSH MAQOLA • SPQR GAZETTE</div>
+                    <h2 class="lead-headline">
+                        <span class="typewriter-target" data-words='["QADIMGI RIM: QAYSARLAR VA BUYUK IMPERIYA", "SENAT VA LEGIONLARNING YENGILMAS QUDRA&#39;TI", "FLAVIY AMFITEATRI VA GLADIATORLAR JANGI"]'></span><span class="typewriter-cursor">|</span>
+                    </h2>
+                    <div class="author-byline">
+                        <span>Muallif: Rim Senati Tarixchilari</span>
+                        <span class="divider">•</span>
+                        <span>Forum Romanum Redaksiyasi</span>
+                    </div>
+
+                    <div class="lead-body">
+                        <p class="drop-cap">
+                            Rim imperiyasi insoniyat tarixida tengi yo'q eng qudratli davlatlardan biri bo'lib, Yevropa, Yaqin Sharq va Shimoliy Afrikani yagona bayroq ostida birlashtirdi. Yetti tepalik bag'rida barpo etilgan Rim shahri harbiy san'at, me'morchilik va huquqshunoslikning tamal toshini qo'ydi.
+                        </p>
+                        <p>
+                            Muazzam Kolizey amfiteatri, Panteon ibodatxonasi va imperatorlarning muhtasham saroylari toshlarga muhrlangan Rim qudratining yorqin timsolidir. Rim legonlarining botirligi va senatorlarning donoligi sivilizatsiya taraqqiyotiga ulkan hissa qo'shgan.
+                        </p>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="#history" class="gazette-btn primary-btn">
+                            <i class="fa-solid fa-compass"></i> IMPERIYANI KASHF QILISH
+                        </a>
+                        <button class="gazette-btn secondary-btn" onclick="openArticleModal('roman-lead')">
+                            <i class="fa-solid fa-book-open"></i> BARCHA TAFSILOTLAR
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Side Gazette Column -->
+                <aside class="gazette-side-column">
+                    <div class="side-widget-box">
+                        <h3 class="widget-title"><div class="seal-icon"><i class="fa-solid fa-quote-left"></i></div> HIKMATLI IQROR</h3>
+                        <blockquote class="royal-quote">
+                            "Tarix — hayot murabbiyisidir. Kimki o'tmishni unutsa, uni qayta takrorlashga mahkumdir."
+                        </blockquote>
+                        <div class="quote-author">— Sitseron (Rim Notig'i va Senatori)</div>
+                    </div>
+
+                    <div class="side-widget-box archival-badge-box">
+                        <div class="seal-stamp"><i class="fa-solid fa-scroll"></i> SPQR SEAL</div>
+                        <h4>VENI, VIDI, VICI</h4>
+                        <p>Keldim, ko'rdim, yengdim! Rim qaysarlarining g'alabaparvar ruhi.</p>
+                    </div>
+                </aside>
+
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">⚔ 🏛 🛡 🏛 ⚔</span>
+        </div>
+
+        <!-- HISTORY SECTION (IMPERIYA TARIXI) -->
+        <section class="gazette-section history-section reveal" id="history">
+            <div class="newspaper-header-box">
+                <span class="sub-label">SENAT ARXIVI</span>
+                <h2 class="section-title">RIM SALTANATI VA LEGIONLAR QUDRA'TI</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="history-content-grid">
+                <div class="history-image-frame liquid-frame entrance-img-frame">
+                    <div class="tape-corner top-left"></div>
+                    <div class="tape-corner top-right"></div>
+                    <img src="images/roman_emperor.jpg" alt="Qadimgi Rim Imperatori">
+                    <div class="image-caption"><i class="fa-solid fa-camera"></i> Rim Imperatori va Laurel Chambari (Arxeologik Arxiv Portreti)</div>
+                </div>
+
+                <div class="history-text-article">
+                    <h3 class="article-subheading">
+                        <span class="typewriter-target" data-words='["Yetti Tepalik ustidagi Sivilizatsiya", "Rim Legionlarining Temir Intizomi", "Senat va Konsullarning Qonunlari"]'></span><span class="typewriter-cursor">|</span>
+                    </h3>
+                    <p class="drop-cap">
+                        Rim tarixi eraddan avvalgi 753-yilda Romul va Rem birodarlari tomonidan asos solingandan boshlab, ming yildan ortiq davom etgan buyuk epopeyadir. Qirollik davridan Respublikaga, so'ngra qudratli Imperiyaga aylangan Rim dunyo arxitekturasi va qonunchiligining ustuniga aylandi.
+                    </p>
+                    <p>
+                        Rim akveduklari, tosh yo'llari (Viya Appiya) hamda harbiy intizom imperiyaning uzoq asrlar davomida gullab-yashnashini ta'minladi.
+                    </p>
+
+                    <!-- Gazette Style Stats Cards -->
+                    <div class="gazette-stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fa-solid fa-crown"></i></div>
+                            <div class="stat-number">70+</div>
+                            <div class="stat-label">Buyuk Qaysarlar</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                            <div class="stat-number">1200</div>
+                            <div class="stat-label">Yillik Imperiya Tarixi</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fa-solid fa-shield"></i></div>
+                            <div class="stat-number">300+</div>
+                            <div class="stat-label">G'olib Legionlar</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">⚔ 🏛 🛡 🏛 ⚔</span>
+        </div>
+
+        <!-- COLOSSEUM BIG FEATURE SECTION -->
+        <section class="gazette-section pyramid-section reveal" id="colosseum">
+            <div class="pyramid-hero-card">
+                <div class="pyramid-img-container liquid-frame entrance-img-frame">
+                    <img src="images/colosseum_arena.jpg" alt="Rim Kolizeyi">
+                    <div class="image-overlay-vignette"></div>
+                </div>
+
+                <div class="pyramid-card-content">
+                    <div class="vintage-badge">SPQR ARENA MO'JIZASI</div>
+                    <h2 class="pyramid-title">
+                        <span class="typewriter-target" data-words='["BUYUK KOLIZEY VA GLADIATORLAR JANGI", "FLAVIY AMFITEATRI ANATOMIYASI", "ARENADAGI TENGSIZ MARDLIK SIRLARI"]'></span><span class="typewriter-cursor">|</span>
+                    </h2>
+                    <p class="pyramid-desc">
+                        Flaviy amfiteatri nomi bilan tanilgan Kolizey 50,000 dan ortiq tomoshabinni o'z bag'riga sig'dira olgan me'morchilik mo'jizasi edi. Bu yerda mard gladiatorlar va afsonaviy bahslar bo'lib o'tgan.
+                    </p>
+                    <button class="gazette-btn crimson-btn" onclick="openArticleModal('colosseum-story')">
+                        <i class="fa-solid fa-eye"></i> KOLIZEY SIRLARI VA ANATOMIYASI
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">⚔ 🏛 🛡 🏛 ⚔</span>
+        </div>
+
+        <!-- RE-DESIGNED LATIN QUOTES & SYMBOL DECODER SECTION -->
+        <section class="gazette-section hieroglyph-section reveal" id="latin-mottoes">
+            <div class="newspaper-header-box text-center">
+                <span class="sub-label">INTERAKTIV DEKODER</span>
+                <h2 class="section-title">RIM SHIORLARI VA LOTINCHA HIKMATLAR</h2>
+                <p class="section-subtitle">Tarixiy shior ustiga bosing va uning chuqur ma'nosini kashf qiling</p>
+            </div>
+
+            <div class="hieroglyph-grid">
+                <div class="symbol-card" onclick="decodeRomanMotto('spqr', event)">
+                    <div class="symbol-icon"><i class="fa-solid fa-landmark-domed"></i></div>
+                    <h3 class="symbol-name">S.P.Q.R.</h3>
+                    <p class="symbol-tag">Senat va Rim Xalqi</p>
+                </div>
+
+                <div class="symbol-card" onclick="decodeRomanMotto('veni', event)">
+                    <div class="symbol-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="symbol-name">VENI VIDI VICI</h3>
+                    <p class="symbol-tag">Keldim, Ko'rdim, Yengdim</p>
+                </div>
+
+                <div class="symbol-card" onclick="decodeRomanMotto('carpe', event)">
+                    <div class="symbol-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                    <h3 class="symbol-name">CARPE DIEM</h3>
+                    <p class="symbol-tag">Lahzani Qadrla</p>
+                </div>
+
+                <div class="symbol-card" onclick="decodeRomanMotto('alea', event)">
+                    <div class="symbol-icon"><i class="fa-solid fa-chess-knight"></i></div>
+                    <h3 class="symbol-name">ALEA IACTA EST</h3>
+                    <p class="symbol-tag">Qur'a Tashlandi</p>
+                </div>
+            </div>
+
+            <div class="hieroglyph-display-box" id="symbolResultBox">
+                <div class="symbol-placeholder">
+                    <i class="fa-solid fa-hand-pointer"></i> 
+                    <span class="typewriter-target" data-words='["Lotincha shiorni tanlang va ma&#39;nosini o&#39;qing...", "S.P.Q.R. va Sezar hikmatlarini bilib o&#39;ling...", "Veni Vidi Vici ma&#39;nosini kashf qiling..."]'></span><span class="typewriter-cursor">|</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">⚔ 🏛 🛡 🏛 ⚔</span>
+        </div>
+
+        <!-- TIMELINE SECTION -->
+        <section class="gazette-section timeline-section reveal" id="timeline">
+            <div class="newspaper-header-box text-center">
+                <span class="sub-label">XRONOLOGIK ARXIV</span>
+                <h2 class="section-title">
+                    <span class="typewriter-target" data-words='["TARIX YO&#39;LI VA BUYUK VOQEALAR", "753 B.C. DAN 80 A.D. GACHA", "RIM IMPERIYASINING OLTI ASLARI"]'></span><span class="typewriter-cursor">|</span>
+                </h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="gazette-timeline-container">
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">753 B.C.</div>
+                    <h3 class="event-title">Rimga Asos Solinishi</h3>
+                    <p class="event-text">Romul Yetti Tepalik bag'rida Rim shahriga asos soldi va birinchi qirol bo'ldi.</p>
+                </div>
+
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">509 B.C.</div>
+                    <h3 class="event-title">Rim Respublikasi</h3>
+                    <p class="event-text">Qirollik ag'darilib, Senat va konsullar boshqaradigan Respublika tuzumi o'rnatildi.</p>
+                </div>
+
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">27 B.C.</div>
+                    <h3 class="event-title">Imperiya Oltin Asri</h3>
+                    <p class="event-text">Avgust Sezar Rimning birinchi imperatori bo'ldi va Pax Romana (Rim Tinchligi) davri boshlandi.</p>
+                </div>
+
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">80 A.D.</div>
+                    <h3 class="event-title">Kolizey Ochiqlanishi</h3>
+                    <p class="event-text">Flaviy imperatorlari davrida 100 kunlik tantanalar bilan muazzam Kolizey bitkazildi.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">⚔ 🏛 🛡 🏛 ⚔</span>
+        </div>
+
+        <!-- REDIRECT CTA SECTION TO ZALLAR.HTML -->
+        <section class="gazette-section booking-cta-section reveal">
+            <div class="booking-card">
+                <div class="booking-badge"><i class="fa-solid fa-building-columns"></i> SPQR MUZEY ZALLARI</div>
+                <h2 class="booking-title">
+                    <span class="typewriter-target" data-words='["RIM IMPERIYASI MUZEY ZALLARIGA TASHRIF BUYURING", "QAYSARLAR XAZINASI VA MARMAR HAYKALLARNI KO&#39;RING"]'></span><span class="typewriter-cursor">|</span>
+                </h2>
+                <p class="booking-subtitle">Qaysarlar xazinasi, marmar haykallar va gladiatorlar qurollari bilan tanishing!</p>
+                
+                <div class="cta-button-wrapper">
+                    <a href="zallar.html" class="gazette-btn crimson-btn">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> MUZEY ZALLARIGA O'TISH
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ROMAN GAZETTE FOOTER -->
+    <footer class="gazette-footer">
+        <div class="footer-top-ornament">
+            <span class="footer-seal-stamp"><i class="fa-solid fa-stamp"></i> SPQR IMPERIAL ARCHIVE</span>
+        </div>
+        <div class="footer-content">
+            <h2 class="footer-logo">THE ROMAN GAZETTE</h2>
+            <p class="footer-tagline">Qadimgi Rim Imperium Muzeyi Rasmiy Xronikasi & Senat Arxivi</p>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Imperium Museum. Barcha huquqlar himoyalangan. Rim Senati Nashri.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ARTICLE READER MODAL POPUP -->
+    <div class="gazette-modal-overlay" id="articleModal">
+        <div class="gazette-modal-card" data-lenis-prevent>
+            <button class="modal-close-btn" onclick="closeArticleModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <span class="modal-category">RIM TARIXI ARXIVI</span>
+                <h2 id="modalTitle">Maqola Sarlavhasi</h2>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic text populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Script File -->
+    <script src="vendor/lenis.min.js"></script>
+    <script src="assets/site.js"></script>
+    <script src="rim.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+/* ==========================================================
+   LENIS — silliq scroll uchun zarur uslublar
+   ----------------------------------------------------------
+   Kutubxonaning rasmiy boilerplate'i. JS tarafi assets/site.js
+   dagi initSmoothScroll() da.
+
+   Nima uchun kerak: sichqoncha g'ildiragi pog'onali ishlaydi —
+   har bir "tiq" ~100px sakraydi. index.html da scroll-story
+   850vh va video 10 soniya, ya'ni bitta tiq videoning ~0.15
+   soniyasini talab qiladi. Seek esa ~45ms turadi, natijada
+   sakrash-kutish-sakrash ko'rinadi. Lenis har tiqni silliq
+   siljishga aylantiradi va video mayda qadamlar bilan boradi.
+   ========================================================== */
+
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+/* Lenis o'zi scroll pozitsiyasini animatsiya qiladi, shuning uchun
+   brauzerning o'z silliq scroll'i o'chirilishi shart. zallar.html
+   dagi Tailwind `scroll-smooth` klassi ham shu yerda bekor bo'ladi.
+
+   DIQQAT: rasmiy boilerplate'da bu qoidalar `.lenis.lenis-smooth`
+   selektori bilan yozilgan, lekin bu versiya `lenis-smooth` klassini
+   qo'shmaydi — faqat `lenis` va scroll paytida `lenis-scrolling`.
+   Shuning uchun selektor `.lenis` ga soddalashtirildi, aks holda
+   qoidalar umuman ishlamas edi. */
+.lenis {
+    scroll-behavior: auto !important;
+}
+
+/* Ichida o'z scroll'i bor bloklar (Leaflet xaritasi, modal ro'yxatlari)
+   `data-lenis-prevent` bilan belgilanadi — ular ustidagi g'ildirak
+   sahifani surmaydi. */
+.lenis [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+/* Scroll davomida iframe hodisalarni yutib qo'ymasin
+   (360zal.html dagi Street View, 3d.html dagi Sketchfab).
+   Bu qoida `lenis-scrolling` bilan ishlaydi — u klass mavjud. */
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}

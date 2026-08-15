@@ -1,0 +1,132 @@
+==================================================================
+IMPERIUM MUZEYI — YANGI SAHIFA REJASI #3
+"VAQT MASHINASI" — GORIZONTAL TARIXIY CHIZIQ (vaqt-mashinasi.html)
+==================================================================
+
+MAQSAD
+------
+Foydalanuvchi oddiy pastga scroll qilishi bilan sahifa GORIZONTAL
+yo'nalishda harakatlanadi — 5000 yillik tarixni (Misr -> Yunoniston
+-> Rim -> Uyg'onish -> Modern) davr-davr bo'ylab "parvoz qilib"
+o'tadi, har bosqichda parallaks fon, sana chizig'i va eksponat
+kartalari paydo bo'ladi. index.html dagi scroll-story bilan bir xil
+texnik pattern (GSAP + ScrollTrigger allaqachon loyihada bor),
+shuning uchun bu variant "yangi kutubxona o'rganish" talab qilmaydi
+— mavjud vendor/gsap.min.js va vendor/ScrollTrigger.min.js qayta
+ishlatiladi.
+
+QANDAY ISHLAYDI (texnik g'oya)
+-------------------------------
+1. Asosiy tuzilma: juda uzun VERTIKAL scroll konteyneri, ichida esa
+   GSAP ScrollTrigger yordamida gorizontal harakatlanadigan "track":
+
+   <section class="timeline-pin">
+     <div class="timeline-track">
+       <div class="era" data-era="egypt">...</div>
+       <div class="era" data-era="greece">...</div>
+       <div class="era" data-era="rome">...</div>
+       <div class="era" data-era="renaissance">...</div>
+       <div class="era" data-era="modern">...</div>
+     </div>
+   </section>
+
+   CSS: .timeline-track { display: flex; width: max-content; }
+        .era { width: 100vw; height: 100vh; flex-shrink: 0; }
+
+2. JS (script.js dagi mavjud GSAP pattern bilan bir xil uslubda):
+
+   const track = document.querySelector('.timeline-track');
+   const pinSection = document.querySelector('.timeline-pin');
+
+   gsap.to(track, {
+     x: () => -(track.scrollWidth - window.innerWidth),
+     ease: 'none',
+     scrollTrigger: {
+       trigger: pinSection,
+       start: 'top top',
+       end: () => '+=' + (track.scrollWidth - window.innerWidth),
+       scrub: 1,
+       pin: true,
+       invalidateOnRefresh: true,
+     },
+   });
+
+   Bu — vertikal scroll harakatini gorizontal "x" harakatga
+   aylantiruvchi standart GSAP texnikasi (index.html dagi video
+   scrub bilan bir xil mantiq: scrollTrigger.progress -> biror
+   qiymatni boshqaradi, faqat bu yerda video vaqti o'rniga
+   elementning x-koordinatasi boshqariladi).
+
+3. Har bir "era" bloki ichida:
+   - Katta yil raqami (masalan "m.a. 3100" Misr uchun) fon sifatida
+     juda katta shrift bilan (masalan font-size: 22vw), pastda
+     eksponat kartasi va qisqa matn.
+   - Parallaks: har "era" ichidagi fon elementi asosiy track dan
+     sekinroq harakatlansin, buning uchun har bir era ichidagi
+     ".era__bg" ga alohida kichikroq gsap.to(..., {xPercent: ...})
+     berish mumkin (bir nechta qatlam tezligi bilan chuqurlik
+     hissi yaratiladi — index.html dagi depth-card effektiga
+     o'xshash prinsip).
+
+4. Navigatsiya uchun pastda "nuqta indikator" (progress dots),
+   ScrollTrigger onUpdate ichida progress asosida faol nuqtani
+   belgilash (index.html dagi progress-fill/progress-number bilan
+   bir xil pattern, script.js:326-341 qatorlaridagi kodga o'xshash).
+
+FAYL TUZILISHI
+---------------
+- vaqt-mashinasi.html -> header/nav/footer + timeline-pin/timeline-track
+- vaqt-mashinasi.css  -> vintage o'zgaruvchilar + .era stillari,
+                          har bir davr uchun turlicha fon rangi
+                          (masalan Misr uchun qumoq sariq, Rim uchun
+                          marmar oq, Uyg'onish uchun to'q qizil)
+- vaqt-mashinasi.js   -> GSAP timeline/ScrollTrigger sozlamalari
+                          (vendor/gsap.min.js va
+                          vendor/ScrollTrigger.min.js allaqachon
+                          loyihada bor, qayta ulash kifoya)
+
+QADAMLAR (amalga oshirish tartibi)
+------------------------------------
+1. index.html dagi collection-grid va rooms-grid dagi mavjud
+   ma'lumotlar (davr, asar, sana, muzey) 5 ta davrga guruhlash
+   uchun asos sifatida ishlatiladi — yangi kontent yozish shart
+   emas, mavjudini qayta tashkil qilish kifoya.
+2. vaqt-mashinasi.html yaratish: header/nav (boshqa sahifalar bilan
+   bir xil, navga "Vaqt mashinasi" linki qo'shiladi).
+3. vaqt-mashinasi.css: 5 ta .era bloki uchun har xil fon-gradient/
+   rang, katta yil raqami tipografiyasi, era ichidagi kartalar
+   uchun index.html dagi .collection-card uslubini qayta ishlatish
+   (vizual uzluksizlik uchun).
+4. vaqt-mashinasi.js:
+   a) gsap va ScrollTrigger mavjudligini tekshirish (agar yuklanmasa,
+      script.js dagi fallback patternga o'xshash — oddiy oddiy
+      vertikal scroll + IntersectionObserver bilan fade-in
+      zaxira reja sifatida qoldiriladi, chunki gorizontal scroll
+      effektining o'zi GSAP siz murakkab bo'ladi).
+   b) Asosiy pin+scrub animatsiyasini yozish (yuqoridagi kod namunasi).
+   c) Har bir era uchun parallaks fon qatlamlarini qo'shish.
+   d) Progress-dots indikatorini qo'shish.
+5. index.html dagi "5 000 yil bitta makonda" (final-reveal bo'limi)
+   dagi "Eksponatlarni kashf eting" linkini yoki alohida yangi
+   nav elementini vaqt-mashinasi.html ga yo'naltirish mumkin —
+   bu ikki sahifa mazmunan bir-birini davom ettiradi.
+
+MOBIL / RESPONSIVE
+-------------------
+- Gorizontal-scroll-pin texnikasi mobil brauzerlarda (ayniqsa iOS
+  Safari) ba'zan "jerky"/silliq bo'lmasligi mumkin — shuning uchun
+  mobil kenglikda (max-width: 760px) pin+scrub o'chirilib, oddiy
+  vertikal ro'yxat ko'rinishiga almashtirilishi tavsiya etiladi
+  (matchMedia('(min-width: 761px)') bilan shart qo'yish — index.html
+  dagi finePointer/prefersReducedMotion patternlariga o'xshash).
+
+TEST QILISH
+-----------
+- Sahifa balandligi to'g'ri hisoblanishini tekshirish (end qiymati
+  track.scrollWidth ga bog'liq, oyna o'lchami o'zgarganda
+  invalidateOnRefresh orqali qayta hisoblanishi kerak — resize
+  eventda ScrollTrigger.refresh() chaqirilishi shart, xuddi
+  script.js:501-507 qatorlaridagidek).
+- Pastga scroll qilganda track chindan gorizontal harakatlanishini,
+  pin ishlab, sahifa "yopishib qolishini" tekshirish.
+- Progress-dots to'g'ri davrni ko'rsatishini tekshirish.

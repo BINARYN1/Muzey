@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milliy Tarix va San'at Muzeyi</title>
+    <!-- Google Fonts Baloo 2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/lenis.css">
+    <link rel="stylesheet" href="assets/site-header.css">
+    <link rel="stylesheet" href="museylar.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+      <span class="brand-mark">I</span>
+      <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+    </a>
+    <nav aria-label="Asosiy navigatsiya" id="navMenu">
+      <a href="museyHaqida.html">Muzey haqida</a>
+      <a href="3d.html">3D Eksponatlar</a>
+      <a href="galereya.html">Galereya</a>
+      <a href="victarina.html">Viktorina</a>
+      <a href="360zal.html">360 zallar</a>
+      <a href="nimadur.html">Vaqt mashinasi</a>
+      <a href="museylar.html">Milliy muzey</a>
+      <a href="zallar.html">Zallar</a>
+      <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    </nav>
+    <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="header-right-group">
+      <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+    <section id="home">
+        <h1>O'tmish va San'at Maskani</h1>
+        <p>Tariximiz va madaniyatimizning eng boy xazinalarini biz bilan birga kashf eting.</p>
+        <a href="#contact" class="btn">Chipta Xarid Qilish</a>
+    </section>
+
+    <section id="about">
+        <h2 class="heading">Muzey Haqida</h2>
+        <p class="about-desc">
+            Muzeyimiz 1950-yilda tashkil topgan bo'lib, xalqimizning boy madaniy merosi, tarixiy obidalari va qadimiy san'at asarlarini asrab-avaylash hamda kelajak avlodga yetkazishni o'z oldiga maqsad qilgan.
+        </p>
+        <div class="stats">
+            <div class="stat-item">
+                <h3>50,000+</h3>
+                <p>Noyob eksponatlar</p>
+            </div>
+            <div class="stat-item">
+                <h3>120,000+</h3>
+                <p>Yillik tashrif buyuruvchilar</p>
+            </div>
+            <div class="stat-item">
+                <h3>75 Yillik</h3>
+                <p>Tarix va tajriba</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="exhibitions">
+        <h2 class="heading">Noyob Ko'rgazmalar</h2>
+        <div class="cards">
+            <div class="card">
+                <div class="card-body">
+                    <h3>📜 Qadimgi Qo'lyozmalar</h3>
+                    <p>Asrlar davomida saqlanib kelgan nodir kitoblar va xattotlik san'ati namunalari zali.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h3>🏺 Arxeologiya Bo'limi</h3>
+                    <p>Qadimgi shaharlar va manzilgohlardan topilgan kulolchilik va me'moriy topilmalar.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h3>🎨 Tasviriy San'at</h3>
+                    <p>Sharq va G'arb rassomlarining eng saralangan rangtasvir asarlari to'plami.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="heading">Tashrif Rejalashtirish</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Ma'lumotlar</h3>
+                <br>
+                <p><strong>📍 Manzil:</strong> Toshkent sh., Markaziy ko'cha, 15-uy</p>
+                <p><strong>🕒 Ish vaqti:</strong> 09:00 - 18:00 (Har kuni)</p>
+                <p><strong>📞 Telefon:</strong> +998 (71) 123-45-67</p>
+                <p><strong>🎟️ Chipta narxi:</strong> Kattalar uchun 20,000 so'm, O'quvchilar uchun 10,000 so'm</p>
+            </div>
+            <div class="contact-form">
+                <h3>Savolingiz bormi? Yozib qoldiring</h3>
+                <br>
+                <form id="museumForm">
+                    <div class="form-group">
+                        <label for="name">Ismingiz:</label>
+                        <input type="text" id="name" placeholder="Ismingizni kiriting" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" placeholder="Emailingizni kiriting" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Xabar:</label>
+                        <textarea id="message" rows="4" placeholder="Xabaringizni yozing..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn submit-btn">Yuborish</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chat Burchak Vidjeti (Unified Imperium AI) -->
+    <div id="aiChatWidget" class="ai-chat-widget">
+        <div id="aiWelcomeBubble" class="ai-welcome-bubble">
+            Imperium muzey saytiga xush kelibsiz! ✨
+        </div>
+        <button id="aiToggleBtn" class="ai-toggle-btn" aria-label="AI Yordamchi">
+            <i class="fa-solid fa-robot"></i>
+        </button>
+        <div id="aiChatWindow" class="ai-chat-window">
+            <div class="ai-chat-header">
+                <div class="ai-header-title">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Imperium AI Yordamchi</span>
+                </div>
+                <button id="aiCloseBtn" class="ai-close-btn">&times;</button>
+            </div>
+            <div id="aiChatBody" class="ai-chat-body">
+                <div class="ai-message bot">
+                    Assalomu alaykum! Men Imperium muzeyining aqlli AI yordamchisiman. Sizga qanday yordam bera olaman?
+                </div>
+                <div class="ai-quick-suggestions">
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Luvr muzeyi haqida aytib ber')">🏛️ Luvr muzeyi</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('3D eksponatlarni ko\'rsat')">🗿 3D Haykallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('360 zallar qaysilar?')">🌐 360 Zallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Sayt mualliflari kim?')">👨‍💻 Mualliflar</span>
+                </div>
+            </div>
+            <div class="ai-chat-footer">
+                <input type="text" id="aiUserInput" placeholder="Savolingizni yozing...">
+                <button id="aiSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/lenis.min.js"></script>
+    <script src="assets/site.js"></script>
+    <script src="museylar.js"></script>
+</body>
+</html>

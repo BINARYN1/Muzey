@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Imperium Gazette — Muzey Zallari va Nodir Xazina</title>
+
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/lenis.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts for Gazette & Imperial Elegance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    /* Palitra saytning qolgan bo'limlariga moslandi:
+                       vintage qog'oz foni + siyoh matn + to'q qizil aksent.
+                       Klass nomlari (gold/obsidian) o'zgarmadi — faqat
+                       qiymatlari almashtirildi, shuning uchun markup va JS
+                       o'zgarishsiz qoladi (368 ta utilita klassi tegilmagan).
+
+                       Endi qiymatlar assets/theme.css tokenlariga bog'landi,
+                       shunda Tailwind CDN qayta generatsiya qilinmasa ham
+                       tungi rejim ishlaydi.
+
+                       DIQQAT: shaffoflik modifikatori bilan ishlatiladigan
+                       ranglar (masalan border-white/10, bg-obsidian-900/90)
+                       oddiy var(--hex) bilan SINADI. Ular kanal ro'yxati va
+                       <alpha-value> ko'rinishida berilishi shart. */
+                    colors: {
+                        /* "gold" -> gazeta aksenti (to'q qizil) */
+                        gold: {
+                            100: 'var(--sidebar-bg)',
+                            300: 'var(--z-accent-hi)',
+                            400: 'rgb(var(--accent-rgb) / <alpha-value>)',
+                            500: 'rgb(var(--accent-rgb) / <alpha-value>)',
+                            600: 'var(--z-accent-lo)',
+                            800: 'var(--primary)'
+                        },
+                        /* "obsidian" -> qog'oz ranglari (shkala teskari) */
+                        obsidian: {
+                            900: 'rgb(var(--paper-rgb) / <alpha-value>)',
+                            800: 'rgb(var(--surface-rgb) / <alpha-value>)',
+                            700: 'rgb(var(--card-rgb) / <alpha-value>)',
+                            600: 'var(--z-surface-3)'
+                        },
+                        /* Qorong'i fonda oq bo'lgan sarlavhalar endi siyoh rangda */
+                        white: 'rgb(var(--text-rgb) / <alpha-value>)',
+                        gray: {
+                            200: 'var(--text-main)',
+                            300: 'rgba(var(--text-rgb), 0.82)',
+                            400: 'rgba(var(--text-rgb), 0.68)',
+                            500: 'rgba(var(--text-rgb), 0.5)'
+                        },
+                        blue: { 500: 'rgb(var(--accent-rgb) / <alpha-value>)' },
+                        amber: { 700: 'var(--z-accent-lo)' }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        body: ['IM Fell English', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Faqat shu sahifada kerak bo'lgan qo'shimcha soyalar.
+           Qolgan hamma rang assets/theme.css dan keladi. */
+        :root {
+            --z-accent-hi: #a00000;   /* aksentning ochroq varianti */
+            --z-accent-lo: #6d0000;   /* aksentning to'qroq varianti */
+            --z-surface-3: #e7e2d6;   /* fondan bir pog'ona to'qroq yuza */
+        }
+
+        [data-theme="dark"] {
+            --z-accent-hi: #e0655d;
+            --z-accent-lo: #a83f39;
+            --z-surface-3: #2a241d;
+        }
+
+        /* --- ASOSIY USLUB: vintage gazeta (saytning qolgan bo'limlari kabi) --- */
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background-color: var(--accent-red);
+            color: var(--on-accent);
+        }
+
+        /* Avval oltin shimmer edi — endi gazeta aksenti (to'q qizil) */
+        .gold-gradient-text {
+            color: var(--accent-red);
+        }
+
+        /* Kartalar: qattiq siyoh chegara + surilgan soya (brutalist) */
+        .gold-border-glow {
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--border);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .gold-border-glow:hover {
+            border-color: var(--accent-red);
+            box-shadow: 7px 7px 0 var(--accent-red);
+            transform: translate(-3px, -3px);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: 2px solid var(--border);
+        }
+
+        .glass-footer {
+            background: var(--sidebar-bg);
+            backdrop-filter: none;
+            border-top: 3px double var(--border);
+        }
+
+        /* Qog'oz fonidagi nozik nuqtalar */
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(var(--ink-rgb), 0.11) 1px, transparent 1px);
+            background-size: 38px 38px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-red);
+        }
+
+        /* --- GAZETTE NEWSPAPER HEADER STYLES --- */
+        /* ==========================================================
+           SAYT HEADERI — boshqa sahifalar (index, 3d, galereya, ...) bilan
+           bir xil: 90px balandlik, chapda logo, o'rtada menyu, o'ngda chipta
+           tugmasi, 1250px dan tor ekranda burger menyu.
+           Avval bu yerda 3 qatorli "gazeta" masthead + ticker bo'lib,
+           ekranning ~265px'ini egallardi.
+           ========================================================== */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr);
+            align-items: center;
+            width: 100%;
+            height: 90px;
+            padding: 0 3.5vw;
+            background: var(--sidebar-bg);
+            border-bottom: 3px double var(--border);
+            box-shadow: 0 4px 15px rgba(17, 17, 17, 0.06);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            justify-self: start;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            color: var(--text-main);
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand > span:last-child {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .brand strong {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            color: var(--text-main);
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+
+        .brand small {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: var(--accent-red);
+            text-transform: uppercase;
+        }
+
+        .site-header nav {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+            min-width: 0;
+        }
+
+        .site-header nav a {
+            position: relative;
+            padding: 6px 0;
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .site-header nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--accent-red);
+            transition: width 0.25s ease;
+        }
+
+        .site-header nav a:hover,
+        .site-header nav a.active {
+            color: var(--accent-red);
+        }
+
+        .site-header nav a:hover::after,
+        .site-header nav a.active::after {
+            width: 100%;
+        }
+
+        .header-ticket {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: 4px 4px 0 var(--border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+
+        .header-ticket:hover {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: var(--on-accent);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--border);
+        }
+
+        .desktop-header-ticket {
+            justify-self: end;
+        }
+
+        /* Chipta, tema tugmasi va burger bitta o'ng katakda, flex qatorda.
+           Ilgari chipta va guruh alohida grid element bo'lib, bitta katakda
+           ustma-ust turardi — bu desktopda burger yashirin bo'lgani uchungina
+           bilinmasdi. */
+        .site-header > .header-right-group {
+            grid-row: 1;
+            grid-column: 3;
+            justify-self: end;
+            align-self: center;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .burger-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .burger-btn span {
+            width: 100%;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .burger-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .burger-btn.open span:nth-child(2) { opacity: 0; }
+        .burger-btn.open span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .mobile-nav-ticket { display: none; }
+
+        /* --- Sahifa ichki navigatsiyasi (faqat shu sahifadagi bo'limlar
+               va xronika sahifalari) --- */
+        .page-subnav {
+            position: sticky;
+            top: 90px;
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 22px;
+            padding: 11px 3.5vw;
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--border);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .page-subnav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(var(--text-rgb), 0.72);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .page-subnav a i { color: var(--accent-red); }
+
+        /* Bo'limga o'tilganda sarlavha yopishqoq header (90px) va
+           subnav (40px) ostida qolib ketmasin. */
+        #about,
+        #exhibits,
+        #halls,
+        #visit {
+            scroll-margin-top: 138px;
+        }
+
+        .page-subnav a:hover { color: var(--accent-red); }
+
+        .page-subnav .subnav-sep {
+            width: 1px;
+            height: 14px;
+            background: rgba(var(--ink-rgb), 0.2);
+        }
+
+        @media (max-width: 1250px) {
+            .site-header {
+                display: flex;
+                justify-content: space-between;
+                height: 80px;
+                padding: 0 20px;
+            }
+
+            .burger-btn { display: flex; }
+            .desktop-header-ticket { display: none; }
+
+            .site-header nav {
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 10px 22px 22px;
+                background: var(--sidebar-bg);
+                border-bottom: 3px double var(--border);
+                display: none;
+            }
+
+            .site-header nav.active { display: flex; }
+
+            .site-header nav a {
+                padding: 12px 0;
+                border-bottom: 1px solid rgba(var(--ink-rgb), 0.15);
+            }
+
+            .mobile-nav-ticket {
+                display: block;
+                margin-top: 15px;
+                width: 100%;
+                padding: 12px 18px;
+                border-bottom: none;
+                background: var(--border);
+                color: var(--card-bg) !important;
+                text-align: center;
+            }
+
+            .page-subnav { top: 80px; }
+
+            #about,
+            #exhibits,
+            #halls,
+            #visit {
+                scroll-margin-top: 128px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .brand small { display: none; }
+            .page-subnav { gap: 4px 14px; padding: 9px 16px; }
+            .page-subnav .subnav-sep { display: none; }
+        }
+
+        /* --- TYPEWRITER COMPONENT STYLES --- */
+        .typewriter-cursor {
+            display: inline-block;
+            font-weight: 400;
+            color: var(--accent-red);
+            animation: typewriterBlink 0.8s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes typewriterBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* --- LIQUID DISTORTION STYLES --- */
+        .liquid-svg-filters {
+            position: absolute;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .liquid-frame {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .liquid-frame img {
+            transition: filter 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: filter, transform;
+        }
+
+        .liquid-frame:hover img {
+            filter: url(#liquid-distortion-filter) brightness(1.08) contrast(1.1);
+            transform: scale(1.05);
+        }
+
+        .liquid-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--accent-rgb), 0.22) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .liquid-frame:hover::after {
+            opacity: 1;
+        }
+
+        /* --- CODROPS D3ADRABBIT IMAGE ENTRANCE ANIMATION STYLES --- */
+        .entrance-img-frame {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .entrance-curtain {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-red), var(--primary));
+            z-index: 12;
+            transform: scaleX(0);
+            transform-origin: left center;
+            pointer-events: none;
+        }
+
+        .entrance-img-frame img {
+            opacity: 0;
+            transform: scale(1.25);
+            filter: blur(10px);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        filter 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.4s ease;
+            will-change: transform, filter, opacity;
+        }
+
+        .entrance-img-frame.revealed .entrance-curtain {
+            animation: curtainSweep 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+
+        .entrance-img-frame.revealed img {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+            transition-delay: 0.3s;
+        }
+
+        @keyframes curtainSweep {
+            0% {
+                transform: scaleX(0);
+                transform-origin: left center;
+            }
+            50% {
+                transform: scaleX(1);
+                transform-origin: left center;
+            }
+            50.1% {
+                transform: scaleX(1);
+                transform-origin: right center;
+            }
+            100% {
+                transform: scaleX(0);
+                transform-origin: right center;
+            }
+        }
+
+        /* --- SCROLL REVEAL FADE UP --- */
+        .scroll-reveal { 
+            opacity: 0; 
+            transform: translateY(40px) scale(0.97); 
+            filter: blur(6px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 1s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* ==========================================================
+           TAILWIND UTILITALARI USTIDAN YOZISH
+           Tailwind CDN o'z <style> ini bizniki'dan keyin joylaydi,
+           shuning uchun bu yerda !important zarur.
+           ========================================================== */
+
+        /* Qorong'i fonda nozik oq chegaralar edi — qog'ozda ko'rinmaydi */
+        [class*="border-white/"] {
+            border-color: rgba(var(--ink-rgb), 0.22) !important;
+        }
+
+        /* Tailwind Preflight tugmalarning chegarasi va fonini nolga tushiradi,
+           shuning uchun tema tugmasi shu yerda qayta tiklanadi. */
+        .theme-toggle {
+            display: inline-grid !important;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--border) !important;
+            border-radius: 50% !important;
+            background: transparent !important;
+            color: var(--text-main) !important;
+            font-size: 14px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border) !important;
+            color: var(--card-bg) !important;
+        }
+
+        /* Kartalarning chegarasi qalinroq (Tailwind `border` = 1px) */
+        .glass-card,
+        .gold-border-glow {
+            border-width: 2px !important;
+        }
+
+        /* Burchaklar saytning qolgan qismidagidek deyarli to'g'ri burchak */
+        .rounded-2xl,
+        .rounded-xl,
+        .rounded-lg {
+            border-radius: 4px !important;
+        }
+
+        /* Fon "orb"lari qog'ozda kerak emas */
+        .blur-3xl {
+            display: none !important;
+        }
+
+        /* Modal fonlari: palitra almashgach krem bo'lib qolardi va sahifadan
+           ajralmasdi. Saytning boshqa modallari kabi to'q pardaga qaytaramiz. */
+        #artifactModal,
+        #ticketModal {
+            background-color: rgba(17, 17, 17, 0.8) !important;
+        }
+
+        /* Asosiy tugmalar — saytning imzosi: siyoh chegara + surilgan soya
+           (Tailwind'ning yumshoq "glow" soyalari o'rniga) */
+        a.bg-gold-400,
+        button.bg-gold-400 {
+            border: 2px solid var(--border) !important;
+            box-shadow: 4px 4px 0 var(--border) !important;
+        }
+
+        a.bg-gold-400:hover,
+        button.bg-gold-400:hover {
+            box-shadow: 6px 6px 0 var(--border) !important;
+        }
+
+        /* Sarlavhalar ostidagi oltin chiziqlar -> siyoh/qizil */
+        .bg-gradient-to-r.from-transparent {
+            opacity: 0.55;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-gold-500 selection:text-obsidian-900">
+
+    <!-- LIQUID DISTORTION SVG FILTER -->
+    <svg class="liquid-svg-filters">
+        <filter id="liquid-distortion-filter" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="2" result="noise" id="liquid-turbulence">
+                <animate attributeName="baseFrequency" dur="8s" values="0.015 0.025; 0.03 0.015; 0.015 0.025" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="liquid-displacement" />
+        </filter>
+    </svg>
+
+    <!-- SAYT HEADERI (boshqa sahifalar bilan bir xil) -->
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+            <span class="brand-mark">I</span>
+            <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+        </a>
+        <nav aria-label="Asosiy navigatsiya" id="navMenu">
+            <a href="museyHaqida.html">Muzey haqida</a>
+            <a href="3d.html">3D Eksponatlar</a>
+            <a href="galereya.html">Galereya</a>
+            <a href="victarina.html">Viktorina</a>
+            <a href="360zal.html">360 zallar</a>
+            <a href="nimadur.html">Vaqt mashinasi</a>
+            <a href="museylar.html">Milliy muzey</a>
+            <a class="active" href="zallar.html">Zallar</a>
+            <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+        </nav>
+        <div class="header-right-group">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+            <a class="header-ticket desktop-header-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+            <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Shu sahifaning bo'limlari va xronika sahifalari -->
+    <div class="page-subnav">
+        <a href="#about"><i class="fa-solid fa-landmark"></i> Biz haqimizda</a>
+        <a href="#exhibits"><i class="fa-solid fa-gem"></i> Eksponatlar</a>
+        <a href="#halls"><i class="fa-solid fa-building-columns"></i> Muzey zallari</a>
+        <a href="#visit"><i class="fa-solid fa-ticket"></i> Chipta narxlari</a>
+        <span class="subnav-sep"></span>
+        <a href="misr.html"><i class="fa-solid fa-scroll"></i> Misr xronikasi</a>
+        <a href="rim.html"><i class="fa-solid fa-shield-halved"></i> Rim xronikasi</a>
+        <a href="imperium_museum_awakening.html"><i class="fa-solid fa-sun"></i> Uyg'onish davri</a>
+        <a href="restavratsiya.html"><i class="fa-solid fa-wrench"></i> Restavratsiya</a>
+    </div>
+
+    <main class="relative z-10 pt-12">
+
+        <!-- HERO SECTION -->
+        <section id="about" class="relative min-h-[85vh] flex items-center justify-center pt-16 pb-16 px-6 overflow-hidden bg-grid-pattern">
+            <!-- Ambient Glowing Orbs -->
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center relative z-10">
+                <!-- Hero Left Content -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-8">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-card border border-gold-500/30 text-gold-400 text-xs uppercase tracking-widest">
+                        <i class="fa-solid fa-crown text-xs"></i>
+                        <span>Imperiya Davri Madaniy Merosi</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-6xl xl:text-7xl font-bold leading-tight tracking-tight">
+                        Tarix Zamonlar Osha <br>
+                        <span class="gold-gradient-text">
+                            <span class="typewriter-target" data-words='["Jonlanadigan Maskan", "Fir&#39;avnlar Saltanati Sirlari", "Rim Imperiyasi Qudra&#39;ti"]'></span><span class="typewriter-cursor">|</span>
+                        </span>
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Rim imperiyasi, Misr fir'avnlari va Sharqning buyuk tamaddunlariga oid nodir asori-atikalarni o'zida jamlagan dunyodagi eng mo'tabar maskanlardan biriga xush kelibsiz.
+                    </p>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                        <a href="#exhibits" class="px-8 py-4 rounded-xl bg-gold-400 text-obsidian-900 font-bold text-sm tracking-wider uppercase hover:bg-gold-300 transition-all shadow-xl shadow-gold-500/20 hover:scale-105">
+                            <i class="fa-solid fa-gem mr-2"></i> Kolleksiyani Ko'rish
+                        </a>
+                        <button onclick="playAmbientAudio()" id="audioBtn" class="px-6 py-4 rounded-xl glass-card gold-border-glow text-gray-200 hover:text-gold-400 font-medium text-sm flex items-center gap-3 transition-all">
+                            <i id="audioIcon" class="fa-solid fa-headphones text-gold-400"></i>
+                            <span id="audioText">Audio Ekskursiya (Sado)</span>
+                        </button>
+                    </div>
+
+                    <!-- Stats Counter -->
+                    <div class="pt-8 border-t border-white/10 grid grid-cols-3 gap-6 text-center lg:text-left">
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text">15,000+</div>
+                            <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Nodir Eksponatlar</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text">12 Ta</div>
+                            <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Mavzu Zallari</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text">250+ Yil</div>
+                            <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Tarixiy Meros</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Right Card (Featured Artifact Preview) -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none group">
+                        <!-- Glow Backdrop -->
+                        <div class="absolute -inset-1 bg-gradient-to-r from-gold-500 to-amber-700 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+
+                        <!-- Main Display Card -->
+                        <div class="relative glass-card rounded-2xl p-6 border border-gold-500/30 overflow-hidden shadow-2xl">
+                            <div class="relative h-80 sm:h-96 rounded-xl overflow-hidden mb-6 liquid-frame entrance-img-frame gold-border-glow">
+                                <img id="heroArtifactImg"
+                                    src="images/artifact_egypt_temple.jpg"
+                                    alt="Misr Dendur Ibodatxonasi"
+                                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+
+                                <!-- Category Badge -->
+                                <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-obsidian-900/90 backdrop-blur-md border border-gold-500/30 text-xs text-gold-400 font-serif z-20">
+                                    Haftaning Shoh Asari
+                                </span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-serif text-xl font-bold text-white">Oltin Fir'avn Niqobi</h3>
+                                    <span class="text-xs text-gold-400 border border-gold-400/30 px-2.5 py-0.5 rounded">Mil.avv. 1323</span>
+                                </div>
+                                <p class="text-gray-400 text-sm line-clamp-2">
+                                    Misr qadimgi saltanatining eng mo'jizakor oltin xazinasi va san'at durdonasi.
+                                </p>
+                                <div class="pt-2 flex items-center justify-between text-xs text-gray-400">
+                                    <span><i class="fa-solid fa-location-dot text-gold-400 mr-1.5"></i> Zal №3 — Misr Zali</span>
+                                    <button onclick="openArtifactModal('Dendur Ibodatxonasi', 'Qadimgi Misr Dendur ibodatxonasi — Mil.avv. 10-yilda Augustus davrida qurilgan. Qumtosh (sandstone) dan ishlangan.', 'images/artifact_egypt_temple.jpg', 'Mil.avv. 10-yil', 'Misr Zali')"
+                                        class="text-gold-400 hover:underline flex items-center gap-1 font-semibold">
+                                        Batafsil <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXHIBITS GALLERY SECTION -->
+        <section id="exhibits" class="py-24 px-6 relative bg-obsidian-800/50">
+            <div class="max-w-7xl mx-auto space-y-12">
+
+                <!-- Section Header -->
+                <div class="text-center space-y-4 max-w-2xl mx-auto">
+                    <span class="text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold block">Nodir To'plamlar</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">Ajoyib Eksponatlar</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
+                    <p class="text-gray-400 text-sm sm:text-base">
+                        <span class="typewriter-target" data-words='["Chora-atrofdagi madaniyatlardan to&#39;plangan nodir asori-atikalar", "Qadimgi dunyo durdonalari va oltin eksponatlar"]'></span><span class="typewriter-cursor">|</span>
+                    </p>
+                </div>
+
+                <!-- Filter Categories Tabs -->
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <button onclick="filterExhibits('all', this)" class="filter-btn active-filter px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 bg-gold-400 text-obsidian-900 shadow-md">
+                        Barchasi
+                    </button>
+                    <button onclick="filterExhibits('rome', this)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 glass-card text-gray-300 hover:text-gold-400 border border-white/5 hover:border-gold-400/50">
+                        Qadimgi Rim
+                    </button>
+                    <button onclick="filterExhibits('egypt', this)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 glass-card text-gray-300 hover:text-gold-400 border border-white/5 hover:border-gold-400/50">
+                        Misr Fir'avnlari
+                    </button>
+                    <button onclick="filterExhibits('renaissance', this)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 glass-card text-gray-300 hover:text-gold-400 border border-white/5 hover:border-gold-400/50">
+                        Uyg'onish Davri
+                    </button>
+                    <button onclick="filterExhibits('east', this)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 glass-card text-gray-300 hover:text-gold-400 border border-white/5 hover:border-gold-400/50">
+                        Sharq Sivilizatsiyasi
+                    </button>
+                    <button onclick="filterExhibits('sculpture', this)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 glass-card text-gray-300 hover:text-gold-400 border border-white/5 hover:border-gold-400/50">
+                        Haykaltaroshlik
+                    </button>
+                </div>
+
+                <!-- Exhibits Cards Grid -->
+                <div id="exhibitsGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Card 1 (Rome) -->
+                    <div class="exhibit-item rome glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="images/artifact_rome_armor.jpg"
+                                    alt="Imperator Trebonianus Bronza Haykali"
+                                    class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Qadimgi Rim
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    Imperator Avgust Haykali</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Rim imperiyasining asoschisining mardona qiyofasi tushirilgan va uning harbiy g'alabalari ifodalangan marmar haykal.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> Mil.avv. 1-asr</span>
+                            <button onclick="openArtifactModal('Rim Imperatori Dubulg\'asi', 'Rim imperatorlik davri bronza dubulg\'a va zirhi — klassik harbiy san\'at namunasi. Qimmatbaho metallardan ishlangan.', 'images/artifact_rome_armor.jpg', 'Mil. I–III asr', 'Rim Imperiyasi Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 (Egypt) -->
+                    <div class="exhibit-item egypt glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="images/artifact_egypt_diorite.jpg"
+                                    alt="Misr Khnumhotep Haykali"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Misr
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    Qadimgi Anubis Haykali</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Qadimgi Misr mifologiyasida narigi dunyo va mumyolash homiysi hisoblangan shoqol sifat iloh haykali.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> Mil.avv. 1340</span>
+                            <button onclick="openArtifactModal('Misr Marosim Idishi', 'Qadimgi Misr marosim idishi — qora diorit toshdan ishlangan, iyerogliflar bilan bezatilgan. O\'rta Sulola davri.', 'images/artifact_egypt_diorite.jpg', 'Mil.avv. 1850-yil', 'Misr Fir\'avnlar Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 (East) -->
+                    <div class="exhibit-item east glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="images/artifact_islamic_tile.jpg"
+                                    alt="Sharq Islomiy Kulolchilik San'ati"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Sharq
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    Sharq Zarrin Qo'lyozmasi</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Qadimiy ipak qog'ozga oltin suvi yuritib yozilgan nodir falsafiy hamda ilmiy risola.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-[2px] flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> XIII Asr</span>
+                            <button onclick="openArtifactModal('Sharq Geometrik San\'ati', 'Feruza, ko\'k va oltin ranglardagi murakkab geometrik naqshli islomiy keramika kafeli. Eron, XIII asr.', 'images/artifact_islamic_tile.jpg', 'XIII asr', 'Sharq Renessansi Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 (Sculpture) -->
+                    <div class="exhibit-item sculpture rome glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="images/artifact_greece_marble.jpg"
+                                    alt="Eirene Marmar Haykali"
+                                    class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Haykaltaroshlik
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    Atena Ma'budasi Busti</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Qadimgi Yunoniston donishmandlik va adolat ma'budasiga bag'ishlangan oppoq marmar haykalcha.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> Mil.avv. 4-asr</span>
+                            <button onclick="openArtifactModal('Yunon Marmar Freizi', 'Qadimgi Yunon oq marmardan o\'yib ishlangan gul va geometrik naqshli memorilar bezagi. Klassik davr san\'ati.', 'images/artifact_greece_marble.jpg', 'Mil.avv. IV asr', 'Klassik San\'at Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 (East) -->
+                    <div class="exhibit-item east glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="images/artifact_rome_armor.jpg"
+                                    alt="Qadimgi Kumush Tanga"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Sharq
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    Bobil Podsholigi Tangasi</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Qadimgi Mesopotamiyaning eng qudratli hukmdorlari davriga oid toza oltindan zarb qilingan simvolik tanga.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> Mil.avv. 6-asr</span>
+                            <button onclick="openArtifactModal('Rim Imperiya Artefaktlari', 'Rim imperatorlik davri bronza va metaldan yasalgan nodir buyumlar to\'plami.', 'images/artifact_rome_armor.jpg', 'Mil. I–III asr', 'Qadimgi Tangalar Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 (Egypt) -->
+                    <div class="exhibit-item egypt glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="images/artifact_egypt_papyrus.jpg"
+                                    alt="Heqanakht Papiruslari"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Misr
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-[12px]">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    Iyeroglifli Qadimiy Papirus</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Qadimgi Misr munajjimlari va kohinlari tomonidan koinot sirlari yozib qoldirilgan nodir papirus varaqlari.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> Mil.avv. 1500</span>
+                            <button onclick="openArtifactModal('Misr Iyeroglifli Papirus', 'Qadimgi Misr papiruslari — iyerogliflar va bo\'yoqli rasmlar bilan bezatilgan, Nil qamishidan tayyorlangan.', 'images/artifact_egypt_papyrus.jpg', 'Mil.avv. 1961-yil', 'Misr Fir\'avnlar Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 7 (Renaissance) -->
+                    <div class="exhibit-item renaissance glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="media/western_renaissance.jpg"
+                                    alt="G'arb Uyg'onish davri san'ati"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Uyg'onish
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    G'arb Uyg'onish Durdonasi</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Inson tanasi anatomiyasi, chiziqli perspektiva va yorug'lik o'yini kashf etilgan davr ustalarining moybo'yoq asari.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> XV–XVI asr</span>
+                            <button onclick="openArtifactModal('G\'arb Uyg\'onish Durdonasi', 'Italiya Uyg\'onish davri ustalari qalamiga mansub asar. Chiziqli perspektiva, anatomik aniqlik va sfumato texnikasi namunasi.', 'media/western_renaissance.jpg', 'XV–XVI asr', 'Uyg\'onish Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 8 (Renaissance) -->
+                    <div class="exhibit-item renaissance glass-card rounded-2xl overflow-hidden border border-white/5 gold-border-glow group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-64 overflow-hidden liquid-frame entrance-img-frame">
+                                <img src="media/eastern_renaissance.jpg"
+                                    alt="Sharq Uyg'onish davri san'ati"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-obsidian-900/90 text-[11px] text-gold-400 border border-gold-400/30 z-20">
+                                    Uyg'onish
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h3 class="font-serif text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                                    Sharq Uyg'onishi Miniatyurasi</h3>
+                                <p class="text-gray-400 text-sm line-clamp-3">
+                                    Movarounnahr va Xuroson maktablari ustalari yaratgan qo'lyozma miniatyurasi — astronomiya, tib va she'riyat gullagan davr yodgorligi.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-white/5 text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-clock text-gold-400 mr-1"></i> XIV–XVI asr</span>
+                            <button onclick="openArtifactModal('Sharq Uyg\'onishi Miniatyurasi', 'Sharq Uyg\'onish davri qo\'lyozma miniatyurasi. Tabiiy bo\'yoqlar va oltin suvi bilan ishlangan, nafis islimiy naqshlar bilan bezatilgan.', 'media/eastern_renaissance.jpg', 'XIV–XVI asr', 'Uyg\'onish Zali')"
+                                class="text-gold-400 hover:text-gold-300 font-semibold flex items-center gap-1">
+                                Batafsil <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- MUSEUM HALLS SECTION -->
+        <section id="halls" class="py-24 px-6 relative bg-obsidian-900">
+            <div class="max-w-7xl mx-auto space-y-16">
+
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div class="space-y-3">
+                        <span class="text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold block">Muzey Sayohati</span>
+                        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">Mo'jizakor Mavzuli Zallar</h2>
+                    </div>
+                    <p class="text-gray-400 text-sm max-w-md">
+                        Muzeyimiz har bir burchagida muazzam tarixiy muhit barpo etilgan. Har bir zal o'zining maxsus yoritilishi va akustikasiga ega.
+                    </p>
+                </div>
+
+                <!-- Halls Interactive Switcher -->
+                <div class="grid lg:grid-cols-12 gap-8 items-center">
+                    <!-- Hall Navigation Buttons -->
+                    <div class="lg:col-span-4 space-y-3">
+
+                        <button onclick="switchHall(0)" class="hall-tab active-hall w-full text-left p-5 rounded-2xl glass-card border border-gold-400/50 flex items-center justify-between transition-all group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-gold-400/10 text-gold-400 flex items-center justify-center font-serif font-bold text-lg group-hover:bg-gold-400 group-hover:text-obsidian-900 transition-colors">
+                                    I
+                                </div>
+                                <div>
+                                    <h4 class="font-serif font-bold text-white group-hover:text-gold-400">Imperatorlar Zali</h4>
+                                    <span class="text-xs text-gray-400">Rim va Vizantiya davri</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-gold-400"></i>
+                        </button>
+
+                        <button onclick="switchHall(1)" class="hall-tab w-full text-left p-5 rounded-2xl glass-card border border-white/5 hover:border-gold-400/30 flex items-center justify-between transition-all group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-white/5 text-gray-300 flex items-center justify-center font-serif font-bold text-lg group-hover:bg-gold-400 group-hover:text-obsidian-900 transition-colors">
+                                    II
+                                </div>
+                                <div>
+                                    <h4 class="font-serif font-bold text-white group-hover:text-gold-400">Fir'avnlar Maqbarasi</h4>
+                                    <span class="text-xs text-gray-400">Qadimgi Misr Xazinalari</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                        </button>
+
+                        <button onclick="switchHall(2)" class="hall-tab w-full text-left p-5 rounded-2xl glass-card border border-white/5 hover:border-gold-400/30 flex items-center justify-between transition-all group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-white/5 text-gray-300 flex items-center justify-center font-serif font-bold text-lg group-hover:bg-gold-400 group-hover:text-obsidian-900 transition-colors">
+                                    III
+                                </div>
+                                <div>
+                                    <h4 class="font-serif font-bold text-white group-hover:text-gold-400">Sharq Renessansi</h4>
+                                    <span class="text-xs text-gray-400">Buyuk Ipak Yoli Madaniyati</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                        </button>
+
+                    </div>
+
+                    <!-- Hall Display Preview Canvas -->
+                    <div class="lg:col-span-8">
+                        <div id="hallPreviewCard" class="relative glass-card rounded-3xl overflow-hidden border border-gold-500/20 p-8 sm:p-12 min-h-[420px] flex flex-col justify-end transition-all duration-500">
+                            <!-- Hall Image Background Overlay -->
+                            <div id="hallBgImage" class="absolute inset-0 bg-cover bg-center transition-all duration-700 opacity-50 scale-100" style="background-image: url('images/artifact_rome_armor.jpg');"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-obsidian-900/80 to-transparent"></div>
+
+                            <!-- Content -->
+                            <div class="relative z-10 space-y-4">
+                                <span id="hallNumberBadge" class="text-xs font-bold text-gold-400 tracking-widest uppercase px-3 py-1 rounded-full bg-gold-400/10 border border-gold-400/30 inline-block">
+                                    Zal №1
+                                </span>
+                                <h3 id="hallTitle" class="font-serif text-2xl sm:text-4xl font-bold text-white">Imperatorlar Zali</h3>
+                                <p id="hallDesc" class="text-gray-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                                    Ushbu zalda Rim va Vizantiya imperiyalarining eng qudratli hukmdorlari haykallari, jangovar qurol-aslahalari hamda oltin tangalari namoyish etiladi.
+                                </p>
+                                <div class="pt-4 flex items-center gap-6 text-xs text-gray-300 border-t border-white/10">
+                                    <span id="hallCapacity"><i class="fa-solid fa-users text-gold-400 mr-2"></i> Sig'imi: 120 kishi</span>
+                                    <span id="hallFloor"><i class="fa-solid fa-layer-group text-gold-400 mr-2"></i> 1-Qavat, Sharqiy qanot</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VISIT & TICKETS PREVIEW -->
+        <section id="visit" class="py-24 px-6 relative bg-obsidian-800/30">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
+
+                <div class="lg:col-span-6 space-y-8">
+                    <div class="space-y-3">
+                        <span class="text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold block">Tashrif Ma'lumotlari</span>
+                        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">Muzeyga Sayohat Qiling</h2>
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                            Sayyohlar hamda san'at ixlosmandlari uchun barcha qulayliklar yaratilgan. Audio-gid xizmati, gidlari hamda maxsus kafelarimiz xizmatida.
+                        </p>
+                    </div>
+
+                    <!-- Info Grid -->
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="glass-card p-5 rounded-xl border border-white/5 space-y-2">
+                            <i class="fa-solid fa-clock text-2xl text-gold-400"></i>
+                            <h4 class="font-serif font-bold text-white">Ish Vaqti</h4>
+                            <p class="text-xs text-gray-400">Sesh — Yak: 09:00 - 20:00<br>Dushanba: Dam olish kuni</p>
+                        </div>
+
+                        <div class="glass-card p-5 rounded-xl border border-white/5 space-y-2">
+                            <i class="fa-solid fa-map-location-dot text-2xl text-gold-400"></i>
+                            <h4 class="font-serif font-bold text-white">Manzil</h4>
+                            <p class="text-xs text-gray-400">Toshkent sh., Imperium shoh ko'chasi, 42-uy</p>
+                        </div>
+
+                        <div class="glass-card p-5 rounded-xl border border-white/5 space-y-2">
+                            <i class="fa-solid fa-headphones text-2xl text-gold-400"></i>
+                            <h4 class="font-serif font-bold text-white">Audio Gid</h4>
+                            <p class="text-xs text-gray-400">O'zbek, Ingliz, Rus va Fransuz tillarida audio apparatlar</p>
+                        </div>
+
+                        <div class="glass-card p-5 rounded-xl border border-white/5 space-y-2">
+                            <i class="fa-solid fa-camera-retro text-2xl text-gold-400"></i>
+                            <h4 class="font-serif font-bold text-white">Rasmga Olish</h4>
+                            <p class="text-xs text-gray-400">Vspyshka (flesh)siz rasm va videoga olishga ruxsat etiladi</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button onclick="openTicketModal()" class="px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-obsidian-900 font-bold text-sm tracking-wider uppercase hover:shadow-lg hover:shadow-gold-500/20 transition-all">
+                            <i class="fa-solid fa-ticket mr-2"></i> Onlayn Chipta Band Qilish
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Price Cards Box -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="glass-card rounded-3xl p-8 border border-gold-500/30 relative overflow-hidden space-y-6 shadow-2xl">
+                        <div class="absolute -top-12 -right-12 w-40 h-40 bg-gold-400/10 rounded-full blur-2xl"></div>
+
+                        <h3 class="font-serif text-2xl font-bold text-white text-center pb-4 border-b border-white/10">
+                            Chipta Narxlari
+                        </h3>
+
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 rounded-xl bg-obsidian-900/60 border border-white/5">
+                                <div>
+                                    <h5 class="font-bold text-white">Kattalar Uchun</h5>
+                                    <span class="text-xs text-gray-400">Fuqarolar va xorijiy mehmonlar</span>
+                                </div>
+                                <span class="font-serif text-xl font-bold text-gold-400">50,000 UZS</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 rounded-xl bg-obsidian-900/60 border border-white/5">
+                                <div>
+                                    <h5 class="font-bold text-white">Talabalar va Maktab o'quvchilari</h5>
+                                    <span class="text-xs text-gray-400">Guvohnoma taqdim etilganda</span>
+                                </div>
+                                <span class="font-serif text-xl font-bold text-gold-400">25,000 UZS</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 rounded-xl bg-obsidian-900/60 border border-white/5">
+                                <div>
+                                    <h5 class="font-bold text-white">VIP Ekskursiya (Gid bilan)</h5>
+                                    <span class="text-xs text-gray-400">Shaxsiy ekskursovod va barcha zallar</span>
+                                </div>
+                                <span class="font-serif text-xl font-bold text-gold-400">120,000 UZS</span>
+                            </div>
+                        </div>
+
+                        <p class="text-center text-xs text-gray-400">
+                            * 7 yoshgacha bo'lgan bolalar va nafaqadagilarga kirish bepul.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="pt-20 pb-12 px-6 bg-obsidian-900 border-t border-white/10 relative z-20">
+        <div class="max-w-7xl mx-auto space-y-16">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full border border-gold-400/50 flex items-center justify-center bg-obsidian-800">
+                            <i class="fa-solid fa-monument text-gold-400"></i>
+                        </div>
+                        <span class="font-serif text-xl font-bold gold-gradient-text">IMPERIUM</span>
+                    </div>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Insoniyat tamadduni va san'atning nodir javohirlarini asrab-avaylovchi xalqaro muzey majmuasi.
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#" class="w-9 h-9 rounded-full glass-card border border-white/10 flex items-center justify-center text-gray-300 hover:text-gold-400 hover:border-gold-400 transition-colors"><i class="fa-brands fa-instagram text-xs"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full glass-card border border-white/10 flex items-center justify-center text-gray-300 hover:text-gold-400 hover:border-gold-400 transition-colors"><i class="fa-brands fa-telegram text-xs"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full glass-card border border-white/10 flex items-center justify-center text-gray-300 hover:text-gold-400 hover:border-gold-400 transition-colors"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full glass-card border border-white/10 flex items-center justify-center text-gray-300 hover:text-gold-400 hover:border-gold-400 transition-colors"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider">Tezkor Havolalar</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="misr.html" class="text-gold-400 hover:underline">Misr Xronikasi</a></li>
+                        <li><a href="rim.html" class="text-gold-400 hover:underline">Rim Xronikasi</a></li>
+                        <li><a href="imperium_museum_awakening.html" class="text-gold-400 hover:underline">Uyg'onish Davri</a></li>
+                        <li><a href="#about" class="hover:text-gold-400 transition-colors">Biz Haqimizda</a></li>
+                        <li><a href="#exhibits" class="hover:text-gold-400 transition-colors">Eksponatlar Galereyasi</a></li>
+                        <li><a href="#halls" class="hover:text-gold-400 transition-colors">Muzey Zallari</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider">Murojaat</h4>
+                    <ul class="space-y-2.5 text-xs text-gray-400">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-phone text-gold-400"></i>
+                            <span>+998 (71) 200-00-42</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-envelope text-gold-400"></i>
+                            <span>info@imperium-museum.uz</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-gold-400"></i>
+                            <span>Toshkent, Imperium Ko'chasi 42</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider">Yangiliklarga Obuna</h4>
+                    <p class="text-xs text-gray-400">Yangi ko'rgazmalar va tadbirlardan xabardor bo'ling.</p>
+                    <form onsubmit="handleSubscribe(event)" class="space-y-2">
+                        <input type="email" required placeholder="Pochta manzilingiz" class="w-full px-4 py-2.5 rounded-lg bg-obsidian-800 border border-white/10 text-xs text-white focus:outline-none focus:border-gold-400">
+                        <button type="submit" class="w-full py-2.5 rounded-lg bg-gold-400 text-obsidian-900 font-bold text-xs uppercase hover:bg-gold-300 transition-colors">
+                            Obuna Bo'lish
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-white/5 text-center text-xs text-gray-500 uppercase tracking-widest">
+                &copy; 2026 Imperium Museum. Barcha huquqlar himoyalangan.
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ARTIFACT DETAIL MODAL -->
+    <div id="artifactModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-obsidian-900/80 backdrop-blur-md">
+        <div class="glass-card max-w-2xl w-full rounded-3xl border border-gold-500/40 p-6 sm:p-8 relative space-y-6 overflow-hidden max-h-[90vh] overflow-y-auto">
+            <button onclick="closeArtifactModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-obsidian-800 text-gray-400 hover:text-white flex items-center justify-center border border-white/10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="relative h-64 sm:h-80 rounded-2xl overflow-hidden">
+                <img id="modalImg" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900 via-transparent to-transparent"></div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span id="modalHall" class="text-xs font-serif text-gold-400 border border-gold-400/30 px-3 py-1 rounded-full"></span>
+                    <span id="modalDate" class="text-xs text-gray-400"></span>
+                </div>
+                <h3 id="modalTitle" class="font-serif text-2xl font-bold text-white"></h3>
+                <p id="modalDesc" class="text-gray-300 text-sm leading-relaxed"></p>
+            </div>
+
+            <div class="pt-4 flex justify-end">
+                <button onclick="closeArtifactModal()" class="px-6 py-2.5 rounded-xl bg-gold-400 text-obsidian-900 font-bold text-xs uppercase hover:bg-gold-300">
+                    Yopish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TICKET RESERVATION MODAL -->
+    <div id="ticketModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-obsidian-900/80 backdrop-blur-md">
+        <div class="glass-card max-w-lg w-full rounded-3xl border border-gold-500/40 p-6 sm:p-8 relative space-y-6">
+            <button onclick="closeTicketModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-obsidian-800 text-gray-400 hover:text-white flex items-center justify-center border border-white/10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="space-y-2">
+                <h3 class="font-serif text-2xl font-bold text-white">Chipta Band Qilish</h3>
+                <p class="text-gray-400 text-xs">Onlayn chiptani rasmiylashtiring va muzeyga navbatsiz kiring.</p>
+            </div>
+
+            <form onsubmit="handleTicketBooking(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ism-Familiyangiz</label>
+                    <input type="text" required placeholder="Masalan: Alisher Navoiy" class="w-full px-4 py-2.5 rounded-xl bg-obsidian-800 border border-white/10 text-xs text-white focus:outline-none focus:border-gold-400">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Tashrif Kuni</label>
+                        <input type="date" required class="w-full px-4 py-2.5 rounded-xl bg-obsidian-800 border border-white/10 text-xs text-white focus:outline-none focus:border-gold-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Chipta Turi</label>
+                        <select id="ticketTypeSelect" onchange="calculateTicketPrice()" class="w-full px-4 py-2.5 rounded-xl bg-obsidian-800 border border-white/10 text-xs text-white focus:outline-none focus:border-gold-400">
+                            <option value="50000">Kattalar (50,000 UZS)</option>
+                            <option value="25000">Talaba/O'quvchi (25,000 UZS)</option>
+                            <option value="120000">VIP Gid Bilan (120,000 UZS)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Odamlar Soni</label>
+                    <input type="number" id="ticketCount" min="1" max="10" value="1" onchange="calculateTicketPrice()" oninput="calculateTicketPrice()" class="w-full px-4 py-2.5 rounded-xl bg-obsidian-800 border border-white/10 text-xs text-white focus:outline-none focus:border-gold-400">
+                </div>
+
+                <div class="p-4 rounded-xl bg-gold-400/10 border border-gold-400/30 flex items-center justify-between">
+                    <span class="text-xs text-gray-300">Jami Summa:</span>
+                    <span id="totalPrice" class="font-serif font-bold text-lg text-gold-400">50,000 UZS</span>
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-obsidian-900 font-bold text-xs uppercase hover:shadow-lg hover:shadow-gold-500/20 transition-all">
+                    Tasdiqlash va To'lash
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ANIMATION ENGINE -->
+    <script src="vendor/lenis.min.js"></script>
+    <script src="assets/site.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // --- Burger menyu -> assets/site.js ---
+
+            // --- 1. TYPEWRITER EFFECT COMPONENT ---
+            (function initTypewriter() {
+                var targets = document.querySelectorAll(".typewriter-target");
+                targets.forEach(function (el) {
+                    var wordsAttr = el.getAttribute("data-words");
+                    if (!wordsAttr) return;
+
+                    try {
+                        var words = JSON.parse(wordsAttr);
+                        var wordIndex = 0;
+                        var charIndex = 0;
+                        var isDeleting = false;
+
+                        function type() {
+                            var currentWord = words[wordIndex];
+                            var speed = 70;
+
+                            if (isDeleting) {
+                                el.textContent = currentWord.substring(0, charIndex - 1);
+                                charIndex--;
+                                speed = 35;
+                            } else {
+                                el.textContent = currentWord.substring(0, charIndex + 1);
+                                charIndex++;
+                                speed = 70;
+                            }
+
+                            if (!isDeleting && charIndex === currentWord.length) {
+                                speed = 2200;
+                                isDeleting = true;
+                            } else if (isDeleting && charIndex === 0) {
+                                isDeleting = false;
+                                wordIndex = (wordIndex + 1) % words.length;
+                                speed = 400;
+                            }
+
+                            setTimeout(type, speed);
+                        }
+
+                        type();
+                    } catch (_) {}
+                });
+            })();
+
+            // --- 2. LIQUID DISTORTION ENGINE ---
+            (function initLiquidDistortion() {
+                var displacement = document.querySelector("#liquid-displacement");
+                var frames = document.querySelectorAll(".liquid-frame");
+                if (!displacement || frames.length === 0) return;
+
+                var currentScale = 0;
+                var targetScale = 0;
+                var animFrame = null;
+
+                function animateDisplacement() {
+                    currentScale += (targetScale - currentScale) * 0.15;
+                    displacement.setAttribute("scale", currentScale.toFixed(2));
+
+                    if (Math.abs(targetScale - currentScale) > 0.1) {
+                        animFrame = requestAnimationFrame(animateDisplacement);
+                    } else {
+                        currentScale = targetScale;
+                        displacement.setAttribute("scale", currentScale.toFixed(2));
+                        animFrame = null;
+                    }
+                }
+
+                frames.forEach(function (frame) {
+                    frame.addEventListener("mousemove", function (e) {
+                        var rect = frame.getBoundingClientRect();
+                        var x = ((e.clientX - rect.left) / rect.width) * 100;
+                        var y = ((e.clientY - rect.top) / rect.height) * 100;
+
+                        frame.style.setProperty("--mouse-x", x.toFixed(1) + "%");
+                        frame.style.setProperty("--mouse-y", y.toFixed(1) + "%");
+
+                        targetScale = 30;
+                        if (!animFrame) {
+                            animFrame = requestAnimationFrame(animateDisplacement);
+                        }
+                    });
+
+                    frame.addEventListener("mouseleave", function () {
+                        targetScale = 0;
+                        if (!animFrame) {
+                            animFrame = requestAnimationFrame(animateDisplacement);
+                        }
+                    });
+                });
+            })();
+
+            // --- 3. CODROPS IMAGE ENTRANCE ANIMATION ENGINE ---
+            (function initImageEntranceAnimation() {
+                var entranceFrames = document.querySelectorAll(".entrance-img-frame");
+                if (entranceFrames.length === 0) return;
+
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("revealed");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                entranceFrames.forEach(function (frame) {
+                    if (!frame.querySelector(".entrance-curtain")) {
+                        var curtain = document.createElement("div");
+                        curtain.className = "entrance-curtain";
+                        frame.appendChild(curtain);
+                    }
+                    observer.observe(frame);
+                });
+            })();
+        });
+
+        // Filter Exhibits
+        function filterExhibits(category, sourceBtn) {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.classList.remove('active-filter', 'bg-gold-400', 'text-obsidian-900');
+                btn.classList.add('glass-card', 'text-gray-300');
+            });
+
+            // Tugma bosilganda `this` uzatiladi; dasturiy chaqiruvda mos tugmani
+            // `onclick` atributidan topamiz. (Avval bu yerda global `event` ishlatilar
+            // edi — dasturiy chaqirilganda xato berardi.)
+            const activeBtn = sourceBtn
+                || [...filterBtns].find(b => (b.getAttribute('onclick') || '').includes(`'${category}'`));
+
+            if (activeBtn) {
+                activeBtn.classList.add('active-filter', 'bg-gold-400', 'text-obsidian-900');
+                activeBtn.classList.remove('glass-card', 'text-gray-300');
+            }
+
+            const items = document.querySelectorAll('.exhibit-item');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'flex';
+                    item.style.opacity = '1';
+                } else {
+                    item.style.display = 'none';
+                    item.style.opacity = '0';
+                }
+            });
+        }
+
+        /* Bosh sahifadagi "Qaysi davrga kirishni siz tanlaysiz" kartalari
+           zallar.html?zal=rome|egypt|renaissance ko'rinishida keladi:
+           mos toifani darhol filtrlab, eksponatlar bo'limiga olib tushamiz. */
+        (function applyEraFromUrl() {
+            const zal = new URLSearchParams(location.search).get('zal');
+            const allowed = ['rome', 'egypt', 'renaissance', 'east', 'sculpture'];
+            if (!zal || !allowed.includes(zal)) return;
+
+            window.addEventListener('load', () => {
+                filterExhibits(zal);
+                const target = document.getElementById('exhibits');
+                if (target) {
+                    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350);
+                }
+            });
+        })();
+
+        // Museum Halls Interactive Data Switch
+        const hallsData = [
+            {
+                number: "Zal №1",
+                title: "Imperatorlar Zali",
+                desc: "Ushbu zalda Rim va Vizantiya imperiyalarining eng qudratli hukmdorlari haykallari, jangovar qurol-aslahalari hamda oltin tangalari namoyish etiladi.",
+                capacity: "Sig'imi: 120 kishi",
+                floor: "1-Qavat, Sharqiy qanot",
+                bg: "images/artifact_rome_armor.jpg"
+            },
+            {
+                number: "Zal №2",
+                title: "Fir'avnlar Maqbarasi",
+                desc: "Qadimgi Misr piramidalari, fir'avnlarning oltin mumyolari va ma'budlar haykallari bilan bezatilgan sirli hamda ulug'vor zal.",
+                capacity: "Sig'imi: 90 kishi",
+                floor: "1-Qavat, G'arbiy qanot",
+                bg: "images/artifact_egypt_temple.jpg"
+            },
+            {
+                number: "Zal №3",
+                title: "Sharq Renessansi",
+                desc: "Sharqiy tamaddunlar, Al-Xorazmiy, Ibn Sino va Ulug'bek davri astronomik asboblari hamda qadimgi oltin qo'lyozmalar xazinasi.",
+                capacity: "Sig'imi: 150 kishi",
+                floor: "2-Qavat, Markaziy zal",
+                bg: "images/artifact_islamic_tile.jpg"
+            }
+        ];
+
+        function switchHall(index) {
+            const tabs = document.querySelectorAll('.hall-tab');
+            tabs.forEach((tab, i) => {
+                if (i === index) {
+                    tab.classList.add('border-gold-400/50');
+                    tab.classList.remove('border-white/5');
+                } else {
+                    tab.classList.remove('border-gold-400/50');
+                    tab.classList.add('border-white/5');
+                }
+            });
+
+            const data = hallsData[index];
+            document.getElementById('hallNumberBadge').innerText = data.number;
+            document.getElementById('hallTitle').innerText = data.title;
+            document.getElementById('hallDesc').innerText = data.desc;
+            document.getElementById('hallCapacity').innerHTML = `<i class="fa-solid fa-users text-gold-400 mr-2"></i> ${data.capacity}`;
+            document.getElementById('hallFloor').innerHTML = `<i class="fa-solid fa-layer-group text-gold-400 mr-2"></i> ${data.floor}`;
+            document.getElementById('hallBgImage').style.backgroundImage = `url('${data.bg}')`;
+        }
+
+        // Modals Logic
+        function openArtifactModal(title, desc, img, date, hall) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalDate').innerText = date;
+            document.getElementById('modalHall').innerText = hall;
+
+            const modal = document.getElementById('artifactModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeArtifactModal() {
+            const modal = document.getElementById('artifactModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openTicketModal() {
+            const modal = document.getElementById('ticketModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            calculateTicketPrice();
+        }
+
+        function closeTicketModal() {
+            const modal = document.getElementById('ticketModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function calculateTicketPrice() {
+            const price = parseInt(document.getElementById('ticketTypeSelect').value) || 50000;
+            const count = parseInt(document.getElementById('ticketCount').value) || 1;
+            const total = price * count;
+            document.getElementById('totalPrice').innerText = total.toLocaleString() + ' UZS';
+        }
+
+        function handleTicketBooking(e) {
+            e.preventDefault();
+            alert("Muvaffaqiyatli! Chiptangiz band qilindi. Email pochtangizga elektron chipta yuborildi.");
+            closeTicketModal();
+        }
+
+        function handleSubscribe(e) {
+            e.preventDefault();
+            alert("Rahmat! Imperium Museum yangiliklariga obuna bo'ldingiz.");
+            e.target.reset();
+        }
+
+        // Ambient Web Audio Synthesizer
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let oscillator = null;
+
+        function playAmbientAudio() {
+            const audioText = document.getElementById('audioText');
+            const audioIcon = document.getElementById('audioIcon');
+
+            if (!isAudioPlaying) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(146.83, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                isAudioPlaying = true;
+
+                audioText.innerText = "Sado To'xtatish";
+                audioIcon.className = "fa-solid fa-volume-high text-gold-400 animate-pulse";
+            } else {
+                if (oscillator) oscillator.stop();
+                isAudioPlaying = false;
+
+                audioText.innerText = "Audio Ekskursiya (Sado)";
+                audioIcon.className = "fa-solid fa-headphones text-gold-400";
+            }
+        }
+    </script>
+</body>
+
+</html>

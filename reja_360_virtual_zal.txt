@@ -1,0 +1,139 @@
+==================================================================
+IMPERIUM MUZEYI — YANGI SAHIFA REJASI #1
+360° VIRTUAL ZAL TURI (panorama.html)
+==================================================================
+
+MAQSAD
+------
+Foydalanuvchi sichqoncha yoki barmog'i bilan ekranni surib, muzey
+zalini har tomondan (chapga, o'ngga, tepaga, pastga) aylantirib
+ko'ra oladigan sahifa. Google Street View / Matterport uslubidagi
+"men zalning ichida turibman" hissi beriladi. Bu ro'yxatdagi eng
+kuchli "wow-effekt" beruvchi variant, lekin eng ko'p tayyorgarlik
+(rasm/render) talab qiladi.
+
+QANDAY ISHLAYDI (texnik g'oya)
+-------------------------------
+Ikki xil yondashuv bor. Loyihada hech qanday framework/build-tool
+yo'qligini hisobga olib, ikkalasi ham vanilla HTML/CSS/JS bilan
+qilinadi:
+
+VARIANT A — "Equirectangular panorama" (eng realistik, tavsiya etiladi)
+  1. Har bir zal uchun bitta 360° panorama rasm kerak (equirectangular,
+     ya'ni kenglik balandlikdan 2 baravar, masalan 4096x2048px).
+     - Bunday rasmlarni quyidagicha olish mumkin:
+       a) Agar sizda haqiqiy zal fotosi bo'lmasa, tayyor CC0/erkin
+          litsenziyali 360° muzey panoramalarini Wikimedia Commons
+          yoki Poly Haven / Museum sайтlaridan yuklab olish mumkin.
+       b) Yoki AI orqali "equirectangular 360 museum hall panorama"
+          promt bilan generatsiya qilish mumkin (Midjourney/Bing
+          Image Creator kabi vositalar 360 panorama rejimini
+          qo'llab-quvvatlaydi).
+       c) Yoki telefon kamerasi bilan "Panorama" rejimida to'liq
+          360 aylanma surat olish (ba'zi telefonlarda maxsus 360
+          rejim bor, yoki Google Street View ilovasi orqali).
+  2. Panorama rasmni ekranga "sfera ichidan ko'rinadigan" qilib
+     chizish uchun eng sodda yo'l — <canvas> + WebGL emas, balki
+     CSS bilan: rasmni juda katta va kengligi ekrandan bir necha
+     baravar katta qilib joylashtirib, foydalanuvchi harakatiga
+     qarab background-position yoki transform: translateX ni
+     o'zgartirish (bu "psevdo-360", to'liq sfera emas, lekin
+     ko'zga chiroyli va oson amalga oshiriladi):
+
+     .panorama-viewport { overflow: hidden; width: 100vw; height: 100vh; }
+     .panorama-image {
+       position: absolute;
+       height: 100%;
+       width: auto; /* rasm eni balandlikdan 2-3 baravar katta bo'lsin */
+       max-width: none;
+       left: 50%;
+       transform: translateX(calc(-50% + var(--pan-x, 0px)));
+       transition: transform 0.05s linear;
+     }
+
+     JS da pointermove/touchmove paytida --pan-x ni chegaralab
+     (rasm chetidan chiqib ketmasin) o'zgartirib turiladi:
+
+     viewport.addEventListener('pointermove', (e) => {
+       const dx = (e.clientX - startX) * sensitivity;
+       panX = clamp(panX + dx, minPanX, maxPanX);
+       image.style.setProperty('--pan-x', panX + 'px');
+     });
+
+     Vertikal harakat uchun xuddi shunday --pan-y bilan
+     transform: translate(x, y) qo'shiladi (parallaks chegarasi
+     bilan, chunki equirectangular rasm vertikal bo'yicha
+     cheklangan burchakka ega bo'lishi kerak — aks holda buzilib
+     ko'rinadi).
+
+  3. Haqiqiy sferik (to'liq 360x180) tajriba kerak bo'lsa, tayyor
+     kutubxona ishlatilmasdan CSS 3D transform bilan "kub xaritasi"
+     (cubemap) usuli ham mumkin: 6 ta rasm (old, orqa, chap, o'ng,
+     tepa, past) dan iborat kub yasab, uni perspective + rotateX/
+     rotateY bilan aylantirish. Bu murakkabroq, lekin hali ham
+     vanilla CSS/JS bilan bajarish mumkin (kutubxonasiz).
+
+VARIANT B — "Hotspot bilan zaldan-zalga o'tish" (soddaroq, lekin kam wow)
+  Bir nechta statik fotosuratlar orasida "hotspot" tugmalar orqali
+  o'tish (masalan zal-1 dagi eshik belgisini bossa zal-2 rasmiga
+  fade bilan almashadi). Bu 360 emas, lekin ancha oson va tez
+  qilinadi, agar haqiqiy panorama rasm topish qiyin bo'lsa zaxira
+  reja sifatida ishlatilishi mumkin.
+
+FAYL TUZILISHI (loyihaning boshqa sahifalari uslubida)
+--------------------------------------------------------
+- panorama.html   -> HTML tuzilishi (header/nav loyihadagi boshqa
+                      sahifalar bilan bir xil, keyin <div id="viewport">)
+- panorama.css    -> vintage-gazeta uslubi (--primary, --accent-red,
+                      --serif o'zgaruvchilari boshqa CSS fayllardan
+                      nusxa olinadi, bu saytda vizual uzluksizlik
+                      uchun muhim)
+- panorama.js     -> pointer/touch harakatlarini kuzatish, pan
+                      chegaralarini hisoblash, hotspot bosilganda
+                      zal almashtirish
+- media/panorama/ -> har bir zal uchun panorama JPG fayllar
+                      (masalan: rome-hall.jpg, egypt-hall.jpg,
+                      renaissance-hall.jpg — index.html dagi 3 ta
+                      "room-card" bilan mos keladi)
+
+QADAMLAR (amalga oshirish tartibi)
+------------------------------------
+1. media/panorama/ papkasiga kamida 1 ta (yaxshisi 3 ta, index.html
+   dagi "Qadimgi Rim / Qadimgi Misr / Uyg'onish" zallariga mos)
+   equirectangular yoki keng burchakli rasm qo'yish.
+2. panorama.html yaratish: header/nav/footer ni index.html dan
+   nusxalash (linklar bir xil bo'lishi kerak: barcha sahifalarda
+   nav bir xil 4 ta link + header-ticket).
+3. panorama.css: vintage o'zgaruvchilarni ko'chirish, viewport va
+   panorama-image stillari, pastki qismda "zal tanlash" tugmalari
+   (Rim / Misr / Uyg'onish) qo'shish.
+4. panorama.js: pointerdown/pointermove/pointerup (sichqoncha) va
+   touchstart/touchmove/touchend (mobil) bilan panX/panY ni
+   yangilash, requestAnimationFrame bilan silliqlashtirish (index.html
+   dagi syncVideo funksiyasidagi "easing" texnikasi xuddi shu tarzda
+   qayta ishlatilishi mumkin — loyihada allaqachon bor pattern).
+5. "Zal tanlash" tugmalari bosilganda rasmni fade-out/fade-in bilan
+   almashtirish (CSS transition: opacity).
+6. index.html dagi "rooms-grid" (Qadimgi Rim / Qadimgi Misr /
+   Uyg'onish kartalari) ichidagi "↗" linklarini
+   panorama.html?zal=rome kabi query parametrga yo'naltirish mumkin,
+   shunda foydalanuvchi to'g'ridan-to'g'ri tegishli zalga tushadi.
+7. nav menyusiga yangi link qo'shish: barcha *.html fayllardagi
+   <nav> ichiga masalan "360° Zal" linkini qo'shish (index.html,
+   3d.html, museyHaqida.html, museylar.html, victarina.html,
+   xarita.html, galereya.html — hammasida bir xil nav bo'lishi kerak).
+
+MOBIL / RESPONSIVE
+-------------------
+- touch-action: none; viewportga, aks holda brauzer sahifani
+  skroll qilishga urinadi barmoq surilganda.
+- Sensitivity (sichqoncha/barmoq harakati tezligi) mobil uchun
+  kamroq bo'lishi kerak (ekran kichik, harakat tezroq katta farq
+  beradi).
+
+TEST QILISH
+-----------
+- Panorama rasm chetlariga yetganda oq/bo'sh joy chiqmasligini
+  tekshirish (clamp funksiyasi to'g'ri ishlashi kerak).
+- Sichqonchani tez-tez tashlab yuborib bosilganda "sakrash" bo'lmasligi.
+- Kichik ekranda (telefon) touch bilan tekshirish.

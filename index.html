@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tarix, san’at va texnologiya uchrashadigan immersiv raqamli muzey.">
+  <title>Imperium — Raqamli muzey</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/lenis.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+ <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+      <span class="brand-mark">I</span>
+      <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+    </a>
+    <nav aria-label="Asosiy navigatsiya" id="navMenu">
+      <a target="_blank" href="./museyHaqida.html">Muzey haqida</a>
+      <a target="_blank" href="./3d.html">3D Eksponatlar</a>
+      <a target="_blank" href="./galereya.html">Galereya</a>
+      <a target="_blank" href="./victarina.html">Viktorina</a>
+      <a target="_blank" href="./360zal.html">360 zallar</a>
+      <a target="_blank" href="./nimadur.html">Vaqt mashinasi</a>
+      <a target="_blank" href="./museylar.html">Milliy muzey</a>
+      <a target="_blank" href="./zallar.html">Zallar</a>
+      <a class="header-ticket mobile-nav-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    </nav>
+    <div class="header-right-group">
+      <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+      <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="top" class="scroll-story" aria-label="Imperiumga kirish">
+      <div class="sticky-stage"><video id="museum-video" class="museum-video" muted="" playsInline="" preload="auto"
+          poster="media/imperium-poster.jpg" aria-label="Derazadan qadimiy muzey zaliga kirish videosi">
+          <source src="media/imperium-scroll.mp4" type="video/mp4" />
+        </video>
+        <div class="video-shade"></div>
+        <div class="edge-vignette"></div>
+        <div class="film-grain"></div>
+        <div id="cursor-trail" class="cursor-trail" aria-hidden="true"></div>
+        <div class="hero-intro">
+          <p class="eyebrow"><span></span>Tarix hech qachon jim turmaydi</p>
+          <h1>Tarixga<em>kirib boring.</em></h1>
+          <p class="hero-lead">Derazani ochish uchun pastga suring. Har bir harakat sizni ming yillik san’atga
+            yaqinlashtiradi.</p>
+        </div>
+        <div class="scene-label scene-label--portal"><span>01</span>
+          <div><small>O‘tish nuqtasi</small><strong>Tarix darvozasi</strong></div>
+        </div>
+        <div class="portal-cards" aria-hidden="true">
+          <article class="mini-card portal-card portal-card--1" data-title="Mona Lisa"><img
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/Mona%20Lisa%2C%20by%20Leonardo%20da%20Vinci%2C%20from%20C2RMF%20retouched.jpg?width=900"
+              alt="" referrerPolicy="no-referrer" />
+            <div><span>Uyg‘onish davri</span><strong>Mona Lisa</strong><small>1503–1519</small></div>
+          </article>
+          <article class="mini-card portal-card portal-card--2" data-title="Venus de Milo"><img
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/Venus%20de%20Milo%20Louvre%20Ma399%20n4.jpg?width=900"
+              alt="" referrerPolicy="no-referrer" />
+            <div><span>Qadimgi Yunoniston</span><strong>Venus de Milo</strong><small>m.a. 130–100</small></div>
+          </article>
+          <article class="mini-card portal-card portal-card--3" data-title="Rosetta toshi"><img
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/Rosetta%20Stone.JPG?width=900" alt=""
+              referrerPolicy="no-referrer" />
+            <div><span>Qadimgi Misr</span><strong>Rosetta toshi</strong><small>m.a. 196</small></div>
+          </article>
+        </div>
+        <div class="depth-cards" aria-hidden="true">
+          <article class="mini-card depth-card depth-card--1" data-title="Nefertiti"><img
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/Nofretete%20Neues%20Museum.jpg?width=900" alt=""
+              referrerPolicy="no-referrer" />
+            <div><span>Qadimgi Misr</span><strong>Nefertiti</strong><small>m.a. 1345</small></div>
+          </article>
+          <article class="mini-card depth-card depth-card--2" data-title="David"><img
+              src="https://tarix.sinaps.uz/wp-content/uploads/2024/02/antonin_imperatorlar_nerva_trayan_menu.webp"
+              alt="" referrerPolicy="no-referrer" />
+            <div><span>Uyg‘onish davri</span><strong>David</strong><small>1501–1504</small></div>
+          </article>
+          <article class="mini-card depth-card depth-card--3" data-title="Mutafakkir"><img
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/Le%20Penseur%20in%20the%20Jardin%20du%20Mus%C3%A9e%20Rodin%2C%20Paris%2014%20June%202015.jpg?width=900"
+              alt="" referrerPolicy="no-referrer" />
+            <div><span>Modern haykaltaroshlik</span><strong>Mutafakkir</strong><small>1904</small></div>
+          </article>
+          <article class="mini-card depth-card depth-card--4" data-title="Qanotli G‘alaba"><img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4kKjyk1jWYKEqtOwy0F1B80ggtDu9N-W5ARFYdyYrlnleYzC4WoS6mJU&s=10"
+              alt="" referrerPolicy="no-referrer" />
+            <div><span>Ellinistik san’at</span><strong>Qanotli G‘alaba</strong><small>m.a. II asr</small></div>
+          </article>
+        </div>
+        <div class="orbit-heading">
+          <p>02 — Imperator zali</p>
+          <h2>Marmarga muhrlangan<span>hokimiyat</span></h2>
+        </div>
+        <div class="orbit-cards">
+          <article class="orbit-card orbit-card--1">
+            <div class="orbit-card__image"><img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMHo3Eb1-ZjoYLM0zJtewD3pk-PshK8UY5tRKh51c9Q_MQaHV-VgKUdOI&s=10"
+                alt="Qanotli G‘alaba" referrerPolicy="no-referrer" /><span>01</span></div>
+            <div class="orbit-card__copy"><small>Ellinistik san’at</small><strong>Qanotli G‘alaba</strong>
+              <p>Noma’lum · m.a. II asr</p>
+            </div>
+          </article>
+          <article class="orbit-card orbit-card--2">
+            <div class="orbit-card__image"><img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Van%20Gogh%20-%20Starry%20Night%20-%20Google%20Art%20Project.jpg?width=900"
+                alt="Yulduzli tun" referrerPolicy="no-referrer" /><span>02</span></div>
+            <div class="orbit-card__copy"><small>Postimpressionizm</small><strong>Yulduzli tun</strong>
+              <p>Vincent van Gogh · 1889</p>
+            </div>
+          </article>
+          <article class="orbit-card orbit-card--3">
+            <div class="orbit-card__image"><img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/The%20Great%20Wave%20off%20Kanagawa.jpg?width=900"
+                alt="Buyuk to‘lqin" referrerPolicy="no-referrer" /><span>03</span></div>
+            <div class="orbit-card__copy"><small>Ukiyo-e</small><strong>Buyuk to‘lqin</strong>
+              <p>Katsushika Hokusai · 1831</p>
+            </div>
+          </article>
+          <article class="orbit-card orbit-card--4">
+            <div class="orbit-card__image"><img
+                src="https://odam.uz/upload/media/entries/2019-01/05/1841-5-aece3a9d59ec357a745e88728c6c1d6e.jpg"
+                alt="Tutankhamun niqobi" referrerPolicy="no-referrer" /><span>04</span></div>
+            <div class="orbit-card__copy"><small>Qadimgi Misr</small><strong>Tutankhamun niqobi</strong>
+              <p>Noma’lum · m.a. XIV asr</p>
+            </div>
+          </article>
+          <article class="orbit-card orbit-card--5">
+            <div class="orbit-card__image"><img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Discobolus%20in%20National%20Roman%20Museum%20Palazzo%20Massimo%20alle%20Terme.JPG?width=900"
+                alt="Diskobol" referrerPolicy="no-referrer" /><span>05</span></div>
+            <div class="orbit-card__copy"><small>Klassik haykaltaroshlik</small><strong>Diskobol</strong>
+              <p>Miron · m.a. 450</p>
+            </div>
+          </article>
+          <article class="orbit-card orbit-card--6">
+            <div class="orbit-card__image"><img src="https://tarix.sinaps.uz/wp-content/themes/history-sinaps/assets/img/menu-cesar.png" alt="Sezar merosi"
+                referrerPolicy="no-referrer" /><span>06</span></div>
+            <div class="orbit-card__copy"><small>Qadimgi Rim</small><strong>Sezar merosi</strong>
+              <p>Rim ustalari · m.a. I asr</p>
+            </div>
+          </article>
+        </div>
+        <div class="final-reveal">
+          <div class="final-copy">
+            <p class="eyebrow"><span></span>Sayohat endi boshlanadi</p>
+            <h2>5 000 yil<em>bitta makonda.</em></h2><a href="#collection">Eksponatlarni kashf eting<span
+                aria-hidden="true">↓</span></a>
+          </div>
+          <div class="card-deck" aria-hidden="true">
+            <div class="deck-card deck-card--1"><img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Mona%20Lisa%2C%20by%20Leonardo%20da%20Vinci%2C%20from%20C2RMF%20retouched.jpg?width=900"
+                alt="" referrerPolicy="no-referrer" /><span>Mona Lisa</span></div>
+            <div class="deck-card deck-card--2"><img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Venus%20de%20Milo%20Louvre%20Ma399%20n4.jpg?width=900"
+                alt="" referrerPolicy="no-referrer" /><span>Venus de Milo</span></div>
+            <div class="deck-card deck-card--3"><img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Rosetta%20Stone.JPG?width=900" alt=""
+                referrerPolicy="no-referrer" /><span>Rosetta toshi</span></div>
+            <div class="deck-card deck-card--4"><img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Nofretete%20Neues%20Museum.jpg?width=900"
+                alt="" referrerPolicy="no-referrer" /><span>Nefertiti</span></div>
+            <div class="deck-card deck-card--5"><img
+                src="https://tarix.sinaps.uz/wp-content/themes/history-sinaps/assets/img/menu-hover.png"
+                alt="" referrerPolicy="no-referrer" /><span>Motsart</span></div>
+          </div>
+        </div>
+        <div class="video-loader" aria-live="polite">
+          <div class="loader-art"><img class="loader-art__image"
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/Mona%20Lisa%2C%20by%20Leonardo%20da%20Vinci%2C%20from%20C2RMF%20retouched.jpg?width=400"
+              alt="" referrerPolicy="no-referrer" /><i class="fa-solid fa-paintbrush loader-art__brush"
+              aria-hidden="true"></i></div>
+          <p>Arxiv ochilmoqda</p>
+        </div>
+        <div class="scroll-hint"><span class="scroll-mouse"><i></i></span><small>Pastga suring</small></div>
+        <aside class="story-progress" aria-label="Video jarayoni"><span id="progress-number">00</span>
+          <div><i id="progress-fill"></i></div><span>100</span>
+        </aside>
+      </div>
+    </section>
+    <section id="story" class="story-intro section-shell">
+      <div class="section-index"><span>01</span>
+        <p>Muzey haqida</p>
+      </div>
+      <div class="story-intro__copy reveal">
+        <p class="kicker">Bizning manifest</p>
+        <h2>Muzey — buyumlar saqlanadigan joy emas. U vaqt bilan <em>uchrashadigan makon.</em></h2>
+      </div>
+      <div class="story-intro__meta reveal">
+        <p>Imperium san’at, tarix va texnologiyani bitta jonli sayohatga birlashtiradi. Har bir eksponat faqat
+          ko‘rilmaydi — uning davri, ovozi va hikoyasi his qilinadi.</p>
+        <div class="museum-stats">
+          <div><strong>12K+</strong><span>raqamli asar</span></div>
+          <div><strong>42</strong><span>tarixiy davr</span></div>
+          <div><strong>24/7</strong><span>ochiq galereya</span></div>
+        </div>
+      </div>
+    </section>
+    <section id="collection" class="collection-section">
+      <div class="section-shell">
+        <div class="collection-heading reveal">
+          <div>
+            <p class="kicker">Tanlangan durdonalar</p>
+            <h2>Jahon xotirasining mashhur sahifalari.</h2>
+          </div>
+          <p>Kartaga yaqinlashing — qolgan asarlar jim bo‘ladi va tanlangan eksponat o‘z hikoyasini boshlaydi.</p>
+        </div>
+        <div class="collection-grid">
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://www.bvjhostelparis.com/wp-content/uploads/2024/06/VOYAGE-SCOLAIRE-PARIS-reservation-groupe-Musee-du-LOUVRE.jpg"
+                alt="Mona Lisa — Leonardo da Vinci" loading="lazy" referrerPolicy="no-referrer" /><span>01</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Parij</small>
+                <h3>Luvr muzeyi</h3>
+              </div>
+              <p>Leonardo da Vinci<span>1503–1519</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Fransiya (Parij)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://cdn.sortiraparis.com/images/80/83517/421527-visuel-paris-musee-d-orsay.jpg"
+                alt="Venus de Milo — Aleksandros" loading="lazy" referrerPolicy="no-referrer" /><span>02</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Parij</small>
+                <h3>Orse muzeyi</h3>
+              </div>
+              <p>Aleksandros<span>m.a. 130–100</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Fransiya (Parij)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://s.zagranitsa.com/images/guides/16562/original/1963b38f9a42629cc2505fcbd06e4f7b.jpg?1427974893"
+                alt="Rosetta toshi — Noma’lum" loading="lazy" referrerPolicy="no-referrer" /><span>03</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Parij</small>
+                <h3>Pompidu markazi</h3>
+              </div>
+              <p>Noma’lum<span>m.a. 196</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Fransiya (Parij)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://data.daryo.uz/media/2021/04/1200px-Metropolitan_Museum_of_Art_The_Met_-_Central_Park_NYC.jpg"
+                alt="Nefertiti — Tutmos" loading="lazy" referrerPolicy="no-referrer" /><span>04</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Nyu-York</small>
+                <h3>Metropoliten muzeyi</h3>
+              </div>
+              <p>Tutmos<span>m.a. 1345</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>AQSh (Nyu-York)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://upload.wikimedia.org/wikipedia/commons/e/ea/National_Museum_of_Natural_History_-_2026_%2855255088887%29.jpg"
+                alt="David — Michelangelo" loading="lazy" referrerPolicy="no-referrer" /><span>05</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Vashington</small>
+                <h3>Smitson tarix muzeyi</h3>
+              </div>
+              <p>Michelangelo<span>1501–1504</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>AQSh (Vashington)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://upload.wikimedia.org/wikipedia/commons/0/00/Tate_Modern_-_Bankside_Power_Station.jpg"
+                alt="Mutafakkir — Auguste Rodin" loading="lazy" referrerPolicy="no-referrer" /><span>06</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>London</small>
+                <h3>Teyt Modern</h3>
+              </div>
+              <p>Auguste Rodin<span>1904</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Buyuk Britaniya (London)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/1280px-Colosseo_2020.jpg"
+                alt="Qanotli G‘alaba — Noma’lum" loading="lazy" referrerPolicy="no-referrer" /><span>07</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Rim</small>
+                <h3>Arxeologiya muzeyi</h3>
+              </div>
+              <p>Noma’lum<span>m.a. II asr</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Italiya (Rim)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://risel.com/wp-content/uploads/2025/02/the-prado-museum-2023-11-27-05-34-30-utc-scaled.jpg"
+                alt="Yulduzli tun — Vincent van Gogh" loading="lazy" referrerPolicy="no-referrer" /><span>08</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Madrid</small>
+                <h3>Prado muzeyi</h3>
+              </div>
+              <p>Vincent van Gogh<span>1889</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Ispaniya (Madrid)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://yuz.uz/file/news/5efbf3f44fa2d1fef2af0cc1f4cda430.jpg"
+                alt="Buyuk to‘lqin — Katsushika Hokusai" loading="lazy" referrerPolicy="no-referrer" /><span>09</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Moskva</small>
+                <h3>Tretyakov galereyasi</h3>
+              </div>
+              <p>Katsushika Hokusai<span>1831</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Rossiya (Moskva)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://www.rijksmuseum.nl/assets/fdd2733b-030d-46be-ac53-932f3b719e77?w=1920&h=1080&fx=3333&fy=2025&c=c454422478deb97d5028ef15fe8ee1444efc831752f549ed9579f8f86f2b6708"
+                alt="Tutankhamun niqobi — Noma’lum" loading="lazy" referrerPolicy="no-referrer" /><span>10</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Amsterdam</small>
+                <h3>Rijksmuseum</h3>
+              </div>
+              <p>Noma’lum<span>m.a. XIV asr</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Niderlandiya (Amsterdam)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img
+                src="https://www.afisha.uz/uploads/media/2025/11/1f26d0719a1fe4213ca120de837fb498_lf.webp"
+                alt="Diskobol — Miron" loading="lazy" referrerPolicy="no-referrer" /><span>11</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Misr (Giza)</small>
+                <h3>Katta Misr muzeyi</h3>
+              </div>
+              <p>Noma’lum<span>m.a. XIV asr</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Misr (Giza)</strong></div>
+            </div>
+          </article>
+          <article class="collection-card reveal" tabindex="0">
+            <div class="collection-card__media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRljjFGaTkF5jCrXDSZoxE1K-g2O1pJ5aRVnuqOGdj88bi0tdbGOIRQ4nsM&s=10" alt="Sezar merosi — Rim ustalari"
+                loading="lazy" referrerPolicy="no-referrer" /><span>12</span>
+              <div class="collection-card__glare"></div>
+            </div>
+            <div class="collection-card__info">
+              <div><small>Tarixiy muzey</small>
+                <h3>Amir Temur tarixi davlat</h3>
+              </div>
+              <p>Uzb<span>m.a. 20 asr</span></p>
+              <div class="card-museum"><span>Hozirgi manzil</span><strong>Toshkent</strong></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="quote-section">
+      <div class="quote-orbit quote-orbit--outer"></div>
+      <div class="quote-orbit quote-orbit--inner"></div>
+      <p class="reveal">“San’at bizni vaqt bo‘ylab olib yuradi, ammo o‘zimizga qaytarib qo‘yadi.”</p><span>Imperium
+        Manifesti — 2026</span>
+    </section>
+    <section id="rooms" class="rooms-section section-shell">
+      <div class="rooms-heading reveal">
+        <p class="kicker">Uchta yo‘nalish</p>
+        <h2>Qaysi davrga kirishni siz tanlaysiz.</h2>
+      </div>
+      <div class="rooms-grid">
+        <article class="room-card room-card--rome reveal"><span>01</span>
+          <div><small>Miloddan avvalgi VIII asr</small>
+            <h3>Qadimgi Rim</h3>
+            <p>Imperatorlar, marmar va abadiylikka intilgan me’morchilik.</p>
+          </div><a href="./rim.html" aria-label="Qadimgi Rim zaliga kirish">↗</a>
+        </article>
+        <article class="room-card room-card--egypt reveal"><span>02</span>
+          <div><small>Miloddan avvalgi XXXI asr</small>
+            <h3>Qadimgi Misr</h3>
+            <p>Fir’avnlar, ierogliflar va ming yillik sirlar dunyosi.</p>
+          </div><a href="./misr.html" aria-label="Qadimgi Misr zaliga kirish">↗</a>
+        </article>
+        <article class="room-card room-card--renaissance reveal"><span>03</span>
+          <div><small>XIV–XVII asrlar</small>
+            <h3>Uyg‘onish</h3>
+            <p>Inson, tafakkur va go‘zallik qayta kashf etilgan davr.</p>
+          </div><a href="./imperium_museum_awakening.html" aria-label="Uyg‘onish zaliga kirish">↗</a>
+        </article>
+      </div>
+    </section>
+    <section class="closing-section">
+      <div class="closing-lines" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p class="kicker">Imperium sizni kutmoqda</p>
+      <h2>O‘tmishni tomosha qilmang.<em>Uning ichiga kiring.</em></h2><a href="#top">Sayohatni qayta
+        boshlash<span>↑</span></a>
+    </section>
+  </main>
+  <footer><a class="brand brand--footer" href="#top"><span
+        class="brand-mark">I</span><span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span></a>
+    <p>Tarix · San’at · Texnologiya</p><span>© 2026 Imperium Museum</span>
+  </footer>
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
+  <script src="vendor/lenis.min.js"></script>
+  <script src="assets/site.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

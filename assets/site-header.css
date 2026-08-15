@@ -1,0 +1,254 @@
+/* ==========================================================
+   UMUMIY HEADER — barcha nav sahifalari uchun
+   ----------------------------------------------------------
+   Bu fayl ilgari museyHaqida.css, galereya.css, 360zal.css,
+   xarita.css, museylar.css, 3d.css va victarina.css da
+   bayt-baytiga takrorlangan bloklardan ajratib olindi.
+   Etalon nusxa: museyHaqida.css (41-160, 344-381, 402-466).
+
+   TEGISHLI EMAS: index.html (style.css), nimadur.html va
+   zallar.html o'z header uslubini saqlaydi — ularning
+   strukturasi va breakpointi boshqacha (1250px, dropdown).
+
+   Sahifaning o'z CSS faylidan OLDIN ulanadi, shunda sahifa
+   kerak bo'lsa ustidan yozа oladi (3d.css: z-index: 80).
+   ========================================================== */
+
+/* --- HEADER --- */
+.site-header {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 90px;
+    padding: 0 3.5vw;
+    border-bottom: 3px double var(--border);
+    background: var(--sidebar-bg);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.brand-mark {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    color: var(--border);
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.brand > span:last-child, .brand div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brand strong {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--text-main);
+    text-transform: uppercase;
+    font-family: var(--serif);
+}
+
+.brand small {
+    color: var(--accent-red);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.site-header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex: 1;
+    min-width: 0;
+    margin: 0 20px;
+}
+
+.site-header nav a {
+    position: relative;
+    color: var(--text-main);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.site-header nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: -6px;
+    left: 0;
+    height: 2px;
+    background: var(--accent-red);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.site-header nav a:hover { color: var(--accent-red); }
+.site-header nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.header-ticket {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-main);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.header-ticket:hover {
+    background: var(--border);
+    color: var(--card-bg);
+}
+
+/* Tema tugmasi va burger shu guruhda yonma-yon turadi.
+   Ilgari bu div faqat burgerni saqlar edi va uslubsiz qolgan. */
+.header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+/* --- BURGER TUGMASI --- */
+.burger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
+
+.burger-btn span {
+    width: 100%;
+    height: 3px;
+    background: var(--text-main, #1c1c1c);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.burger-btn.open span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+.burger-btn.open span:nth-child(2) {
+    opacity: 0;
+}
+.burger-btn.open span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+.mobile-nav-ticket {
+    display: none !important;
+}
+
+.desktop-header-ticket {
+    display: inline-flex;
+}
+
+/* --- MOBIL DRAWER --- */
+@media (max-width: 1100px) {
+    .site-header {
+        padding: 0 20px;
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .burger-btn {
+        display: flex !important;
+    }
+
+    .desktop-header-ticket {
+        display: none !important;
+    }
+
+    .mobile-nav-ticket {
+        display: block !important;
+        margin-top: 15px;
+        width: 100%;
+        text-align: center;
+        padding: 12px 18px;
+        background: var(--border, #111111);
+        color: var(--card-bg, #ffffff) !important;
+        border-radius: var(--radius, 6px);
+    }
+
+    .site-header nav {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: calc(100vh - 80px);
+        background: var(--sidebar-bg, #f7f5f0);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 40px 30px;
+        gap: 22px;
+        border-bottom: 2px solid var(--border, #111111);
+        transition: left 0.35s ease-in-out;
+        text-align: left;
+        box-shadow: 10px 0px 25px rgba(0,0,0,0.15);
+        margin: 0;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .site-header nav.active {
+        left: 0 !important;
+    }
+
+    .site-header nav a {
+        font-size: 16px;
+        width: 100%;
+        text-align: left !important;
+    }
+
+    .site-header nav a::after {
+        display: none;
+    }
+}

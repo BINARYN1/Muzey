@@ -1,0 +1,257 @@
+﻿/* ==========================================
+   VINTAGE/GAZETA USLUBIDAGI PROFIL SOZLAMALARI
+   ========================================== */
+/* Ranglar va tokenlar -> assets/theme.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--sans);
+}
+
+body, html {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--sans);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+a { color: inherit; text-decoration: none; }
+
+
+/* --- HERO / BOSH SAKHIFASI (GAZETA SURLAVHASI) --- */
+.about-hero {
+  margin-top: 90px;
+  padding: 50px 20px 30px;
+  text-align: center;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tagline {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1.05;
+  margin: 15px 0;
+  text-transform: uppercase;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-family: var(--font-body);
+  font-weight: 400;
+  text-transform: none;
+}
+
+.hero-description {
+  font-size: 18px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+
+/* --- MAIN LAYOUT --- */
+.main-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* GAZETA STATISTIKA CHETI (BAR) */
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  padding: 15px 0;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  text-align: center;
+}
+
+.stat-card h2 {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.stat-card p {
+  font-family: var(--serif);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* GAZETA BO'LIMLARI */
+.section-block {
+  margin-bottom: 50px;
+}
+
+.section-title-wrap {
+  text-align: center;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: 32px;
+  text-transform: uppercase;
+}
+
+/* GAZETA SHAKLIDAGI MATRIX/GRID (3-ustunli gazeta uslubi) */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.text-card {
+  border-right: 1px solid var(--border);
+  padding-right: 30px;
+}
+
+.text-card:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.card-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.text-card h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* Gazetadagi birinchi katta harf (Drop Cap) effekti */
+.text-card p::first-letter {
+  font-family: var(--serif);
+  font-size: 45px;
+  float: left;
+  line-height: 0.8;
+  padding-right: 8px;
+  font-weight: bold;
+}
+
+/* GAZETA RASMLARI VA KARTALARI */
+.museums-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.museum-card {
+  border: 1px solid var(--border);
+  padding: 12px;
+  background: var(--card-bg);
+}
+
+.museum-img {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  /* Rasmga gazeta uslubidagi oq-qora/sepia effekti */
+  filter: grayscale(80%) sepia(20%);
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.museum-country {
+  font-family: var(--serif);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.museum-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.museum-info p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+
+/* Responsive moslashuvchanlik */
+@media (max-width: 900px) {
+  .museums-grid, .grid-2col {
+    grid-template-columns: 1fr;
+  }
+  
+  .text-card {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+
+  .stats-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+
+/* --- UNIFIED AI CHIPS & HEADER --- */
+.ai-header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.ai-header-title i { color: var(--accent-red); font-size: 15px; }
+.ai-quick-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.ai-chip {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0px var(--border);
+}
+.ai-chip:hover {
+    background: var(--accent-red);
+    color: #ffffff;
+    border-color: var(--accent-red);
+    transform: translateY(-2px);
+}

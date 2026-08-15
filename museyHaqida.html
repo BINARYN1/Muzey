@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPERIUM — Muzeylar haqida</title>
+  
+  <!-- Google Fonts Baloo 2 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/lenis.css">
+  <link rel="stylesheet" href="assets/site-header.css">
+  <link rel="stylesheet" href="museyHaqida.css">
+</head>
+<body>
+
+  <!-- HEADER (Aynan siz taqdim etgan kod) -->
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+      <span class="brand-mark">I</span>
+      <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+    </a>
+    <nav aria-label="Asosiy navigatsiya" id="navMenu">
+      <a href="museyHaqida.html">Muzey haqida</a>
+      <a href="3d.html">3D Eksponatlar</a>
+      <a href="galereya.html">Galereya</a>
+      <a href="victarina.html">Viktorina</a>
+      <a href="360zal.html">360 zallar</a>
+      <a href="nimadur.html">Vaqt mashinasi</a>
+      <a href="museylar.html">Milliy muzey</a>
+      <a href="zallar.html">Zallar</a>
+      <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    </nav>
+    <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="header-right-group">
+      <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+  <!-- HERO SECTION -->
+  <section class="about-hero">
+    <div class="about-hero-container">
+      <span class="tagline">TARIX VA RAQAMLI KELAJAK KESISHDIGAN MASKAN</span>
+      <h1 class="hero-title">IMPERIUM Muzeyi<br><em>Haqida.</em></h1>
+      <p class="hero-description">
+        IMPERIUM raqamli muzeyi — insoniyatning boy madaniy merosi, qadimiy me'morchilik san'ati va betakror eksponatlarini zamonaviy 3D texnologiyalar orqali bitta platformaga jamlaydi.
+      </p>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-container" id="about-content">
+    
+    <!-- STATS / STATISTIKA -->
+    <div id="stats-container" class="stats-grid">
+      <div class="stat-card">
+        <h2 class="stat-number" data-target="10000">10,000+</h2>
+        <p>Raqamlashtirilgan eksponatlar</p>
+      </div>
+      <div class="stat-card">
+        <h2 class="stat-number" data-target="50">50+</h2>
+        <p>Jahonaviy hamkor muzeylar</p>
+      </div>
+      <div class="stat-card">
+        <h2>3D</h2>
+        <p>Interaktiv 360° modellar</p>
+      </div>
+    </div>
+
+    <!-- MISSIYA SECTION -->
+    <section class="section-block">
+      <div class="section-title-wrap">
+        <span class="tagline">BIZNING MAQSADIMIZ</span>
+        <h2 class="section-title">Bizning Missiyamiz va Qarashlarimiz</h2>
+      </div>
+      <div class="grid-2col">
+        <div class="text-card">
+          <i class="fa-solid fa-landmark card-icon"></i>
+          <h3>Merosni Saqlash</h3>
+          <p>Qadimiy yodgorliklar va madaniy san'at asarlarini kelajak avlod uchun raqamli formatda saqlab qolish va uning umrini uzaytirish.</p>
+        </div>
+        <div class="text-card">
+          <i class="fa-solid fa-globe card-icon"></i>
+          <h3>Chegarasiz Ziyorat</h3>
+          <p>Dunyoning istalgan nuqtasidan turib, eng mashhur muzey va me'moriy obidalarni 3D rejimida haqiqiy kabi tajriba qilish imkonini yaratish.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KATTA MUZEYLAR RO'YXATI -->
+    <section class="section-block">
+      <div class="section-title-wrap">
+        <span class="tagline">MADANIY CHINORLAR</span>
+        <h2 class="section-title">Dunyoning Eng Mashhur Muzeylari</h2>
+      </div>
+
+      <div class="museums-grid">
+        <div class="museum-card">
+          <div class="museum-img" style="background-image: url('https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="museum-info">
+            <span class="museum-country"><i class="fa-solid fa-location-dot"></i> Fransiya, Parij</span>
+            <h3 class="museum-name">Luvr Muzeyi (Musée du Louvre)</h3>
+            <p>Dunyodagi eng yirik san'at muzeyi. Mona Liza va ko'plab qadimiy haykallarning uyi.</p>
+          </div>
+        </div>
+
+        <div class="museum-card">
+          <div class="museum-img" style="background-image: url('https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="museum-info">
+            <span class="museum-country"><i class="fa-solid fa-location-dot"></i> Buyuk Britaniya, London</span>
+            <h3 class="museum-name">Britaniya Muzeyi (British Museum)</h3>
+            <p>Insoniyat tarixi, san'ati va madaniyatiga bag'ishlangan dunyodagi eng qadimgi muzeylardan biri.</p>
+          </div>
+        </div>
+
+        <div class="museum-card">
+          <div class="museum-img" style="background-image: url('https://images.unsplash.com/photo-1554907984-15263bfd63bd?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="museum-info">
+            <span class="museum-country"><i class="fa-solid fa-location-dot"></i> Italiya, Rim</span>
+            <h3 class="museum-name">Vatikan Muzeylari</h3>
+            <p>Uyg'onish davri durdonalari va Sistin kapellasi bilan mashhur bo'lgan muqaddas maskan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AI Chat Burchak Vidjeti (Unified Imperium AI) -->
+  <div id="aiChatWidget" class="ai-chat-widget">
+    <div id="aiWelcomeBubble" class="ai-welcome-bubble">
+      Imperium muzey saytiga xush kelibsiz! ✨
+    </div>
+    <button id="aiToggleBtn" class="ai-toggle-btn" aria-label="AI Yordamchi">
+      <i class="fa-solid fa-robot"></i>
+    </button>
+    <div id="aiChatWindow" class="ai-chat-window">
+      <div class="ai-chat-header">
+        <div class="ai-header-title">
+          <i class="fa-solid fa-brain"></i>
+          <span>Imperium AI Yordamchi</span>
+        </div>
+        <button id="aiCloseBtn" class="ai-close-btn">&times;</button>
+      </div>
+      <div id="aiChatBody" class="ai-chat-body">
+        <div class="ai-message bot">
+          Assalomu alaykum! Men Imperium muzeyining aqlli AI yordamchisiman. Sizga qanday yordam bera olaman?
+        </div>
+        <div class="ai-quick-suggestions">
+          <span class="ai-chip" onclick="sendQuickAiQuery('Luvr muzeyi haqida aytib ber')">🏛️ Luvr muzeyi</span>
+          <span class="ai-chip" onclick="sendQuickAiQuery('3D eksponatlarni ko\'rsat')">🗿 3D Haykallar</span>
+          <span class="ai-chip" onclick="sendQuickAiQuery('360 zallar qaysilar?')">🌐 360 Zallar</span>
+          <span class="ai-chip" onclick="sendQuickAiQuery('Sayt mualliflari kim?')">👨‍💻 Mualliflar</span>
+        </div>
+      </div>
+      <div class="ai-chat-footer">
+        <input type="text" id="aiUserInput" placeholder="Savolingizni yozing...">
+        <button id="aiSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/lenis.min.js"></script>
+  <script src="assets/site.js"></script>
+  <script src="museyHaqida.js"></script>
+</body>
+</html>

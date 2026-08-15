@@ -1,0 +1,130 @@
+/* ==========================================================
+   TOKEN TIZIMI — yorug' (standart) va tungi rejim
+   ----------------------------------------------------------
+   Ilgari bu :root bloki 8 faylda aynan takrorlangan edi:
+   style.css, 3d.css, 360zal.css, galereya.css, museyHaqida.css,
+   museylar.css, victarina.css, xarita.css.
+
+   Yorug' rejim qiymatlari o'zgartirilmadi — sayt avvalgidek
+   ochiladi. Tungi rejim <html data-theme="dark"> orqali yoqiladi.
+
+   DIQQAT: bu yerga yangi nom qo'shishdan oldin o'ylab ko'ring.
+   Ba'zi sahifalar e'lon qilinmagan nomlarni ishlatadi
+   (--ink-muted, --text-gold, --font-title, --bg-color,
+   --font-headline, --font-serif, --text-light). Ular hozir
+   ishlamaydi; bu yerda e'lon qilinsa, uxlab yotgan qoidalar
+   birdan ishlab ketib, ko'rinishni o'zgartiradi.
+   ========================================================== */
+
+:root {
+    color-scheme: light;
+
+    /* --- Mavjud 13 token (qiymatlari o'zgarmagan) --- */
+    --primary: #111111;              /* Siyoh rangi */
+    --primary-hover: #2b2b2b;
+    --accent-red: #8b0000;           /* Gazeta aksent rangi */
+    --bg-dark: #f0ede6;              /* Yengil vintage qog'oz foni */
+    --sidebar-bg: #f7f5f0;           /* Yon panel foni */
+    --card-bg: #ffffff;              /* Karta foni */
+    --text-main: #1c1c1c;            /* Asosiy matn */
+    --text-muted: rgba(28, 28, 28, 0.6);
+    --border: #111111;               /* Gazeta liniyalari */
+    --border-light: rgba(17, 17, 17, 0.18);
+    --radius: 6px;
+    --serif: "Baloo 2", "Georgia", "Times New Roman", serif;
+    --sans: "Baloo 2", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* --- style.css dagi aliaslar --- */
+    --ink: var(--primary);
+    --paper: var(--card-bg);
+    --paper-soft: var(--sidebar-bg);
+
+    /* --- Yangi: ilgari qattiq yozilgan qiymatlar uchun --- */
+    --on-primary: #f0ede6;           /* var(--primary) FONIDAGI matn */
+    --on-accent: #ffffff;            /* var(--accent-red) FONIDAGI matn */
+    --ink-rgb: 17, 17, 17;           /* rgba(17,17,17,x) uchun */
+    --text-rgb: 28, 28, 28;          /* rgba(28,28,28,x) uchun */
+    --wash-rgb: 242, 233, 216;       /* index video ustidagi parda */
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --shadow-drawer: rgba(0, 0, 0, 0.15);
+    --grain-blend: multiply;         /* film-grain aralashuv rejimi */
+    --grain-color: #000000;          /* multiply uchun qora nuqtalar */
+    /* Kanal ko'rinishidagi nusxalar — Tailwind'ning
+       rgb(var(--x) / <alpha-value>) sintaksisi va rgba() uchun kerak */
+    --paper-rgb: 240, 237, 230;      /* = --bg-dark */
+    --surface-rgb: 247, 245, 240;    /* = --sidebar-bg */
+    --card-rgb: 255, 255, 255;       /* = --card-bg */
+    --accent-rgb: 139, 0, 0;         /* = --accent-red */
+    --skeleton-a: #eeeeee;           /* galereya yuklanish shimmer'i */
+    --skeleton-b: #f5f5f5;
+    --surface-2: #eee9e0;            /* fondan bir pog'ona to'qroq yuza */
+    --success: #2e7d32;              /* viktorina "to'g'ri" belgisi */
+    --danger: #c62828;               /* viktorina "xato" belgisi */
+    --scrim: rgba(44, 36, 29, 0.7);  /* rasm ustidagi qoraytirgich */
+}
+
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    --primary: #ece5d8;
+    --primary-hover: #fffaf0;
+    --accent-red: #cf5049;           /* qorong'ida o'qiladigan gazeta qizili */
+    --bg-dark: #14110d;
+    --sidebar-bg: #1c1815;
+    --card-bg: #221d18;
+    --text-main: #ece5d8;
+    --text-muted: rgba(236, 229, 216, 0.62);
+    --border: #e0d8c8;
+    --border-light: rgba(224, 216, 200, 0.20);
+    /* --radius, --serif, --sans o'zgarmaydi */
+
+    --on-primary: #14110d;
+    --on-accent: #ffffff;
+    --ink-rgb: 224, 216, 200;
+    --text-rgb: 236, 229, 216;
+    --wash-rgb: 12, 10, 8;
+    --shadow-color: rgba(0, 0, 0, 0.55);
+    --shadow-drawer: rgba(0, 0, 0, 0.6);
+    --grain-blend: screen;           /* qorong'ida multiply ko'rinmaydi */
+    --grain-color: #ffffff;          /* screen uchun oq nuqtalar */
+    --paper-rgb: 20, 17, 13;
+    --surface-rgb: 28, 24, 21;
+    --card-rgb: 34, 29, 24;
+    --accent-rgb: 207, 80, 73;
+    --skeleton-a: #262019;
+    --skeleton-b: #322b22;
+    --surface-2: #2a241d;
+    --success: #6fbf73;
+    --danger: #e2635b;
+    --scrim: rgba(0, 0, 0, 0.62);
+}
+
+/* Rasmlar qorong'i fonda biroz yumshoqroq ko'rinsin */
+[data-theme="dark"] img {
+    filter: grayscale(70%) brightness(0.88);
+}
+[data-theme="dark"] img:hover {
+    filter: grayscale(0%) brightness(0.95);
+}
+
+/* --- TEMA ALMASHTIRISH TUGMASI --- */
+.theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--border);
+    color: var(--card-bg);
+}

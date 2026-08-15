@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMPERIUM - Raqamli Muzey Viktorinasi</title>
+    <!-- Google Fonts Baloo 2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome kutubxonasi -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/lenis.css">
+    <link rel="stylesheet" href="assets/site-header.css">
+    <link rel="stylesheet" href="victarina.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+            <span class="brand-mark">I</span>
+            <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+        </a>
+        <nav aria-label="Asosiy navigatsiya" id="navMenu">
+            <a href="museyHaqida.html">Muzey haqida</a>
+            <a href="3d.html">3D Eksponatlar</a>
+            <a href="galereya.html">Galereya</a>
+            <a href="victarina.html">Viktorina</a>
+            <a href="360zal.html">360 zallar</a>
+            <a href="nimadur.html">Vaqt mashinasi</a>
+            <a href="museylar.html">Milliy muzey</a>
+            <a href="zallar.html">Zallar</a>
+            <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+        </nav>
+        <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="header-right-group">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+            <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+
+    <!-- BACKGROUND SHAPES -->
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+
+    <!-- QUIZ CONTAINER -->
+    <div class="quiz-container" id="quiz-card">
+
+        <!-- QUIZ HEADER -->
+        <div class="quiz-header">
+            <div class="anime-badge"><i class="fa-solid fa-landmark"></i> Muzeylar va Tarix Bilimdonlari</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- SCORE BOARD -->
+        <div class="score-board">
+            <div class="score"><i class="fa-solid fa-check" style="color: var(--success);"></i> To'g'ri: <span
+                    id="correct-score">0</span></div>
+            <div class="score"><i class="fa-solid fa-xmark" style="color: var(--accent-red);"></i> Xato: <span
+                    id="wrong-score">0</span></div>
+        </div>
+
+        <!-- QUESTION BOX -->
+        <div class="question-box" id="question-box">
+            <h2 id="question-text">Savol yuklanmoqda...</h2>
+            <div class="options-container" id="options"></div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div class="result-screen hidden" id="result-screen">
+            <div class="trophy-icon"><i class="fa-solid fa-award" style="color: var(--accent-red);"></i></div>
+            <h2>MISSIYA BAJARILDI!</h2>
+            <p>Sizning yakuniy natijangiz:</p>
+            <h3 id="final-score">0 / 20</h3>
+
+            <div class="mistakes-review-container">
+                <h3><i class="fa-solid fa-chart-line"></i> AI Tahlili va Natijalar Hisoboti:</h3>
+                <div id="mistakes-list"></div>
+            </div>
+
+            <button id="restart-btn"><i class="fa-solid fa-rotate-right"></i> Qayta urinib ko'rish</button>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="navigation-buttons" id="nav-buttons">
+            <button id="prev-btn" disabled><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
+            <span id="question-counter">1 / 20</span>
+            <button id="next-btn">Oldinga <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+
+    </div>
+
+    <!-- AI Chat Burchak Vidjeti (Unified Imperium AI) -->
+    <div id="aiChatWidget" class="ai-chat-widget">
+        <div id="aiWelcomeBubble" class="ai-welcome-bubble">
+            Imperium muzey saytiga xush kelibsiz! ✨
+        </div>
+        <button id="aiToggleBtn" class="ai-toggle-btn" aria-label="AI Yordamchi">
+            <i class="fa-solid fa-robot"></i>
+        </button>
+        <div id="aiChatWindow" class="ai-chat-window">
+            <div class="ai-chat-header">
+                <div class="ai-header-title">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Imperium AI Yordamchi</span>
+                </div>
+                <button id="aiCloseBtn" class="ai-close-btn">&times;</button>
+            </div>
+            <div id="aiChatBody" class="ai-chat-body">
+                <div class="ai-message bot">
+                    Assalomu alaykum! Men Imperium muzeyining aqlli AI yordamchisiman. Sizga qanday yordam bera olaman?
+                </div>
+                <div class="ai-quick-suggestions">
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Luvr muzeyi haqida aytib ber')">🏛️ Luvr muzeyi</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('3D eksponatlarni ko\'rsat')">🗿 3D Haykallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('360 zallar qaysilar?')">🌐 360 Zallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Sayt mualliflari kim?')">👨‍💻 Mualliflar</span>
+                </div>
+            </div>
+            <div class="ai-chat-footer">
+                <input type="text" id="aiUserInput" placeholder="Savolingizni yozing...">
+                <button id="aiSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.min.js"></script>
+    <script src="vendor/lenis.min.js"></script>
+    <script src="assets/site.js"></script>
+    <script src="victarina.js"></script>
+</body>
+
+</html>

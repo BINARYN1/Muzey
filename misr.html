@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Egyptian Gazette - Qadimgi Misr Xronikasi</title>
+
+    <!-- Google Fonts: Baloo 2 umumiy header uchun, qolganlari gazeta uslubi uchun -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Temani CSS dan OLDIN o'rnatadi — tungi rejimda oq chaqnash bo'lmasin -->
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/lenis.css">
+    <link rel="stylesheet" href="assets/site-header.css">
+    <link rel="stylesheet" href="misr.css">
+</head>
+
+<body>
+
+    <!-- LIQUID DISTORTION SVG FILTER -->
+    <svg class="liquid-svg-filters">
+        <filter id="liquid-distortion-filter" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="2" result="noise" id="liquid-turbulence">
+                <animate attributeName="baseFrequency" dur="8s" values="0.015 0.025; 0.03 0.015; 0.015 0.025" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="liquid-displacement" />
+        </filter>
+    </svg>
+
+    <!-- FULL PAGE BACKGROUND VIDEO CONTAINER (SCROLL-SYNCED) -->
+    <div class="bg-video-container">
+        <video muted playsinline preload="auto" id="hero-video" class="hero-video">
+            <source src="./Ultra_realistic_cinematic_inte.mp4" type="video/mp4">
+        </video>
+        <div class="video-vignette"></div>
+    </div>
+
+    <!-- UMUMIY SAYT HEADERI (barcha sahifalarda bir xil) -->
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+        <span class="brand-mark">I</span>
+        <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+      </a>
+      <nav aria-label="Asosiy navigatsiya" id="navMenu">
+        <a href="museyHaqida.html">Muzey haqida</a>
+        <a href="3d.html">3D Eksponatlar</a>
+        <a href="galereya.html">Galereya</a>
+        <a href="victarina.html">Viktorina</a>
+        <a href="360zal.html">360 zallar</a>
+        <a href="nimadur.html">Vaqt mashinasi</a>
+        <a href="museylar.html">Milliy muzey</a>
+        <a href="zallar.html">Zallar</a>
+        <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+      </nav>
+      <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+      <div class="header-right-group">
+        <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+        <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- NEWSPAPER TOP UTILITY & TICKER BAR -->
+    <div class="gazette-ticker-bar">
+        <div class="ticker-wrapper">
+            <span class="badge"><i class="fa-solid fa-scroll"></i> MAXSUS NASHR</span>
+            <div class="ticker-marquee">
+                <span class="ticker-text"><i class="fa-solid fa-bolt"></i> SHOSHILINCH XABAR: Giza ehromlari yaqinida yangi fir'avn maqbarasi topildi! • Tutankhamun xazinasi muzeyga keltirildi • Nil daryosida qadimiy kemalar qoldiqlari aniqlandi</span>
+            </div>
+        </div>
+        <div class="ticker-meta">
+            <span><i class="fa-solid fa-calendar-days"></i> EST. 3100 B.C.</span>
+            <span><i class="fa-solid fa-coins"></i> 5 GOLDEN DEBEN</span>
+        </div>
+    </div>
+
+    <!-- MAIN VINTAGE NEWSPAPER MASTHEAD / HEADER -->
+    <header class="gazette-header">
+        <div class="header-top-info">
+            <div class="date-issue">
+                <span>VOL. III ... NO. 777</span>
+                <span>QAHIRA • MISR</span>
+            </div>
+            <div class="header-seal">
+                <i class="fa-solid fa-feather-pointed"></i> ROYALE ARCHIVE
+            </div>
+            <div class="weather-info">
+                <span>SAXARA QUYOSHLI: 38°C</span>
+                <span>NIL SHADUFI: BO'L-KO'L</span>
+            </div>
+        </div>
+
+        <div class="masthead-main">
+            <div class="masthead-title">
+                <h1>THE EGYPTIAN GAZETTE</h1>
+                <p class="masthead-subtitle">
+                    <span class="typewriter-target" data-words='["QADIMGI MISR VA FIR&#39;AVNLAR DAVRI", "5000 YILLIK ULUGBOR SIVILIZATSIYA", "GIZA PIRAMIDALARI VA NIL SIRLARI"]'></span><span class="typewriter-cursor">|</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Sahifa ichidagi bo'limlarga o'tish. Saytlararo navigatsiya
+             yuqoridagi umumiy .site-header da. -->
+        <nav class="gazette-nav">
+            <a href="#hero-section" class="active"><i class="fa-solid fa-newspaper"></i> BOSH SAHIFA</a>
+            <a href="#history"><i class="fa-solid fa-landmark"></i> FIR'AVNLAR TARIXI</a>
+            <a href="#pyramid"><i class="fa-solid fa-pyramid"></i> GIZA PIRAMIDALARI</a>
+            <a href="#museum"><i class="fa-solid fa-building-columns"></i> MUZEY ZALLARI</a>
+            <a href="#timeline"><i class="fa-solid fa-timeline"></i> TARIX YO'LI</a>
+            <a href="#hieroglyphs"><i class="fa-solid fa-language"></i> IYEROGLIFLAR</a>
+        </nav>
+    </header>
+
+    <main class="gazette-content-wrapper">
+
+        <!-- FRONT PAGE HERO ARTICLE / SECTION -->
+        <section class="gazette-hero-section reveal" id="hero-section">
+            <div class="hero-article-grid">
+                
+                <!-- Main Lead Story -->
+                <article class="lead-story-card">
+                    <div class="article-category-tag">BOSH MAQOLA • SPECIALE</div>
+                    <h2 class="lead-headline">
+                        <span class="typewriter-target" data-words='["5000 YILLIK SIRLAR VA YO&#39;QOLGAN SIVILIZATSIYA", "TUTANKHAMUN XAZINASI VA FIR&#39;AVNLAR SALTANATI", "GIZA EHROMLARI ANATOMIYASI VA NIL SIRLARI"]'></span><span class="typewriter-cursor">|</span>
+                    </h2>
+                    <div class="author-byline">
+                        <span>Muallif: Qadimgi Dunyo Xronikachi Tarixchilari</span>
+                        <span class="divider">•</span>
+                        <span>Nil Vodiysi Redaksiyasi</span>
+                    </div>
+
+                    <div class="lead-body">
+                        <p class="drop-cap">
+                            Qadimgi Misr madaniyati insoniyat tarixidagi eng sirli va muazzam sivilizatsiyalardan biri bo'lib, Nil daryosining unumdor sohillarida barg uzdi. Ming yillar davomida buyuk fir'avnlar, muqaddas ibodatxonalar va osmonga bo'y cho'zgan piramidalar ushbu sehrli zaminning qudratidan darak berib kelmoqda.
+                        </p>
+                        <p>
+                            Qumdagi har bir zarracha va har bir iyeroglif yozuv ortida inson aqli va me'morchiligining tengsiz cho'qqisi yotadi. Fir'avnlar nafaqat davlat hukmdorlari, balki ilohiy qudrat egasi sifatida e'zozlangan.
+                        </p>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="zallar.html" class="gazette-btn primary-btn">
+                            <i class="fa-solid fa-compass"></i> ZALLARNI KASHF QILISH
+                        </a>
+                        <button class="gazette-btn secondary-btn" onclick="openArticleModal('lead-story')">
+                            <i class="fa-solid fa-book-open"></i> BARCHA TAFSILOTLAR
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Side Gazette Column -->
+                <aside class="gazette-side-column">
+                    <div class="side-widget-box">
+                        <h3 class="widget-title"><i class="fa-solid fa-quote-left"></i> TARIXIY IQROR</h3>
+                        <blockquote class="royal-quote">
+                            "Misr — Nil daryosining bebaho in'omidir. Kimki bu tuproqqa qadam bossa, vaqtning o'zi to'xtaganiga guvoh bo'ladi."
+                        </blockquote>
+                        <div class="quote-author">— Gerodot (Eraddan avvalgi V asr)</div>
+                    </div>
+
+                    <div class="side-widget-box archival-badge-box">
+                        <div class="seal-stamp"><i class="fa-solid fa-stamp"></i> PHARAOH SEAL</div>
+                        <h4>IMPERIYALAR MUHR I</h4>
+                        <p>Tutankhamun, Ramses II va Kleopatra davridan qolgan eng nodir ashyolar to'plami.</p>
+                    </div>
+                </aside>
+
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">☥ 𓋹 𓀀 𓆣 ☥</span>
+        </div>
+
+        <!-- HISTORY SECTION (FIR'AVNLAR DAVRI) -->
+        <section class="gazette-section history-section reveal" id="history">
+            <div class="newspaper-header-box">
+                <span class="sub-label">ARXEOLOGIK BADIA</span>
+                <h2 class="section-title">FIR'AVNLAR DAVRI VA SALTANAT QUDRA'TI</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="history-content-grid">
+                <div class="history-image-frame liquid-frame entrance-img-frame">
+                    <div class="tape-corner top-left"></div>
+                    <div class="tape-corner top-right"></div>
+                    <img src="./images.jpg" alt="Qadimgi Misr Fir'avnlari">
+                    <div class="image-caption"><i class="fa-solid fa-camera"></i> Fir'avn haykali va oltin niqob tasviri (Arxiv nusxasi)</div>
+                </div>
+
+                <div class="history-text-article">
+                    <h3 class="article-subheading">Buyuk Sivilizatsiya Chorrahasi</h3>
+                    <p class="drop-cap">
+                        Qadimgi Misr dunyodagi eng qudratli sivilizatsiyalardan biri bo'lib, uning madaniyati va arxitekturasi asrlar o'tsa-da o'z jozibasini yo'qotgani yo'q. Nil daryosi bag'rida barpo etilgan ushbu buyuk saltanat me'morchilik, tibbiyot va astronomiyada mislsiz muvaffaqiyatlarga erishgan.
+                    </p>
+                    <p>
+                        Ular ulkan piramidalar, muazzam ibodatxonalar va sirlarga boy iyeroglif yozuvlar qoldirib, bugungi kunga qadar arxeolog va tadqiqotchilarni hayratga solib kelmoqda.
+                    </p>
+
+                    <!-- Gazette Style Stats Cards -->
+                    <div class="gazette-stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fa-solid fa-crown"></i></div>
+                            <div class="stat-number">170+</div>
+                            <div class="stat-label">Hukmron Fir'avn</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                            <div class="stat-number">5000</div>
+                            <div class="stat-label">Yillik Buyuk Tarix</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fa-solid fa-pyramid"></i></div>
+                            <div class="stat-number">138</div>
+                            <div class="stat-label">Kashf Etilgan Piramida</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">𓁹 𓀔 𓃭 𓁹</span>
+        </div>
+
+        <!-- PYRAMID BIG FEATURE SECTION -->
+        <section class="gazette-section pyramid-section reveal" id="pyramid">
+            <div class="pyramid-hero-card">
+                <div class="pyramid-img-container liquid-frame entrance-img-frame">
+                    <img src="./images (4).jpg" alt="Giza Piramidalari">
+                    <div class="image-overlay-vignette"></div>
+                </div>
+
+                <div class="pyramid-card-content">
+                    <div class="vintage-badge">DUNYO MO'JIZASI</div>
+                    <h2 class="pyramid-title">GIZA PIRAMIDALARI VA BUYUK SPHINX</h2>
+                    <p class="pyramid-desc">
+                        Dunyoning yetti mo'jizasidan biri bo'lgan Giza ehromlari asrlar bo'yi o'z sirlarini saqlab kelmoqda. Nechalar million tonnalik ulkan tosh bloklardan barpo etilgan ushbu muazzam inshootlar muhandislik cho'qqisidir.
+                    </p>
+                    <button class="gazette-btn gold-btn" onclick="openArticleModal('pyramid-story')">
+                        <i class="fa-solid fa-eye"></i> EHROM ANATOMIYASI VA SIRLARI
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">☥ 𓋹 𓀀 𓆣 ☥</span>
+        </div>
+
+        <!-- MUSEUM GALLERY SECTION -->
+        <section class="gazette-section museum-section reveal" id="museum">
+            <div class="newspaper-header-box text-center">
+                <span class="sub-label">EKSPONATLAR ARXIVI</span>
+                <h2 class="section-title">QADIMGI MUZEY ZALLARI</h2>
+                <p class="section-subtitle">Oltin sarkofaglar, afsonaviy relikviyalar va fir'avnlar xazinasi</p>
+            </div>
+
+            <div class="museum-gallery-grid">
+                <div class="gallery-press-item">
+                    <div class="photo-container liquid-frame entrance-img-frame">
+                        <img src="./images (1).jpg" alt="Muzey Zali 1">
+                        <div class="photo-tag">ZAL #01</div>
+                    </div>
+                    <div class="photo-caption-box">
+                        <h4>Tutankhamun Oltin Sarcophagusi</h4>
+                        <p>Sof oltindan ishlangan va qimmatbaho javohirlar bilan bezatilgan fir'avn niqobi.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-press-item">
+                    <div class="photo-container liquid-frame entrance-img-frame">
+                        <img src="./images (2).jpg" alt="Muzey Zali 2">
+                        <div class="photo-tag">ZAL #02</div>
+                    </div>
+                    <div class="photo-caption-box">
+                        <h4>Iyeroglif Papirus Qo'lyozmalari</h4>
+                        <p>Qadimgi Misr tibbiyoti va afsonalari bitilgan noyob mumyo papiruslari.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-press-item">
+                    <div class="photo-container liquid-frame entrance-img-frame">
+                        <img src="./images (3).jpg" alt="Muzey Zali 3">
+                        <div class="photo-tag">ZAL #03</div>
+                    </div>
+                    <div class="photo-caption-box">
+                        <h4>Fir'avnlar Ibodatxonasi Xazinasi</h4>
+                        <p>Luksor va Karnak ibodatxonalaridan topilgan muqaddas haykalchalar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">𓁹 𓀔 𓃭 𓁹</span>
+        </div>
+
+        <!-- TIMELINE SECTION -->
+        <section class="gazette-section timeline-section reveal" id="timeline">
+            <div class="newspaper-header-box text-center">
+                <span class="sub-label">XRONOLOGIK ARXIV</span>
+                <h2 class="section-title">TARIX YO'LI VA MUHIM VOQEALAR</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="gazette-timeline-container">
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">3100 B.C.</div>
+                    <h3 class="event-title">Misr Birlashuvi</h3>
+                    <p class="event-text">Qirol Narmer Yuqori va Quyi Misrni birlashtirib, Birinchi Fir'avnlar sulolasiga asos soldi.</p>
+                </div>
+
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">2500 B.C.</div>
+                    <h3 class="event-title">Piramidalar Qurilishi</h3>
+                    <p class="event-text">Xufu (Xeops) va Xafra fir'avnlari davrida ulkan Giza piramidalari va Sphinx barpo etildi.</p>
+                </div>
+
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">1500 B.C.</div>
+                    <h3 class="event-title">Buyuk Imperiya Oltin Davri</h3>
+                    <p class="event-text">Yangi Saltanat davri: Tutmos III va Ramses II boshchiligida Misr Yaqin Sharqning eng qudratli imperiyasiga aylandi.</p>
+                </div>
+
+                <div class="timeline-event-card">
+                    <div class="event-year-badge">1323 B.C.</div>
+                    <h3 class="event-title">Tutankhamun Saltanati</h3>
+                    <p class="event-text">Yosh fir'avnning sirli o'limi va Shohlar vodiysida uning daxlsiz maqbarasi barpo etilishi.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">☥ 𓋹 𓀀 𓆣 ☥</span>
+        </div>
+
+        <!-- NEW INTERACTIVE HIEROGLYPHIC DECODER SECTION (ABOVE FOOTER) -->
+        <section class="gazette-section hieroglyph-section reveal" id="hieroglyphs">
+            <div class="newspaper-header-box text-center">
+                <span class="sub-label">INTERAKTIV DEKODER</span>
+                <h2 class="section-title">IYEROGLIFLAR VA MUQADDAS BELGILAR</h2>
+                <p class="section-subtitle">Belgi ustiga bosing va qadimgi Misrlilarning sirli ma'nosini kashf eting</p>
+            </div>
+
+            <div class="hieroglyph-grid">
+                <div class="symbol-card" onclick="decodeSymbol('ankh', event)">
+                    <div class="symbol-icon">☥</div>
+                    <h3 class="symbol-name">ANKH (kalit)</h3>
+                    <p class="symbol-tag">Abadiy Hayot Ramzi</p>
+                </div>
+
+                <div class="symbol-card" onclick="decodeSymbol('eye', event)">
+                    <div class="symbol-icon">𓁹</div>
+                    <h3 class="symbol-name">HORUS KO'ZI</h3>
+                    <p class="symbol-tag">Muqaddas Himoya</p>
+                </div>
+
+                <div class="symbol-card" onclick="decodeSymbol('shen', event)">
+                    <div class="symbol-icon">𓋹</div>
+                    <h3 class="symbol-name">SHEN RING</h3>
+                    <p class="symbol-tag">Cheksiz Saltanat</p>
+                </div>
+
+                <div class="symbol-card" onclick="decodeSymbol('scarab', event)">
+                    <div class="symbol-icon">𓃭</div>
+                    <h3 class="symbol-name">SKARABEY</h3>
+                    <p class="symbol-tag">Quyosh Qaytadan Tug'ilishi</p>
+                </div>
+            </div>
+
+            <div class="hieroglyph-display-box" id="symbolResultBox">
+                <div class="symbol-placeholder">
+                    <i class="fa-solid fa-hand-pointer"></i> 
+                    <span class="typewriter-target" data-words='["Yozuv belgisini tanlang va ma&#39;nosini o&#39;qing...", "Iyerogliflar sirini kashf eting...", "Ankh, Horus va Skarabey ma&#39;nosini biling..."]'></span><span class="typewriter-cursor">|</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-rule">
+            <span class="rule-ornament">𓁹 𓀔 𓃭 𓁹</span>
+        </div>
+
+        <!-- REDIRECT CTA SECTION TO ZALLAR.HTML -->
+        <section class="gazette-section booking-cta-section reveal">
+            <div class="booking-card">
+                <div class="booking-badge"><i class="fa-solid fa-building-columns"></i> MUZEY ZALLARI ARXIVI</div>
+                <h2 class="booking-title">
+                    <span class="typewriter-target" data-words='["FIR&#39;AVNLAR XAZINASI MUZEYIGA TASHRIF BUYURING", "QADIMGI DUNYO SIRLARINI KASHF ETING"]'></span><span class="typewriter-cursor">|</span>
+                </h2>
+                <p class="booking-subtitle">Qadimgi dunyo sirlari, oltin eksponatlar va muazzam muzey zallari bilan tanishing!</p>
+                
+                <div class="cta-button-wrapper">
+                    <a href="zallar.html" class="gazette-btn gold-btn">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> MUZEY ZALLARIGA O'TISH
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NEWSPAPER FOOTER -->
+    <footer class="gazette-footer">
+        <div class="footer-top-ornament">
+            <span class="footer-seal-stamp"><i class="fa-solid fa-stamp"></i> OFFICIAL GAZETTE ARCHIVE</span>
+        </div>
+        <div class="footer-content">
+            <h2 class="footer-logo">THE EGYPTIAN GAZETTE</h2>
+            <p class="footer-tagline">Qadimgi Misr Imperium Muzeyi Rasmiy Xronikasi & Tarixiy Arxivi</p>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Imperium Museum. Barcha huquqlar himoyalangan. Nil Vodiysi Maxsus Nashri.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ARTICLE READER MODAL POPUP -->
+    <div class="gazette-modal-overlay" id="articleModal">
+        <div class="gazette-modal-card" data-lenis-prevent>
+            <button class="modal-close-btn" onclick="closeArticleModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <span class="modal-category">TARIXIY MAQOLA ARXIVI</span>
+                <h2 id="modalTitle">Maqola Sarlavhasi</h2>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic text populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Script Files -->
+    <script src="vendor/lenis.min.js"></script>
+    <script src="assets/site.js"></script>
+    <script src="misr.js"></script>
+</body>
+
+</html>

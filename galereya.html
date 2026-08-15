@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPERIUM — Europeana 3D Muzeyi</title>
+  <!-- Google Fonts Baloo 2 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/lenis.css">
+  <link rel="stylesheet" href="assets/site-header.css">
+  <link rel="stylesheet" href="galereya.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+      <span class="brand-mark">I</span>
+      <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+    </a>
+    <nav aria-label="Asosiy navigatsiya" id="navMenu">
+      <a href="museyHaqida.html">Muzey haqida</a>
+      <a href="3d.html">3D Eksponatlar</a>
+      <a href="galereya.html">Galereya</a>
+      <a href="victarina.html">Viktorina</a>
+      <a href="360zal.html">360 zallar</a>
+      <a href="nimadur.html">Vaqt mashinasi</a>
+      <a href="museylar.html">Milliy muzey</a>
+      <a href="zallar.html">Zallar</a>
+      <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    </nav>
+    <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="header-right-group">
+      <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+  <!-- STICKY GRID SCROLL — Codrops "Sticky Grid Scroll" (Theo Plawinski,
+       MIT litsenziya) asosida IMPERIUM uslubiga moslashtirildi.
+       Asl namunadagidek: avval bitta to'liq ekranli rasm ko'rinadi,
+       undan keyingina panjara animatsiyasi boshlanadi. -->
+  <section class="ssg-intro" aria-hidden="true">
+    <img class="ssg-intro-image" src="images/colosseum_arena.jpg" alt="" loading="eager">
+    <div class="ssg-intro-scrim"></div>
+    <p class="ssg-intro-caption">Sayohatingiz boshlanmoqda — pastga scroll qiling</p>
+  </section>
+
+  <section class="ssg-block" aria-label="Galereya taqdimoti">
+    <div class="ssg-wrapper">
+      <div class="ssg-content">
+        <span class="ssg-kicker">Eksponatlar galereyasi</span>
+        <h2 class="ssg-title">Har bir eksponat —<br><em>bir hikoya.</em></h2>
+        <p class="ssg-description">Misrdan Rimgacha, Uyg'onish davridan Islom san'atigacha — minglab yillik meros bir nazarda.</p>
+        <a class="ssg-button" href="#gallery">Galereyani ko'rish <i class="fa-solid fa-arrow-down"></i></a>
+      </div>
+      <div class="ssg-gallery">
+        <ul class="ssg-grid">
+          <li class="ssg-item"><img class="ssg-image" src="images/artifact_egypt_diorite.jpg" alt="Qadimgi Misr — Khnumhotep haykali" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="images/artifact_rome_armor.jpg" alt="Qadimgi Rim — jangchi sovuti" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="images/artifact_greece_marble.jpg" alt="Qadimgi Gretsiya — Eirene haykali" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="images/artifact_islamic_tile.jpg" alt="Islom san'ati — kulolchilik kafeli" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="images/artifact_egypt_temple.jpg" alt="Qadimgi Misr — Dendur ibodatxonasi" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="images/colosseum_arena.jpg" alt="Rim Kolizeyi arenasi" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="images/roman_emperor.jpg" alt="Rim imperatori haykali" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="media/eastern_renaissance.jpg" alt="Sharq Uyg'onish davri san'ati" loading="lazy"></li>
+          <li class="ssg-item"><img class="ssg-image" src="media/western_renaissance.jpg" alt="G'arb Uyg'onish davri san'ati" loading="lazy"></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero-section" id="about">
+    <div class="hero-container">
+      <div class="hero-content">
+        <span class="tagline">YEVROPA SAN'ATI VA GALEREYA TARIXI</span>
+        <h1 class="hero-title">Galereya Olamiga<br><em>sayohat qiling.</em></h1>
+        <p class="hero-description">
+          Europeana API orqali Yevropaning eng sara galereyalari, me'moriy obidalari va madaniy meroslarini real vaqt rejimida o'rganing.
+        </p>
+      </div>
+
+      <div class="hero-window">
+        <div class="window-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-container" id="gallery">
+    <div class="action-bar">
+      <button id="randomBtn" class="btn-dark">
+        <i class="fa-solid fa-cube"></i> Tasodifiy Eksponatlar
+      </button>
+      
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Qidiruv: Statue, Chair, Vase, Armor...">
+        <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+    </div>
+
+    <div id="status">3D eksponatlar yuklanmoqda...</div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </main>
+
+  <div id="artModal" class="modal">
+    <span class="modal-close" id="modalClose">&times;</span>
+    <div class="modal-box">
+      <div id="modal3DContainer" class="modal-3d-wrapper"></div>
+      <div class="modal-caption" id="modalCaption"></div>
+    </div>
+  </div>
+
+  <!-- AI Chat Burchak Vidjeti (Unified Imperium AI) -->
+  <div id="aiChatWidget" class="ai-chat-widget">
+    <div id="aiWelcomeBubble" class="ai-welcome-bubble">
+      Imperium muzey saytiga xush kelibsiz! ✨
+    </div>
+    <button id="aiToggleBtn" class="ai-toggle-btn" aria-label="AI Yordamchi">
+      <i class="fa-solid fa-robot"></i>
+    </button>
+    <div id="aiChatWindow" class="ai-chat-window">
+      <div class="ai-chat-header">
+        <div class="ai-header-title">
+          <i class="fa-solid fa-brain"></i>
+          <span>Imperium AI Yordamchi</span>
+        </div>
+        <button id="aiCloseBtn" class="ai-close-btn">&times;</button>
+      </div>
+      <div id="aiChatBody" class="ai-chat-body">
+        <div class="ai-message bot">
+          Assalomu alaykum! Men Imperium muzeyining aqlli AI yordamchisiman. Sizga qanday yordam bera olaman?
+        </div>
+        <div class="ai-quick-suggestions">
+          <span class="ai-chip" onclick="sendQuickAiQuery('Luvr muzeyi haqida aytib ber')">🏛️ Luvr muzeyi</span>
+          <span class="ai-chip" onclick="sendQuickAiQuery('3D eksponatlarni ko\'rsat')">🗿 3D Haykallar</span>
+          <span class="ai-chip" onclick="sendQuickAiQuery('360 zallar qaysilar?')">🌐 360 Zallar</span>
+          <span class="ai-chip" onclick="sendQuickAiQuery('Sayt mualliflari kim?')">👨‍💻 Mualliflar</span>
+        </div>
+      </div>
+      <div class="ai-chat-footer">
+        <input type="text" id="aiUserInput" placeholder="Savolingizni yozing...">
+        <button id="aiSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
+  <script src="vendor/lenis.min.js"></script>
+  <script src="assets/site.js"></script>
+  <script src="galereya.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top-10 Jahon Muzeylari va Tarixiy Joylar 360° Zallari — Imperium</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS faylini ulanishi -->
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/lenis.css">
+    <link rel="stylesheet" href="assets/site-header.css">
+    <link rel="stylesheet" href="360zal.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+      <span class="brand-mark">I</span>
+      <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
+    </a>
+    <nav aria-label="Asosiy navigatsiya" id="navMenu">
+      <a href="museyHaqida.html">Muzey haqida</a>
+      <a href="3d.html">3D Eksponatlar</a>
+      <a href="galereya.html">Galereya</a>
+      <a href="victarina.html">Viktorina</a>
+      <a href="360zal.html">360 zallar</a>
+      <a href="nimadur.html">Vaqt mashinasi</a>
+      <a href="museylar.html">Milliy muzey</a>
+      <a href="zallar.html">Zallar</a>
+      <a class="header-ticket mobile-nav-ticket" href="xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    </nav>
+    <a class="header-ticket desktop-header-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="header-right-group">
+      <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+    <main class="panorama-section">
+        <div class="iframe-container">
+            <!-- 360 panorama. Manzil formati: !1d<kenglik>!2d<uzunlik>!3f<yo'nalish> -->
+            <iframe id="museumFrame" src="https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d41.906380!2d12.453400!3f90!4f0!5f0.8" allowfullscreen=""></iframe>
+            <div class="panorama-loader" id="panoramaLoader">
+                <div class="panorama-spinner"></div>
+                <span>Panorama yuklanmoqda…</span>
+            </div>
+        </div>
+        <div class="hall-info" id="hallInfoText">1. Vatikan Muzeyi — Rim, Italiya</div>
+
+        <div class="hall-selectors">
+            <!-- 1. Vatikan muzeyi -->
+            <button class="hall-btn active" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d41.90638!2d12.4534!3f90!4f0!5f0.8', '1. Vatikan Muzeyi — Rim, Italiya', this)">1. Vatikan Muzeyi</button>
+            
+            <!-- 2. Luvr muzeyi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d48.860294!2d2.3355!3f0!4f0!5f0.8', '2. Luvr Muzeyi — Parij, Fransiya', this)">2. Luvr Muzeyi</button>
+            
+            <!-- 3. Orse muzeyi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d48.859961!2d2.326561!3f90!4f0!5f0.8', '3. Orse Muzeyi — Parij, Fransiya', this)">3. Orse Muzeyi</button>
+            
+            <!-- 4. Aleksandriya Kutubxonasi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d31.2089!2d29.9092!3f110!4f0!5f0.8', '4. Aleksandriya Kutubxonasi — Misr', this)">4. Aleksandriya Kutubxonasi</button>
+            
+            <!-- 5. Van Gog muzeyi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d52.3584!2d4.8813!3f90!4f0!5f0.8', '5. Van Gog Muzeyi — Amsterdam, Niderlandiya', this)">5. Van Gog Muzeyi</button>
+            
+            <!-- 6. Uffizi muzeyi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d43.7684!2d11.2554!3f180!4f0!5f0.8', '6. Uffizi Muzeyi — Florensiya, Italiya', this)">6. Uffizi Muzeyi</button>
+            
+            <!-- 7. Kolizey -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d41.890251!2d12.492373!3f60!4f0!5f0.8', '7. Kolizey — Rim, Italiya', this)">7. Kolizey</button>
+            
+            <!-- 8. Dojlar saroyi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d45.433611!2d12.340278!3f240!4f0!5f0.8', '8. Dojlar Saroyi — Venetsiya, Italiya', this)">8. Dojlar Saroyi</button>
+            
+            <!-- 9. Versal saroyi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d48.804865!2d2.120355!3f100!4f0!5f0.8', '9. Versal Saroyi — Versal, Fransiya', this)">9. Versal Saroyi</button>
+            
+            <!-- 10. Madrid Qirollik Saroyi -->
+            <button class="hall-btn" onclick="changeMuseum('https://www.google.com/maps/embed?pb=!6m7!1m6!2m2!1d40.4183!2d-3.7142!3f170!4f0!5f0.8', '10. Madrid Qirollik Saroyi — Ispaniya', this)">10. Madrid Qirollik Saroyi</button>
+        </div>
+    </main>
+    <!-- AI Chat Burchak Vidjeti (Unified Imperium AI) -->
+    <div id="aiChatWidget" class="ai-chat-widget">
+        <div id="aiWelcomeBubble" class="ai-welcome-bubble">
+            Imperium muzey saytiga xush kelibsiz! ✨
+        </div>
+        <button id="aiToggleBtn" class="ai-toggle-btn" aria-label="AI Yordamchi">
+            <i class="fa-solid fa-robot"></i>
+        </button>
+        <div id="aiChatWindow" class="ai-chat-window">
+            <div class="ai-chat-header">
+                <div class="ai-header-title">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Imperium AI Yordamchi</span>
+                </div>
+                <button id="aiCloseBtn" class="ai-close-btn">&times;</button>
+            </div>
+            <div id="aiChatBody" class="ai-chat-body">
+                <div class="ai-message bot">
+                    Assalomu alaykum! Men Imperium muzeyining aqlli AI yordamchisiman. Sizga qanday yordam bera olaman?
+                </div>
+                <div class="ai-quick-suggestions">
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Luvr muzeyi haqida aytib ber')">🏛️ Luvr muzeyi</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('3D eksponatlarni ko\'rsat')">🗿 3D Haykallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('360 zallar qaysilar?')">🌐 360 Zallar</span>
+                    <span class="ai-chip" onclick="sendQuickAiQuery('Sayt mualliflari kim?')">👨‍💻 Mualliflar</span>
+                </div>
+            </div>
+            <div class="ai-chat-footer">
+                <input type="text" id="aiUserInput" placeholder="Savolingizni yozing...">
+                <button id="aiSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript faylini ulanishi -->
+    <script src="./vendor/lenis.min.js"></script>
+    <script src="./assets/site.js"></script>
+    <script src="./360zal.js"></script>
+</body>
+</html>

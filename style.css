@@ -1,0 +1,1592 @@
+/* Ranglar va tokenlar -> assets/theme.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    background: var(--bg-dark);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--sans);
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; filter: grayscale(70%); transition: filter 0.3s ease; }
+img:hover { filter: grayscale(0%); }
+
+/* --- HEADER --- */
+.site-header {
+    position: fixed;
+    z-index: 80;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr);
+    align-items: center;
+    width: 100%;
+    height: 90px;
+    padding: 0 3.5vw;
+    border-bottom: 3px double transparent;
+    background: transparent;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-14px);
+    pointer-events: none;
+    transition: background-color 0.4s ease, border-color 0.4s ease, opacity 0.5s ease, transform 0.5s ease, visibility 0s linear 0.5s;
+}
+
+.site-header.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: background-color 0.4s ease, border-color 0.4s ease, opacity 0.5s ease, transform 0.5s ease, visibility 0s linear 0s;
+}
+
+.site-header.is-solid {
+    border-bottom-color: var(--border);
+    background: var(--sidebar-bg);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    justify-self: start;
+}
+
+.brand-mark {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    color: var(--border);
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.brand > span:last-child, .brand div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brand strong {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--text-main);
+    text-transform: uppercase;
+    font-family: var(--serif);
+}
+
+.brand small {
+    color: var(--accent-red);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.site-header nav {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    min-width: 0;
+}
+
+.site-header nav a {
+    position: relative;
+    color: var(--text-main);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.site-header nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: -6px;
+    left: 0;
+    height: 2px;
+    background: var(--accent-red);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.site-header nav a:hover { color: var(--accent-red); }
+.site-header nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.header-ticket {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    justify-self: end;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-main);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+}
+
+.header-ticket:hover {
+    background: var(--border);
+    color: var(--card-bg);
+}
+
+.scroll-story {
+  position: relative;
+  height: 850vh;
+  background: var(--paper);
+}
+
+.sticky-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 620px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--paper);
+}
+
+.museum-video {
+  position: absolute;
+  z-index: -5;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: contrast(110%) saturate(115%);
+  transition: opacity 0.8s ease;
+}
+
+/* opacity 1 bo'lishi shart: yarim shaffof video har kadrda ortidagi
+   fon bilan aralashtiriladi va kompozitorning tez yo'liga tushmaydi.
+   Oldingi 0.95 ning yumshatuvchi ta'sirini .video-shade allaqachon
+   beryapti, shuning uchun ko'rinishda deyarli farq yo'q. */
+.museum-video.is-ready {
+  opacity: 1;
+}
+
+.video-shade,
+.edge-vignette,
+.film-grain {
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+}
+
+.video-shade {
+  z-index: -4;
+  background:
+    linear-gradient(90deg, rgba(var(--wash-rgb), 0.85), transparent 48%, rgba(var(--wash-rgb), 0.4)),
+    linear-gradient(180deg, rgba(var(--wash-rgb), 0.15), transparent 30%, rgba(var(--wash-rgb), 0.7));
+}
+
+.edge-vignette {
+  z-index: 41;
+  box-shadow: inset 0 0 150px 30px var(--shadow-color);
+}
+
+/* DIQQAT: bu yerda ilgari `mix-blend-mode` bor edi va u videoni
+   qotirardi. Blend rejimi qatlamni mustaqil kompozitsiya qilishga
+   yo'l qo'ymaydi — brauzer har kadrda butun ekranni video kadri
+   bilan qayta aralashtirishga majbur bo'ladi, video esa ayni paytda
+   scroll bilan seek qilinayotgan bo'ladi. Oddiy alfa bilan ko'rinish
+   deyarli bir xil, lekin narxi bir necha barobar arzon.
+   `grain-shift` animatsiyasi faqat translate3d bo'lgani uchun
+   kompozitorda ishlaydi va qoladi. */
+.film-grain {
+  z-index: 42;
+  opacity: 0.12;
+  inset: -4%;
+  background-image:
+    repeating-radial-gradient(circle at 17% 32%, transparent 0 1px, var(--grain-color) 1px 2px),
+    repeating-radial-gradient(circle at 73% 64%, transparent 0 2px, var(--grain-color) 2px 3px);
+  background-size: 9px 11px, 13px 15px;
+  animation: grain-shift 0.25s steps(2) infinite;
+  will-change: transform;
+}
+
+@keyframes grain-shift {
+  0% { transform: translate3d(-1%, 1%, 0); }
+  50% { transform: translate3d(1%, -1%, 0); }
+  100% { transform: translate3d(0, 1%, 0); }
+}
+
+.hero-intro {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 7vw;
+  width: min(650px, 56vw);
+  transform: translateY(-45%);
+  opacity: 0;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.eyebrow > span {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--ink);
+}
+
+.hero-intro h1,
+.final-copy h2,
+.closing-section h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: var(--ink);
+}
+
+.hero-intro h1 {
+  max-width: 660px;
+  font-size: clamp(72px, 9.4vw, 154px);
+}
+
+.hero-intro h1 em,
+.final-copy h2 em,
+.closing-section h2 em {
+  display: block;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.hero-intro h1 em {
+  margin-left: 0.35em;
+  font-size: 0.76em;
+  font-style: italic;
+}
+
+.hero-lead {
+  width: min(400px, 82%);
+  margin: 32px 0 0 5px;
+  color: rgba(var(--text-rgb), 0.78);
+  font-size: 13px;
+  line-height: 1.8;
+  border-left: 2px solid var(--ink);
+  padding-left: 12px;
+}
+
+.scene-label {
+  position: absolute;
+  z-index: 12;
+  top: 47%;
+  right: 7vw;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  opacity: 0;
+}
+
+.scene-label > span {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.scene-label > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 15px;
+  border-left: 1px solid var(--ink);
+}
+
+.scene-label small {
+  color: rgba(var(--text-rgb), 0.6);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.scene-label strong {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.cursor-trail {
+  position: absolute;
+  z-index: 25;
+  pointer-events: none;
+  inset: 0;
+}
+
+.trail-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 132px;
+  height: 174px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.15);
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+}
+
+.trail-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trail-card::after {
+  position: absolute;
+  inset: 0;
+  border: 4px solid var(--paper);
+  content: "";
+}
+
+.mini-card {
+  position: absolute;
+  z-index: 16;
+  display: grid;
+  grid-template-rows: 128px auto;
+  width: 174px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 6px 6px 0px var(--ink);
+  opacity: 0;
+}
+
+.mini-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom: 1px solid var(--ink);
+}
+
+.mini-card > div {
+  display: flex;
+  min-height: 74px;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.mini-card span,
+.orbit-card small,
+.collection-card small {
+  color: var(--ink);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mini-card strong {
+  margin-top: 5px;
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.mini-card small {
+  margin-top: auto;
+  color: rgba(var(--text-rgb), 0.65);
+  font-size: 8px;
+}
+
+.portal-card {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.depth-card--1 { top: 18%; left: 5vw; }
+.depth-card--2 { top: 20%; right: 5vw; }
+.depth-card--3 { right: 8vw; bottom: 9%; }
+.depth-card--4 { bottom: 8%; left: 8vw; }
+
+.orbit-heading {
+  position: absolute;
+  z-index: 9;
+  top: 15%;
+  left: 7vw;
+  max-width: 430px;
+  opacity: 0;
+}
+
+.orbit-heading p {
+  margin: 0 0 13px;
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+.orbit-heading h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(42px, 5vw, 76px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  color: var(--ink);
+}
+
+.orbit-heading h2 span {
+  display: block;
+  margin-left: 0.8em;
+  color: var(--ink);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.orbit-card {
+  position: absolute;
+  z-index: 18;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  width: 300px;
+  padding: 7px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 6px 6px 0px var(--ink);
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.orbit-card__image {
+  position: relative;
+  height: 112px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.orbit-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.orbit-card__image > span {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 3px 5px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 7px;
+}
+
+.orbit-card__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 11px 12px;
+}
+
+.orbit-card__copy strong {
+  margin-top: 7px;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.orbit-card__copy p {
+  margin: 8px 0 0;
+  color: rgba(var(--text-rgb), 0.7);
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.orbit-card--1, .orbit-card--3, .orbit-card--5 { bottom: 10%; left: 6vw; }
+.orbit-card--2, .orbit-card--4, .orbit-card--6 { top: 18%; right: 6vw; }
+
+.final-reveal {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9vw;
+  pointer-events: none;
+}
+
+.final-copy {
+  max-width: 620px;
+  opacity: 0;
+}
+
+.final-copy h2 {
+  font-size: clamp(70px, 9vw, 145px);
+}
+
+.final-copy h2 em {
+  margin-left: 0.45em;
+  font-size: 0.6em;
+  font-style: italic;
+}
+
+.final-copy > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 34px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  pointer-events: auto;
+}
+
+.final-copy > a span {
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.card-deck {
+  position: relative;
+  width: 260px;
+  height: 350px;
+  margin-right: 4vw;
+  perspective: 1000px;
+}
+
+.deck-card {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 4px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 8px 8px 0px var(--ink);
+  opacity: 0;
+  transform-origin: 50% 100%;
+}
+
+.deck-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.deck-card > span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 22px 15px 13px;
+  background: linear-gradient(transparent, var(--paper));
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: bold;
+  color: var(--ink);
+}
+
+.video-loader {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--paper);
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.video-loader.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.loader-art {
+  position: relative;
+  width: 132px;
+  height: 190px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 6px 6px 0px var(--ink);
+}
+
+.loader-art__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(15%) contrast(105%);
+  clip-path: inset(0 100% 0 0);
+  animation: loader-reveal 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.loader-art__brush {
+  position: absolute;
+  z-index: 2;
+  top: -20px;
+  left: -14px;
+  color: var(--ink);
+  font-size: 20px;
+  transform: rotate(38deg);
+  filter: drop-shadow(2px 3px 0 rgba(var(--ink-rgb), 0.2));
+  animation: loader-brush 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes loader-reveal {
+  0% { clip-path: inset(0 100% 0 0); }
+  8% { clip-path: inset(0 88% 0 0); }
+  20% { clip-path: inset(0 68% 0 0); }
+  34% { clip-path: inset(0 44% 0 0); }
+  48% { clip-path: inset(0 0 0 0); }
+  78% { clip-path: inset(0 0 0 0); }
+  92% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 100% 0 0); }
+}
+
+@keyframes loader-brush {
+  0% { left: -14px; top: 8%; opacity: 1; }
+  8% { left: 8%; top: 62%; }
+  16% { left: 18%; top: 12%; }
+  24% { left: 30%; top: 68%; }
+  32% { left: 40%; top: 18%; }
+  40% { left: 50%; top: 60%; }
+  48% { left: calc(100% - 16px); top: 40%; opacity: 1; }
+  56% { opacity: 0; }
+  90% { opacity: 0; left: -14px; top: 8%; }
+  100% { opacity: 1; left: -14px; top: 8%; }
+}
+
+.video-loader p {
+  margin: 22px 0 0;
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.scroll-hint {
+  position: absolute;
+  z-index: 35;
+  bottom: 28px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+.scroll-mouse {
+  position: relative;
+  display: block;
+  width: 19px;
+  height: 30px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+}
+
+.scroll-mouse i {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 2px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--ink);
+  animation: scroll-dot 1.5s ease infinite;
+}
+
+@keyframes scroll-dot {
+  0% { opacity: 0; transform: translateY(-2px); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(9px); }
+}
+
+.scroll-hint small {
+  color: var(--ink);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.story-progress {
+  position: absolute;
+  z-index: 45;
+  top: 50%;
+  right: 2.3vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 9px;
+  transform: translateY(-50%);
+  opacity: 0;
+}
+
+.hero-intro.is-visible,
+.scroll-hint.is-visible,
+.story-progress.is-visible {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.story-progress span {
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.story-progress > div {
+  position: relative;
+  width: 2px;
+  height: 132px;
+  overflow: hidden;
+  background: rgba(var(--text-rgb), 0.2);
+}
+
+.story-progress i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.section-shell {
+  width: min(1380px, 90vw);
+  margin: 0 auto;
+}
+
+.story-intro {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1.25fr) minmax(280px, 0.65fr);
+  gap: 5vw;
+  padding-top: 150px;
+  padding-bottom: 160px;
+  border-top: 3px double var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.section-index {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding-top: 10px;
+}
+
+.section-index span {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.section-index p {
+  margin: 5px 0 0;
+  color: rgba(var(--text-rgb), 0.6);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.kicker {
+  margin: 0 0 24px;
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.story-intro__copy h2,
+.collection-heading h2,
+.rooms-heading h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(42px, 5.1vw, 76px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+  color: var(--ink);
+}
+
+.story-intro__copy h2 em {
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.story-intro__meta {
+  padding-top: 40px;
+}
+
+.story-intro__meta > p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.museum-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 50px;
+}
+
+.museum-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 13px;
+  border-top: 1px solid var(--ink);
+}
+
+.museum-stats strong {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.museum-stats span {
+  color: rgba(var(--text-rgb), 0.6);
+  font-size: 7px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.collection-section {
+  padding: 150px 0 180px;
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
+}
+
+.collection-heading {
+  display: grid;
+  grid-template-columns: 1fr 0.42fr;
+  align-items: end;
+  gap: 9vw;
+  margin-bottom: 90px;
+}
+
+.collection-heading h2 {
+  max-width: 800px;
+}
+
+.collection-heading > p {
+  margin: 0 0 7px;
+  color: rgba(var(--text-rgb), 0.75);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 55px 18px;
+}
+
+.collection-card {
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  perspective: 900px;
+  /* `filter` ataylab transition ro'yxatida yo'q: kartaga sichqoncha
+     kelganda qolgan 11 tasi xiralashadi va blurni 0.5s animatsiya
+     qilish har kadrda o'sha 11 elementni qayta rasterizatsiya qilardi.
+     Endi blur bir marta qo'llanadi, ko'zga esa opacity o'tishi ishlaydi. */
+  transition: opacity 0.5s ease, transform 0.2s ease;
+  will-change: transform;
+}
+
+.collection-grid.has-focus .collection-card:not(.is-focused) {
+  opacity: 0.3 !important;
+  filter: blur(1px) !important;
+}
+
+.collection-grid.has-focus .collection-card.is-focused {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.collection-card:nth-child(4n + 2),
+.collection-card:nth-child(4n + 4) {
+  transform: translateY(42px);
+}
+
+.collection-card:nth-child(4n + 2):hover,
+.collection-card:nth-child(4n + 4):hover {
+  transform: translateY(32px);
+}
+
+/* Egilish JS'dagi tween bilan emas, ikkita CSS o'zgaruvchisi orqali
+   beriladi. JS faqat --rx/--ry ni yozadi, silliqlashni brauzerning
+   o'zi transition bilan bajaradi — sichqoncha harakatida hech qanday
+   obyekt yaratilmaydi. */
+.collection-card__media {
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  height: clamp(310px, 35vw, 520px);
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  background: var(--paper-soft);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.2s ease-out;
+}
+
+.collection-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0, 1);
+}
+
+.collection-card:hover .collection-card__media img,
+.collection-card:focus .collection-card__media img {
+  transform: scale(1.055);
+}
+
+.collection-card__media > span {
+  position: absolute;
+  z-index: 4;
+  top: 13px;
+  left: 13px;
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.collection-card__glare {
+  display: none;
+}
+
+.collection-card__info {
+  padding: 20px 3px 0;
+}
+
+.collection-card__info > div:first-child {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.collection-card__info h3 {
+  margin: 4px 0 0;
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.collection-card__info > p {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 0 0;
+  color: rgba(var(--text-rgb), 0.65);
+  font-size: 9px;
+}
+
+.card-museum {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--ink);
+}
+
+.card-museum span {
+  color: rgba(var(--text-rgb), 0.5);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.card-museum strong {
+  max-width: 60%;
+  color: var(--ink);
+  font-size: 8px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.quote-section {
+  position: relative;
+  display: flex;
+  min-height: 90vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: 120px 8vw;
+  border-top: 3px double var(--ink);
+  border-bottom: 3px double var(--ink);
+  background: var(--paper-soft);
+  text-align: center;
+}
+
+.quote-section > p {
+  position: relative;
+  z-index: 2;
+  max-width: 1080px;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(45px, 6.2vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.quote-section > span {
+  position: relative;
+  z-index: 2;
+  margin-top: 35px;
+  color: var(--ink);
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.quote-orbit {
+  position: absolute;
+  border: 1px solid rgba(var(--text-rgb), 0.2);
+  border-radius: 50%;
+  animation: slow-spin 30s linear infinite;
+}
+
+.quote-orbit::before,
+.quote-orbit::after {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+  content: "";
+}
+
+.quote-orbit::before { top: 18%; left: 8%; }
+.quote-orbit::after { right: 12%; bottom: 16%; }
+
+.quote-orbit--outer {
+  width: min(86vw, 1000px);
+  aspect-ratio: 1;
+}
+
+.quote-orbit--inner {
+  width: min(58vw, 680px);
+  aspect-ratio: 1;
+  animation-direction: reverse;
+  animation-duration: 22s;
+}
+
+@keyframes slow-spin {
+  to { transform: rotate(360deg); }
+}
+
+.rooms-section {
+  padding-top: 160px;
+  padding-bottom: 180px;
+}
+
+.rooms-heading {
+  display: grid;
+  grid-template-columns: 0.4fr 1fr;
+  align-items: start;
+  margin-bottom: 90px;
+}
+
+.rooms-heading .kicker {
+  margin-top: 12px;
+}
+
+.rooms-heading h2 {
+  max-width: 800px;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.room-card {
+  position: relative;
+  display: flex;
+  min-height: 540px;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 26px;
+  border: 1px solid var(--ink);
+  box-shadow: 6px 6px 0px var(--ink);
+  background:
+    linear-gradient(180deg, rgba(var(--wash-rgb), 0.1), rgba(var(--wash-rgb), 0.95)),
+    var(--room-image),
+    var(--paper-soft);
+  background-position: center;
+  background-size: cover;
+  transition: flex 0.7s cubic-bezier(0.2, 0.75, 0, 1), filter 0.45s ease;
+}
+
+.room-card--rome { --room-image: url("media/imperium-poster.jpg"); }
+/* Avval Wikimedia havolasi ishlatilgan edi, ammo u 404 qaytaradi —
+   karta bo'sh ko'rinardi. Papkadagi mahalliy rasmga o'tkazildi. */
+.room-card--egypt { --room-image: url("images/artifact_egypt_temple.jpg"); }
+.room-card--renaissance { --room-image: url("https://commons.wikimedia.org/wiki/Special:FilePath/The%20School%20of%20Athens%20by%20Raffaello%20Sanzio%20da%20Urbino.jpg?width=1200"); }
+
+.room-card > span {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.room-card > div {
+  align-self: flex-end;
+  max-width: 290px;
+}
+
+.room-card small {
+  color: var(--ink);
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.room-card h3 {
+  margin: 10px 0;
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.room-card p {
+  margin: 0;
+  color: rgba(var(--text-rgb), 0.75);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.room-card > a {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  align-self: flex-end;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  color: var(--ink);
+  transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+/* Havolani butun karta ustiga yoyamiz — foydalanuvchi kichkina strelkani emas,
+   kartaning istalgan joyini bosishi mumkin. */
+.room-card > a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* Strelka belgisini ::before orqali chizamiz. Muhim: aylantirish (rotate)
+   <a> ning o'ziga berilmaydi — aks holda <a> o'z ::after'i uchun yangi
+   "containing block" bo'lib qolib, qoplama 42px doiraga qisqarardi va
+   kartani bosib bo'lmasdi. */
+.room-card > a {
+  font-size: 0;
+}
+
+.room-card > a::before {
+  content: "↗";
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.room-card:hover > a {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.room-card:hover > a::before {
+  transform: rotate(45deg);
+}
+
+.room-card {
+  cursor: pointer;
+}
+
+.closing-section {
+  position: relative;
+  display: flex;
+  min-height: 95vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: 110px 6vw;
+  background: var(--paper);
+  border-top: 1px solid var(--ink);
+  text-align: center;
+}
+
+.closing-section h2 {
+  position: relative;
+  max-width: 1050px;
+  font-size: clamp(64px, 8.5vw, 138px);
+}
+
+.closing-section h2 em {
+  margin-top: 0.13em;
+  font-size: 0.68em;
+  font-style: italic;
+}
+
+.closing-section > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 27px;
+  margin-top: 52px;
+  padding: 15px 21px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+.closing-section > a:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.closing-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.closing-lines i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 95vw;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--text-rgb), 0.25), transparent);
+}
+
+.closing-lines i:nth-child(1) { transform: translate(-50%, -50%) rotate(0); }
+.closing-lines i:nth-child(2) { transform: translate(-50%, -50%) rotate(60deg); }
+.closing-lines i:nth-child(3) { transform: translate(-50%, -50%) rotate(-60deg); }
+
+footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: 150px;
+  padding: 30px 4vw;
+  border-top: 3px double var(--ink);
+  background: var(--paper);
+}
+
+.brand--footer .brand-mark {
+  width: 34px;
+  height: 34px;
+}
+
+footer > p,
+footer > span {
+  margin: 0;
+  color: rgba(var(--text-rgb), 0.6);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+footer > p { justify-self: center; }
+footer > span { justify-self: end; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(55px);
+}
+
+/* BURGER BUTTON & NAV TICKET RESPONSIVE */
+.burger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.burger-btn span {
+  width: 100%;
+  height: 3px;
+  background: var(--text-main, #1c1c1c);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.burger-btn.open span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.burger-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+.burger-btn.open span:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+.mobile-nav-ticket {
+  display: none !important;
+}
+
+.desktop-header-ticket {
+  display: inline-flex;
+}
+
+/* Header grid'i 3 ustunli. Ilgari chipta tugmasi va .header-right-group
+   ikkalasi ham 3-ustunga qo'yilgan, ya'ni bitta katakda ustma-ust turgan
+   edi — bu faqat desktopda burger yashirin bo'lgani uchun bilinmasdi.
+   Endi guruh ichida ko'rinadigan tema tugmasi ham bor, shuning uchun
+   chipta guruhning ichiga ko'chirildi va katakda bitta flex element qoldi. */
+.site-header > .header-right-group {
+  grid-row: 1;
+  grid-column: 3;
+  justify-self: end;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* MEDIA QUERIES */
+
+@media (max-width: 1100px) {
+  .collection-grid { grid-template-columns: repeat(3, 1fr); }
+  .collection-card:nth-child(4n + 2), .collection-card:nth-child(4n + 4) { transform: none; }
+  .story-intro { grid-template-columns: 110px 1fr; }
+  .story-intro__meta { grid-column: 2; }
+  .rooms-grid { grid-template-columns: 1fr; }
+  .room-card { min-height: 420px; }
+  .card-deck { width: 210px; height: 290px; }
+}
+
+/* Header burger menyusi — menyu bandlari 1250px dan tor ekranda sig'maydi */
+@media (max-width: 1250px) {
+  .site-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    height: 80px !important;
+    padding: 0 20px !important;
+    grid-template-columns: none !important;
+  }
+
+  .burger-btn {
+    display: flex !important;
+  }
+
+  .desktop-header-ticket {
+    display: none !important;
+  }
+
+  .mobile-nav-ticket {
+    display: block !important;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+    padding: 12px 18px;
+    background: var(--border, #111111);
+    color: var(--card-bg, #ffffff) !important;
+    border-radius: var(--radius, 6px);
+  }
+
+  .site-header nav {
+    position: fixed;
+    top: 80px;
+    left: -100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(100vh - 80px);
+    background: var(--sidebar-bg, #f7f5f0);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 40px 30px;
+    gap: 22px;
+    border-bottom: 2px solid var(--border, #111111);
+    transition: left 0.35s ease-in-out;
+    text-align: left;
+    box-shadow: 10px 0px 25px rgba(0,0,0,0.15);
+    margin: 0;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .site-header nav.active {
+    left: 0 !important;
+    display: flex !important;
+  }
+
+  .site-header nav a {
+    font-size: 16px;
+    width: 100%;
+    text-align: left !important;
+  }
+
+  .site-header nav a::after {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand strong { font-size: 12px; }
+  .brand-mark { width: 36px; height: 36px; }
+  .scroll-story { height: 700vh; }
+  .sticky-stage { min-height: 560px; }
+  .museum-video { object-position: center center; }
+  .video-shade { background: linear-gradient(180deg, rgba(var(--wash-rgb), 0.15), transparent 30%, rgba(var(--wash-rgb), 0.9)); }
+  .edge-vignette { box-shadow: inset 0 0 80px 10px var(--shadow-color); }
+  .hero-intro { top: auto; bottom: 105px; left: 22px; width: calc(100% - 44px); transform: none; }
+  .hero-intro h1 { max-width: 400px; font-size: clamp(58px, 19vw, 94px); }
+  .hero-intro h1 em { margin-left: 0; }
+  .hero-lead { width: 90%; margin-top: 22px; font-size: 11px; }
+  .eyebrow { margin-bottom: 16px; font-size: 8px; }
+  .scene-label { top: 18%; right: 18px; }
+  .cursor-trail, .depth-cards { display: none; }
+  .mini-card { width: 132px; grid-template-rows: 90px auto; }
+  .mini-card > div { min-height: 62px; padding: 9px; }
+  .mini-card strong { font-size: 14px; }
+  .orbit-heading { top: 13%; left: 20px; max-width: calc(100% - 40px); }
+  .orbit-heading h2 { font-size: 42px; }
+  .orbit-card { top: auto !important; right: 18px !important; bottom: 78px !important; left: 18px !important; width: auto; grid-template-columns: 80px 1fr; }
+  .orbit-card__image { height: 96px; }
+  .final-reveal { align-items: flex-end; padding: 0 22px 104px; }
+  .final-copy h2 { font-size: 64px; }
+  .final-copy h2 em { margin-left: 0; }
+  .card-deck { display: none; }
+  .story-progress { right: 9px; }
+  .story-progress > div { height: 88px; }
+  .section-shell { width: calc(100% - 36px); }
+  .story-intro { grid-template-columns: 1fr; gap: 38px; padding-top: 100px; padding-bottom: 110px; }
+  .section-index { padding-top: 0; }
+  .story-intro__meta { grid-column: auto; padding-top: 0; }
+  .story-intro__copy h2, .collection-heading h2, .rooms-heading h2 { font-size: 44px; }
+  .museum-stats { gap: 10px; }
+  .collection-section { padding: 100px 0 120px; }
+  .collection-heading { grid-template-columns: 1fr; gap: 25px; margin-bottom: 60px; }
+  .collection-heading > p { max-width: 430px; }
+  .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 38px 10px; }
+  .collection-card__media { height: 58vw; }
+  .collection-card__info h3 { font-size: 19px; }
+  .card-museum { display: none; }
+  .quote-section { min-height: 75vh; }
+  .quote-orbit--outer { width: 140vw; }
+  .quote-orbit--inner { width: 95vw; }
+  .rooms-section { padding-top: 110px; padding-bottom: 120px; }
+  .rooms-heading { grid-template-columns: 1fr; gap: 18px; margin-bottom: 55px; }
+  .room-card { min-height: 390px; padding: 20px; }
+  .room-card h3 { font-size: 36px; }
+  .closing-section { min-height: 78vh; }
+  .closing-section h2 { font-size: 57px; }
+  footer { grid-template-columns: 1fr; justify-items: center; gap: 25px; text-align: center; }
+  footer > p, footer > span { justify-self: center; }
+}
+
+@media (max-width: 430px) {
+  .collection-grid { grid-template-columns: 1fr; }
+  .collection-card__media { height: 115vw; }
+  .museum-stats strong { font-size: 21px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .film-grain, .scroll-mouse i, .loader-art__image, .loader-art__brush, .quote-orbit { animation: none !important; }
+  .loader-art__image { clip-path: inset(0 0 0 0); }
+  .loader-art__brush { display: none; }
+  .collection-card, .collection-card__media img { transition-duration: 0.01ms !important; }
+}

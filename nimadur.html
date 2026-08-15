@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMPERIUM MUZEYI — Vaqt Mashinasi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>try{if(localStorage.getItem('imperium-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+    <link rel="stylesheet" href="./assets/theme.css">
+    <link rel="stylesheet" href="./assets/lenis.css">
+    <link rel="stylesheet" href="./nimadur.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+</head>
+
+<body>
+
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <header class="header">
+        <a href="./index.html" class="logo-container">
+            <div class="logo-icon">I</div>
+            <div class="aylan">
+                <span class="logo-text">IMPERIUM</span>
+                <span>Raqamli muzey</span>
+            </div>
+        </a>
+
+        <ul class="nav-links" id="navMenu">
+            <li><a href="./museyHaqida.html" class="nav-link">Muzey haqida</a></li>
+            <li><a href="./3d.html" class="nav-link">3D Eksponatlar</a></li>
+            <li><a href="./galereya.html" class="nav-link">Galereya</a></li>
+            <li><a href="./victarina.html" class="nav-link">Viktorina</a></li>
+            <li><a href="./360zal.html" class="nav-link">360 zallar</a></li>
+            <li><a href="./nimadur.html" class="nav-link active">Vaqt mashinasi</a></li>
+            <li><a href="./museylar.html" class="nav-link">Milliy muzey</a></li>
+            <li><a href="./zallar.html" class="nav-link">Zallar</a></li>
+            <li class="mobile-nav-ticket"><a href="./xarita.html" class="nav-link">Muzeylar Haritasi</a></li>
+        </ul>
+
+        <a class="sound-toggle-btn" href="./xarita.html">
+            Muzeylar Haritasi
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <div class="header-right-group">
+            <button class="theme-toggle" id="themeToggle" aria-label="Tungi rejimga o'tish" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+            <button class="burger-btn" id="burgerBtn" aria-label="Menyu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="hero-intro" id="heroIntro">
+        <div class="hero-tagline">5000 YILLIK TARIXIY INTERAKTIV PARVOZ</div>
+    </div>
+
+    <!-- ===== XRONO-KONSOL: vaqt mashinasining boshqaruv paneli ===== -->
+    <div class="chrono-console" id="chronoConsole">
+        <div class="console-plate">
+            <div class="console-topbar">
+                <span class="console-brand"><i class="fa-solid fa-hourglass-half"></i> IMPERIUM • XRONO-KONSOL</span>
+                <span class="console-status"><i class="status-lamp"></i> YADRO BARQAROR</span>
+            </div>
+
+            <div class="console-body">
+                <div class="console-readout">
+                    <span class="readout-caption">MO'LJALLANGAN SANA</span>
+                    <div class="readout-year">
+                        <span class="year-prefix" id="yearPrefix">M.A.</span>
+                        <span class="year-digits" id="yearDigits">3100</span>
+                    </div>
+                    <div class="readout-era" id="readoutEra">Qadimgi Misr Davri</div>
+                    <div class="readout-range" id="readoutRange">M.A. 3100 – 30</div>
+                </div>
+
+                <div class="console-dial">
+                    <label class="dial-label" for="yearDial">VAQT SHKALASI — tutqichni suring</label>
+                    <input type="range" id="yearDial" class="year-dial" min="-3100" max="2025" step="5"
+                        value="-3100" aria-label="Yilni tanlang">
+                    <div class="dial-ticks">
+                        <span>M.A. 3100</span><span>M.A. 1500</span><span>0</span><span>1000</span><span>2025</span>
+                    </div>
+
+                    <div class="preset-row" id="presetRow">
+                        <button class="preset-chip" data-year="-3100"><i class="fa-solid fa-ankh"></i> Misr</button>
+                        <button class="preset-chip" data-year="-800"><i
+                                class="fa-solid fa-building-columns"></i> Yunoniston</button>
+                        <button class="preset-chip" data-year="-27"><i class="fa-solid fa-shield-halved"></i>
+                            Rim</button>
+                        <button class="preset-chip" data-year="1400"><i class="fa-solid fa-palette"></i>
+                            Uyg'onish</button>
+                        <button class="preset-chip" data-year="1900"><i
+                                class="fa-solid fa-wand-magic-sparkles"></i> Modern</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="console-footer">
+                <button class="launch-lever" id="launchBtn">
+                    <span class="lever-knob"></span>
+                    <span class="lever-text">VAQTGA SAKRASH</span>
+                </button>
+                <button class="console-skip" id="skipBtn">Konsolsiz ko'rish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PARVOZ (warp) ekrani ===== -->
+    <div class="warp-screen" id="warpScreen">
+        <div class="warp-streaks"></div>
+        <div class="warp-core">
+            <div class="warp-caption">VAQT OQIMI KESIB O'TILMOQDA</div>
+            <div class="warp-year" id="warpYear">2025</div>
+            <div class="warp-bar"><span id="warpBar"></span></div>
+            <div class="warp-note" id="warpNote">Xrono-yadro quvvat to'plamoqda…</div>
+        </div>
+    </div>
+
+    <section class="timeline-pin" id="pinSection">
+        <div class="timeline-track" id="timelineTrack">
+
+            <div class="era era--egypt" id="egypt">
+                <div class="era__bg-year" data-speed="0.25">M.A. 3100</div>
+                <div class="era__grid-overlay"></div>
+
+                <div class="era__info">
+                    <span class="era__badge"><i class="fa-solid fa-ankh"></i> Qadimgi Dunyo • M.A. 3100 - 30</span>
+                    <h2 class="era__title">Qadimgi Misr Davri</h2>
+                    <p class="era__desc">
+                        Ehromlar, fir'avnlar va sirli iyerogliflar saltanati. Nil daryosining unumdor bo'ylarida barpo
+                        etilgan, abadiyat va muqaddas e'tiqodlarga yo'g'rilgan birinchi buyuk sivilizatsiya.
+                    </p>
+                    <div class="era__quote">
+                        "Vaqt hamma narsadan qo'rqadi, lekin ehromlar vaqtdan qo'rqadi."
+                    </div>
+                    <div class="hieroglyph-widget">
+                        <h3>𓀀 Ismingizni iyeroglifda ko'ring</h3>
+                        <input type="text" id="userInput" placeholder="Ismingizni kiriting..."
+                            oninput="convertToHieroglyph()">
+                        <div id="hieroglyphResult" class="result-area"></div>
+                    </div>
+                </div>
+
+                <div class="era__artifacts">
+                    <div class="artifact-card"
+                        data-title="Tutanchamon Oltin Niqobi" data-desc="Dafn xazinasi kashfiyotlarining cho'qqisi. 11 kg sof oltindan quyilgan, fir'avn mumiysining yuzini abadiylashtirgan muqaddas san'at asari." data-date="Miloddan avvalgi 1323-yil" data-material="Oltin, lojuvard, obsidian">
+                        <div class="artifact-img-wrap"> <img class="img" src="https://odam.uz/upload/media/entries/2019-01/05/1841-1-1cac8c1d5bdb42cce8705f676aaf85a0.jpg" alt=""></div>
+                        <div class="artifact-meta">Eksponat #01 • Misr</div>
+                        <h3 class="artifact-title">Tutanchamon Niqobi</h3>
+                        <p class="artifact-desc">Oltin va qimmatbaho lapis-lazuli toshlaridan ishlangan fir'avn dafn
+                            niqobi.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+
+                    <div class="artifact-card"
+                        data-title="Rosetta Toshi" data-desc="Uch xil yozuvda bitilgan mashhur granit plita. Aynan ushbu tosh tufayli qadimgi Misr iyerogliflari kaliti topilgan." data-date="Miloddan avvalgi 196-yil" data-material="Granodiorit">
+                        <div class="artifact-img-wrap"><img class="img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5_mKZUQipgtWNJuKbQyUgzwevBhmc4JVurbSZi747zw&s=10" alt=""></div>
+                        <div class="artifact-meta">Eksponat #02 • Misr</div>
+                        <h3 class="artifact-title">Rosetta Toshi</h3>
+                        <p class="artifact-desc">Iyerogliflar sirini ochgan va qadimiy yozuvlarni tushunishga yo'l
+                            ochgan unikal bitik.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era era--greece" id="greece">
+                <div class="era__bg-year" data-speed="0.25">M.A. 800</div>
+                <div class="era__grid-overlay"></div>
+
+                <div class="era__info">
+                    <span class="era__badge"><i class="fa-solid fa-building-columns"></i> Antik Davr • M.A. 800 -
+                        146</span>
+                    <h2 class="era__title">Qadimgi Yunoniston</h2>
+                    <p class="era__desc">
+                        Demokratiya, falsafa, teatr va mukammal haykaltaroshlik beshigi. Afina akropoli hamda Olimpiya
+                        o'yinlarining oltin asri.
+                    </p>
+                    <div class="era__quote">
+                        "Bilim — bu qalbdagi eng yorug' chiroqdir." — Sokrat
+                    </div>
+                    <div class="audio-guide-card">
+                        <div class="audio-guide-header">
+                            <span class="widget-badge">🎧 AUDIOGID</span>
+                            <span class="audio-time" id="audioTimer">00:00</span>
+                        </div>
+                        <h4 class="audio-title">Yunoniston oltin asri hikoyasi</h4>
+
+                        <div class="audio-controls">
+                            <button class="audio-btn" id="playBtn" onclick="toggleAudioGuide()">
+                                <i class="fas fa-play" id="playIcon"></i> <span id="playText">ESHITISH</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="era__artifacts">
+                    <div class="artifact-card"
+                        data-title="Miloslik Venera Haykali" data-desc="Go'zallik va muhabbat ma'budasi Afroditaning antik davrga oid eng mashhur marmar haykali." data-date="Miloddan avvalgi 130-yil" data-material="Paros oq marmari">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-person-dress"></i></div>
+                        <div class="artifact-meta">Eksponat #03 • Yunoniston</div>
+                        <h3 class="artifact-title">Miloslik Venera</h3>
+                        <p class="artifact-desc">Yunon ellinistik san'atining eng cho'qqi va nafis namunasi.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+
+                    <div class="artifact-card"
+                        data-title="Antikitera Mexanizmi" data-desc="Insoniyat tarixidagi birinchi analog astronomik kompyuter. Sayyoralar harakatini hisoblagan." data-date="Miloddan avvalgi 150-yil" data-material="Bronza">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-gear"></i></div>
+                        <div class="artifact-meta">Eksponat #04 • Yunoniston</div>
+                        <h3 class="artifact-title">Antikitera Uskunasi</h3>
+                        <p class="artifact-desc">Sayyoralar va tutilishlarni hisoblaydigan qadimgi dunyo kompyuteri.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era era--rome" id="rome">
+                <div class="era__bg-year" data-speed="0.25">M.A. 27</div>
+                <div class="era__grid-overlay"></div>
+
+                <div class="era__info">
+                    <span class="era__badge"><i class="fa-solid fa-shield-halved"></i> Imperiya Saltanati • M.A. 27 -
+                        476</span>
+                    <h2 class="era__title">Rim Imperiyasi</h2>
+                    <p class="era__desc">
+                        Dunyoning mutloq hukmdori. Ulkan harbiy intizom, muhandislik mo'jizalari, Akveduklar, Kolizey va
+                        huquqiy tizim poydevori.
+                    </p>
+                    <div class="era__quote">
+                        "Hamma yo'llar Rimga olib boradi."
+                    </div>
+                    
+                </div>
+
+                <div class="era__artifacts">
+                    <div class="artifact-card"
+                        data-title="Kolizey Amfiteatri Maketi" data-desc="Flaviy imperatorlari tomonidan qurilgan 50,000 kishilik ulkan amfiteatr." data-date="M.A. 80-yil" data-material="Travertin va beton">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-chess-rook"></i></div>
+                        <div class="artifact-meta">Eksponat #05 • Rim</div>
+                        <h3 class="artifact-title">Kolizey Maketi</h3>
+                        <p class="artifact-desc">Rim muhandisligi va gladiatorlar jangining afsonaviy ramzi.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+
+                    <div class="artifact-card"
+                        data-title="Avgust Sezar Byusti" data-desc="Rim Imperiyasining birinchi imperatori Oktavian Avgustning salobatli haykali." data-date="M.A. 20-yil" data-material="Marmar">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-user-tie"></i></div>
+                        <div class="artifact-meta">Eksponat #06 • Rim</div>
+                        <h3 class="artifact-title">Avgust Sezar Byusti</h3>
+                        <p class="artifact-desc">Rim tinchligi (Pax Romana) asoschisi imperator portreti.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era era--renaissance" id="renaissance">
+                <div class="era__bg-year" data-speed="0.25">1400 AD</div>
+                <div class="era__grid-overlay"></div>
+
+                <div class="era__info">
+                    <span class="era__badge"><i class="fa-solid fa-palette"></i> Renessans • 1400 - 1600</span>
+                    <h2 class="era__title">Uyg'onish Davri</h2>
+                    <p class="era__desc">
+                        San'at, anatomiya va ilm-fanning qayta tug'ilishi. Leonardo da Vinchi, Mikelanjelo va Rafael
+                        kabi daholarning oltin merosi.
+                    </p>
+                    <div class="era__quote">
+                        "O'rganish ongni hech qachon charchatmaydi." — Leonardo da Vinchi
+                    </div>
+                </div>
+
+                <div class="era__artifacts">
+                    <div class="artifact-card"
+                        data-title="Mona Liza (La Gioconda)" data-desc="Leonardo da Vinchi qalamiga mansub dunyodagi eng qimmatbaho kartina." data-date="1503 - 1519-yillar" data-material="Terak yog'ochi, moybo'yoq">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-image"></i></div>
+                        <div class="artifact-meta">Eksponat #07 • Uyg'onish</div>
+                        <h3 class="artifact-title">Mona Liza (Nusxa)</h3>
+                        <p class="artifact-desc">Leonardo da Vinchining nigohi butun dunyoni hayratga solgan asari.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+
+                    <div class="artifact-card"
+                        data-title="Dovud Haykali (David)" data-desc="Mikelanjelo Buonarroti tomonidan o'yilgan mukammal haykaltaroshlik asari." data-date="1501 - 1504-yillar" data-material="Karara marmari">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-child-reaching"></i></div>
+                        <div class="artifact-meta">Eksponat #08 • Uyg'onish</div>
+                        <h3 class="artifact-title">Dovud Haykali</h3>
+                        <p class="artifact-desc">Renessans davri haykaltaroshligining cho'qqisi va gumanizm ramzi.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era era--modern" id="modern">
+                <div class="era__bg-year" data-speed="0.25">1900 AD</div>
+                <div class="era__grid-overlay"></div>
+
+                <div class="era__info">
+                    <span class="era__badge"><i class="fa-solid fa-wand-magic-sparkles"></i> Modern • 1900 -
+                        Hozir</span>
+                    <h2 class="era__title">Modern va Zamonaviy</h2>
+                    <p class="era__desc">
+                        Sanoat inqilobi, abstraktsiya va ekspressionizm. Tuyg'ular va yangicha texnologiyalarning erkin
+                        aks etishi.
+                    </p>
+                    <div class="era__quote">
+                        "San'at qalbdan kundalik hayot changini yuvib tashlaydi." — Pablo Pikasso
+                    </div>
+                </div>
+
+                <div class="era__artifacts">
+                    <div class="artifact-card"
+                        data-title="Yulduzli Tun" data-desc="Vinsent van Gogning ekspressionistik uslubdagi afsonaviy durdonasi." data-date="1889-yil" data-material="Moybo'yoq">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-star"></i></div>
+                        <div class="artifact-meta">Eksponat #09 • Modern</div>
+                        <h3 class="artifact-title">Yulduzli Tun</h3>
+                        <p class="artifact-desc">Van Gogning girdobsimon osmon va yorqin yulduzlar tasviri.</p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+
+                    <div class="artifact-card"
+                        data-title="Xotira Bardavomligi" data-desc="Salvador Dalining eriyotgan soatlar tasvirlangan syurrealistik kartinasi." data-date="1931-yil" data-material="Moybo'yoq">
+                        <div class="artifact-img-wrap"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <div class="artifact-meta">Eksponat #10 • Modern</div>
+                        <h3 class="artifact-title">Xotira Bardavomligi</h3>
+                        <p class="artifact-desc">Dalining vaqt va tushlar olamini ifodalovchi syurrealistik kartinasi.
+                        </p>
+                        <button class="artifact-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Batafsil
+                            Ko'rish</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="timeline-nav" id="timelineNav">
+        <div class="hud-chrono">
+            <button class="hud-console-btn" id="reopenConsoleBtn" title="Konsolni ochish">
+                <i class="fa-solid fa-hourglass-half"></i>
+            </button>
+            <div class="hud-readout">
+                <span class="hud-caption">BORT XRONOMETRI</span>
+                <span class="hud-year" id="hudYear">M.A. 3100</span>
+            </div>
+            <span class="hud-era" id="hudEra">Qadimgi Misr Davri</span>
+        </div>
+
+        <div class="nav-dots" id="navDots">
+            <button class="dot-item active" onclick="scrollToEra(0)">
+                <span class="dot"></span><span class="dot-label">Misr</span>
+            </button>
+            <button class="dot-item" onclick="scrollToEra(1)">
+                <span class="dot"></span><span class="dot-label">Yunoniston</span>
+            </button>
+            <button class="dot-item" onclick="scrollToEra(2)">
+                <span class="dot"></span><span class="dot-label">Rim</span>
+            </button>
+            <button class="dot-item" onclick="scrollToEra(3)">
+                <span class="dot"></span><span class="dot-label">Uyg'onish</span>
+            </button>
+            <button class="dot-item" onclick="scrollToEra(4)">
+                <span class="dot"></span><span class="dot-label">Modern</span>
+            </button>
+        </div>
+        <div class="nav-progress-line">
+            <div class="nav-progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="artifactModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header-tag">Eksponat Ma'lumoti</div>
+            <h3 class="modal-title" id="modalTitle">Nomi</h3>
+            <p class="modal-body" id="modalBody">Tafsilotlar...</p>
+            <div class="modal-info-grid">
+                <div class="modal-info-item"><span>Yaratilgan Davr:</span><strong id="modalDate">-</strong></div>
+                <div class="modal-info-item"><span>Material:</span><strong id="modalMaterial">-</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./vendor/lenis.min.js"></script>
+    <script src="./assets/site.js"></script>
+    <script src="./nimadur.js"></script>
+</body>
+
+</html>

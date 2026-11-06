@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./assets/theme.css">
     <link rel="stylesheet" href="./assets/lenis.css">
     <link rel="stylesheet" href="./nimadur.css">
+    <link rel="stylesheet" href="./assets/site-header.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -25,30 +26,26 @@
 
     <div class="cursor-glow" id="cursorGlow"></div>
 
-    <header class="header">
-        <a href="./index.html" class="logo-container">
-            <div class="logo-icon">I</div>
-            <div class="aylan">
-                <span class="logo-text">IMPERIUM</span>
-                <span>Raqamli muzey</span>
-            </div>
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
+            <span class="brand-mark">I</span>
+            <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
         </a>
 
-        <ul class="nav-links" id="navMenu">
-            <li><a href="./museyHaqida.html" class="nav-link">Muzey haqida</a></li>
-            <li><a href="./3d.html" class="nav-link">3D Eksponatlar</a></li>
-            <li><a href="./galereya.html" class="nav-link">Galereya</a></li>
-            <li><a href="./victarina.html" class="nav-link">Viktorina</a></li>
-            <li><a href="./360zal.html" class="nav-link">360 zallar</a></li>
-            <li><a href="./nimadur.html" class="nav-link active">Vaqt mashinasi</a></li>
-            <li><a href="./museylar.html" class="nav-link">Milliy muzey</a></li>
-            <li><a href="./zallar.html" class="nav-link">Zallar</a></li>
-            <li class="mobile-nav-ticket"><a href="./xarita.html" class="nav-link">Muzeylar Haritasi</a></li>
-        </ul>
+        <nav aria-label="Asosiy navigatsiya" id="navMenu">
+            <a href="./museyHaqida.html">Muzey haqida</a>
+            <a href="./3d.html">3D Eksponatlar</a>
+            <a href="./galereya.html">Galereya</a>
+            <a href="./victarina.html">Viktorina</a>
+            <a href="./360zal.html">360 zallar</a>
+            <a href="./nimadur.html" class="active">Vaqt mashinasi</a>
+            <a href="./museylar.html">Milliy muzey</a>
+            <a href="./zallar.html">Zallar</a>
+            <a class="header-ticket mobile-nav-ticket" href="./xarita.html">Muzeylar haritasi <i class="fa-solid fa-arrow-right"></i></a>
+        </nav>
 
-        <a class="sound-toggle-btn" href="./xarita.html">
-            Muzeylar Haritasi
-            <i class="fa-solid fa-arrow-right"></i>
+        <a class="header-ticket desktop-header-ticket" href="./xarita.html">
+            Muzeylar Haritasi <i class="fa-solid fa-arrow-right"></i>
         </a>
 
         <div class="header-right-group">

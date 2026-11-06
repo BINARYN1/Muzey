@@ -1,17 +1,5 @@
 /* ==========================================================
    UMUMIY HEADER — barcha nav sahifalari uchun
-   ----------------------------------------------------------
-   Bu fayl ilgari museyHaqida.css, galereya.css, 360zal.css,
-   xarita.css, museylar.css, 3d.css va victarina.css da
-   bayt-baytiga takrorlangan bloklardan ajratib olindi.
-   Etalon nusxa: museyHaqida.css (41-160, 344-381, 402-466).
-
-   TEGISHLI EMAS: index.html (style.css), nimadur.html va
-   zallar.html o'z header uslubini saqlaydi — ularning
-   strukturasi va breakpointi boshqacha (1250px, dropdown).
-
-   Sahifaning o'z CSS faylidan OLDIN ulanadi, shunda sahifa
-   kerak bo'lsa ustidan yozа oladi (3d.css: z-index: 80).
    ========================================================== */
 
 /* --- HEADER --- */
@@ -23,15 +11,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     width: 100%;
-    height: 90px;
-    padding: 0 3.5vw;
-    border-bottom: 3px double var(--border);
+    height: 82px;
+    padding: 0 3vw;
+    border-bottom: 2px solid var(--border);
     background: var(--sidebar-bg);
-    /* Sahifaning o'z shrifti (masalan rim.css'dagi Cinzel/Poppins)
-       umumiy headerga o'tib ketmasin — u doim Baloo 2 bo'lishi kerak. */
     font-family: var(--sans);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .site-header a {
@@ -41,83 +28,90 @@
 .brand {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     flex-shrink: 0;
     text-decoration: none;
 }
 
 .brand-mark {
     display: grid;
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     place-items: center;
     border: 2px solid var(--border);
     border-radius: 50%;
     color: var(--border);
     font-family: var(--serif);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
 }
 
 .brand > span:last-child, .brand div:last-child {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
 }
 
 .brand strong {
-    font-size: 15px;
+    font-size: 13.5px;
     font-weight: 900;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     color: var(--text-main);
     text-transform: uppercase;
     font-family: var(--serif);
+    line-height: 1.1;
 }
 
 .brand small {
     color: var(--accent-red);
-    font-size: 9px;
-    letter-spacing: 0.2em;
+    font-size: 8px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     font-weight: 700;
+    line-height: 1;
 }
 
 .site-header nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 24px;
+    gap: 20px;
     flex: 1;
     min-width: 0;
-    margin: 0 20px;
+    margin: 0 14px;
 }
 
 .site-header nav a {
     position: relative;
     color: var(--text-main);
-    font-size: 11.5px;
-    letter-spacing: 0.08em;
+    font-size: 11px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     font-weight: 700;
-    transition: color 0.3s ease;
+    transition: color 0.25s ease;
     white-space: nowrap;
 }
 
 .site-header nav a::after {
     position: absolute;
     right: 0;
-    bottom: -6px;
+    bottom: -5px;
     left: 0;
     height: 2px;
     background: var(--accent-red);
     content: "";
     transform: scaleX(0);
     transform-origin: right;
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
 }
 
-.site-header nav a:hover { color: var(--accent-red); }
-.site-header nav a:hover::after {
+.site-header nav a:hover,
+.site-header nav a.active { 
+    color: var(--accent-red); 
+}
+
+.site-header nav a:hover::after,
+.site-header nav a.active::after {
     transform: scaleX(1);
     transform-origin: left;
 }
@@ -125,14 +119,14 @@
 .header-ticket {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 18px;
+    gap: 8px;
+    padding: 8px 14px;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: var(--radius, 6px);
     background: transparent;
     color: var(--text-main);
-    font-size: 11px;
-    letter-spacing: 0.12em;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
     font-weight: 700;
     text-transform: uppercase;
     transition: all 0.25s ease;
@@ -145,12 +139,10 @@
     color: var(--card-bg);
 }
 
-/* Tema tugmasi va burger shu guruhda yonma-yon turadi.
-   Ilgari bu div faqat burgerni saqlar edi va uslubsiz qolgan. */
 .header-right-group {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     flex-shrink: 0;
 }
 
@@ -159,8 +151,8 @@
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 30px;
-    height: 22px;
+    width: 28px;
+    height: 20px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -170,20 +162,20 @@
 
 .burger-btn span {
     width: 100%;
-    height: 3px;
+    height: 2.5px;
     background: var(--text-main, #1c1c1c);
     border-radius: 2px;
     transition: all 0.3s ease;
 }
 
 .burger-btn.open span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
+    transform: translateY(8.5px) rotate(45deg);
 }
 .burger-btn.open span:nth-child(2) {
     opacity: 0;
 }
 .burger-btn.open span:nth-child(3) {
-    transform: translateY(-10px) rotate(-45deg);
+    transform: translateY(-9px) rotate(-45deg);
 }
 
 .mobile-nav-ticket {
@@ -195,10 +187,10 @@
 }
 
 /* --- MOBIL DRAWER --- */
-@media (max-width: 1100px) {
+@media (max-width: 1150px) {
     .site-header {
-        padding: 0 20px;
-        height: 80px;
+        padding: 0 16px;
+        height: 75px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -225,18 +217,18 @@
 
     .site-header nav {
         position: fixed;
-        top: 80px;
+        top: 75px;
         left: -100%;
         width: 100% !important;
         max-width: 100% !important;
-        height: calc(100vh - 80px);
+        height: calc(100vh - 75px);
         background: var(--sidebar-bg, #f7f5f0);
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        padding: 40px 30px;
-        gap: 22px;
+        padding: 30px 24px;
+        gap: 20px;
         border-bottom: 2px solid var(--border, #111111);
         transition: left 0.35s ease-in-out;
         text-align: left;
@@ -251,7 +243,7 @@
     }
 
     .site-header nav a {
-        font-size: 16px;
+        font-size: 15px;
         width: 100%;
         text-align: left !important;
     }

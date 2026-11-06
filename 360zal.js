@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
-            const systemPrompt = `Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi savollariga faqat o'zbek tilida, qisqa va do'stona javob bering.
+            const systemPrompt = `Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi qaysi tilda murojaat qilsa (o'zbek, ingliz, rus va h.k.), xuddi shu tilda qisqa va do'stona javob bering.
 
 Bizning loyihamizda 10 ta maxsus 360° zallar (muzeylar va tarixiy obidalar) mavjud:
 1. Vatikan Muzeyi

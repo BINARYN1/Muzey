@@ -23,11 +23,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
     width: 100%;
     height: 90px;
     padding: 0 3.5vw;
     border-bottom: 3px double var(--border);
     background: var(--sidebar-bg);
+    /* Sahifaning o'z shrifti (masalan rim.css'dagi Cinzel/Poppins)
+       umumiy headerga o'tib ketmasin — u doim Baloo 2 bo'lishi kerak. */
+    font-family: var(--sans);
+}
+
+.site-header a {
+    text-decoration: none;
 }
 
 .brand {

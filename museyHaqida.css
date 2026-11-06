@@ -1,231 +1,384 @@
-﻿/* ==========================================
-   VINTAGE/GAZETA USLUBIDAGI PROFIL SOZLAMALARI
-   ========================================== */
-/* Ranglar va tokenlar -> assets/theme.css */
+/* ==========================================================
+   MUZEY HAQIDA — CHEKSIZ PARALLAX SCROLL
+   ----------------------------------------------------------
+   Ranglar va tokenlar -> assets/theme.css
+   Umumiy header -> assets/site-header.css (bu yerda "ish-floating-header"
+   modifikatori bilan shaffof/suzuvchi ko'rinishga o'tkaziladi).
+   ========================================================== */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: var(--sans);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--sans);
 }
 
-body, html {
-    width: 100%;
-    min-height: 100vh;
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: var(--sans);
-    overflow-x: hidden;
-    overflow-y: auto;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0c0a08;
+  color: #fff;
 }
 
-a { color: inherit; text-decoration: none; }
-
-
-/* --- HERO / BOSH SAKHIFASI (GAZETA SURLAVHASI) --- */
-.about-hero {
-  margin-top: 90px;
-  padding: 50px 20px 30px;
-  text-align: center;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.tagline {
+/* --- CHEKSIZ SCROLL O'RALG'ICHI --- */
+.ish-wrapper {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.ish-content {
+  position: relative;
+}
+
+.ish-hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100svh;
+  overflow: clip;
+  background: #0c0a08;
+}
+
+.ish-hero-image {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #0c0a08;
+}
+
+/* Ba'zi eksponat suratlari keng ekranga mos kelmaydi (4:3 ga yaqin) —
+   to'g'ridan-to'g'ri "cover" bilan cho'zilsa dubulg'a yoki lavha
+   qirqilib qolardi. Shuning uchun ikki qatlamli texnika: xira orqa fon
+   butun ekranni to'ldiradi, aniq old plan esa hech narsa qirqilmasdan
+   markazda "contain" bilan ko'rsatiladi. */
+.ish-hero-bg {
+  position: absolute;
+  inset: -30px;
+  z-index: 1;
+  width: calc(100% + 60px);
+  height: calc(100% + 60px);
+  object-fit: cover;
+  filter: blur(38px) brightness(0.42) saturate(1.15);
+  transform: scale(1.08);
+}
+
+.ish-hero-fg {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0.94) saturate(1.05) drop-shadow(0 40px 70px rgba(0, 0, 0, 0.65));
+}
+
+/* --- SARLAVHA QOPLAMASI (rasm pastida) --- */
+.ish-hero-caption {
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 0 0;
+  padding: 90px 6vw 90px;
+  background: linear-gradient(to top, rgba(6, 5, 4, 0.88) 0%, rgba(6, 5, 4, 0.35) 45%, rgba(6, 5, 4, 0) 80%);
+}
+
+.ish-hero-kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #e7c9a9;
   font-family: var(--serif);
   font-size: 12px;
-  letter-spacing: 2px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.hero-title {
-  font-family: var(--serif);
-  font-size: 56px;
-  font-weight: 900;
-  line-height: 1.05;
-  margin: 15px 0;
-  text-transform: uppercase;
-}
-
-.hero-title em {
-  font-style: italic;
-  font-family: var(--font-body);
-  font-weight: 400;
-  text-transform: none;
-}
-
-.hero-description {
-  font-size: 18px;
-  max-width: 800px;
-  margin: 0 auto;
-  font-style: italic;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 0;
-}
-
-/* --- MAIN LAYOUT --- */
-.main-container {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 0 20px;
-}
-
-/* GAZETA STATISTIKA CHETI (BAR) */
-.stats-grid {
-  display: flex;
-  justify-content: space-around;
-  border-top: 2px solid var(--border);
-  border-bottom: 2px solid var(--border);
-  padding: 15px 0;
-  margin-bottom: 40px;
-}
-
-.stat-card {
-  text-align: center;
-}
-
-.stat-card h2 {
-  font-family: var(--serif);
-  font-size: 36px;
   font-weight: 700;
-}
-
-.stat-card p {
-  font-family: var(--serif);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* GAZETA BO'LIMLARI */
-.section-block {
-  margin-bottom: 50px;
-}
-
-.section-title-wrap {
-  text-align: center;
-  margin-bottom: 25px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 10px;
-}
-
-.section-title {
-  font-family: var(--serif);
-  font-size: 32px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
 }
 
-/* GAZETA SHAKLIDAGI MATRIX/GRID (3-ustunli gazeta uslubi) */
-.grid-2col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
-.text-card {
-  border-right: 1px solid var(--border);
-  padding-right: 30px;
-}
-
-.text-card:last-child {
-  border-right: none;
-  padding-right: 0;
-}
-
-.card-icon {
-  font-size: 24px;
-  margin-bottom: 10px;
-  display: block;
-}
-
-.text-card h3 {
+.ish-hero-caption h2 {
+  max-width: 780px;
+  margin: 0;
+  color: #fff;
   font-family: var(--serif);
-  font-size: 22px;
-  margin-bottom: 10px;
+  font-size: clamp(26px, 4.4vw, 52px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+/* --- FUTER: DAVRLARGA TEZKOR HAVOLALAR --- */
+.ish-footer {
+  position: fixed;
+  z-index: 12;
+  inset: auto 0 0 0;
+  display: flex;
+  justify-content: center;
+  padding: 24px 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+}
+
+.ish-footer nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  pointer-events: auto;
+}
+
+.ish-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-family: var(--serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  opacity: 0.88;
+  transition: opacity 0.3s ease;
 }
 
-/* Gazetadagi birinchi katta harf (Drop Cap) effekti */
-.text-card p::first-letter {
-  font-family: var(--serif);
-  font-size: 45px;
-  float: left;
-  line-height: 0.8;
-  padding-right: 8px;
-  font-weight: bold;
+.ish-footer nav a:hover { opacity: 0.55; }
+
+/* --- FLOATING HEADER (rasm ustida suzadi) --- */
+.site-header.ish-floating-header {
+  background: linear-gradient(to bottom, rgba(6, 5, 4, 0.72) 0%, rgba(6, 5, 4, 0) 100%);
+  border-bottom: none;
+  box-shadow: none;
 }
 
-/* GAZETA RASMLARI VA KARTALARI */
-.museums-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+.ish-floating-header .brand-mark {
+  border-color: rgba(255, 255, 255, 0.75);
+  color: #fff;
 }
 
-.museum-card {
-  border: 1px solid var(--border);
-  padding: 12px;
-  background: var(--card-bg);
+.ish-floating-header .brand strong { color: #fff; }
+.ish-floating-header .brand small { color: #e7c9a9; }
+
+.ish-floating-header nav a { color: rgba(255, 255, 255, 0.92); }
+.ish-floating-header nav a:hover,
+.ish-floating-header nav a.ish-active { color: #e7c9a9; }
+.ish-floating-header nav a::after { background: #e7c9a9; }
+
+.ish-floating-header .header-ticket {
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+.ish-floating-header .header-ticket:hover {
+  background: #fff;
+  color: #111;
 }
 
-.museum-img {
-  width: 100%;
-  height: 180px;
-  background-size: cover;
-  background-position: center;
-  /* Rasmga gazeta uslubidagi oq-qora/sepia effekti */
-  filter: grayscale(80%) sepia(20%);
-  border: 1px solid var(--border);
-  margin-bottom: 12px;
+.ish-floating-header .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+.ish-floating-header .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }
 
-.museum-country {
-  font-family: var(--serif);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: block;
-  margin-bottom: 5px;
-}
+.ish-floating-header .burger-btn span { background: #fff; }
 
-.museum-name {
-  font-family: var(--serif);
-  font-size: 18px;
-  line-height: 1.2;
-  margin-bottom: 8px;
-}
-
-.museum-info p {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-
-/* Responsive moslashuvchanlik */
-@media (max-width: 900px) {
-  .museums-grid, .grid-2col {
-    grid-template-columns: 1fr;
+/* Mobil ochiluvchi menyu — odatdagidek qattiq fonda, o'qilishi uchun */
+@media (max-width: 1100px) {
+  .ish-floating-header nav {
+    background: var(--sidebar-bg, #f7f5f0);
   }
-  
-  .text-card {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding-right: 0;
-    padding-bottom: 20px;
-  }
+  .ish-floating-header nav a { color: var(--text-main, #1c1c1c); }
+  .ish-floating-header nav a.ish-active { color: var(--accent-red); }
+  .ish-floating-header .mobile-nav-ticket { color: var(--card-bg, #ffffff) !important; }
+}
 
-  .stats-grid {
+/* --- MOBIL MOSLASHUV --- */
+@media (max-width: 700px) {
+  .ish-hero-caption {
+    padding: 70px 24px 130px;
+  }
+  .ish-footer nav {
+    gap: 16px;
+  }
+  .ish-footer nav a span {
+    display: none;
+  }
+}
+
+/* --- AI CHAT WIDGET (OriginUI Style) --- */
+.ai-chat-widget {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 99999;
+}
+.ai-toggle-btn {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--card-bg);
+    border: 2px solid var(--card-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ai-toggle-btn::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-red);
+    opacity: 0.6;
+    animation: origin-pulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+.ai-toggle-btn:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+    transform: scale(1.1) rotate(6deg);
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(139, 0, 0, 0.4);
+}
+@keyframes origin-pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.35); opacity: 0; }
+}
+.ai-welcome-bubble {
+    position: absolute;
+    bottom: 68px;
+    right: 0;
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 12px;
+    box-shadow: 4px 4px 0px var(--border);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+.ai-welcome-bubble.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.ai-chat-window {
+    position: absolute;
+    bottom: 68px;
+    right: 0;
+    width: 380px;
+    height: 480px;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 6px 6px 0px var(--border);
+    display: flex;
     flex-direction: column;
-    gap: 20px;
-  }
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all 0.3s ease;
+}
+.ai-chat-window.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.ai-chat-header {
+    padding: 14px 18px;
+    background: var(--sidebar-bg);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.ai-close-btn { background: none; border: none; color: var(--text-main); font-size: 20px; cursor: pointer; }
+.ai-close-btn:hover { color: var(--accent-red); }
+.ai-chat-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-dark);
+}
+.ai-message {
+    max-width: 88%;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+.ai-message.bot {
+    background: var(--card-bg);
+    color: var(--text-main);
+    align-self: flex-start;
+    border: 1px solid var(--border);
+    box-shadow: 2px 2px 0px var(--border);
+    font-family: var(--serif);
+}
+.ai-message.user {
+    background: var(--border);
+    color: var(--card-bg);
+    align-self: flex-end;
+    font-weight: 600;
+}
+.ai-chat-footer {
+    padding: 12px;
+    background: var(--sidebar-bg);
+    border-top: 2px solid var(--border);
+    display: flex;
+    gap: 8px;
+}
+.ai-chat-footer input {
+    flex: 1;
+    padding: 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-main);
+    font-size: 12px;
+    outline: none;
+}
+.ai-chat-footer button {
+    padding: 0 16px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--card-bg);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+.ai-chat-footer button:hover { background: var(--accent-red); border-color: var(--accent-red); color: #ffffff; }
+
+@media (max-width: 768px) {
+    .ai-chat-window {
+        width: calc(100vw - 32px);
+        right: -10px;
+        height: 400px;
+    }
 }
 
-
-/* --- UNIFIED AI CHIPS & HEADER --- */
+/* --- UNIFIED AI CHIPS & HEADER (AI vidjeti uchun) --- */
 .ai-header-title {
     display: flex;
     align-items: center;

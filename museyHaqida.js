@@ -1,54 +1,136 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Burger menyu -> assets/site.js
+/* ==========================================================
+   MUZEY HAQIDA — CHEKSIZ PARALLAX SCROLL
+   ----------------------------------------------------------
+   Codrops "Infinite Scroll with Parallax" (Joe Ben Taylor, MIT
+   litsenziya) asosidagi Lenis+GSAP sozlamalari IMPERIUM uchun
+   moslashtirildi (assets/site.js dagi umumiy initSmoothScroll()
+   qasddan ishlatilmaydi — u window'ga o'z Lenis nusxasini
+   o'rnatib, shu sahifadagi maxsus wrapper/content Lenis'i bilan
+   to'qnashib qolardi).
+   ========================================================== */
 
-    // Statistik raqamlarning animatsiyasi
-    const statsContainer = document.getElementById("stats-container");
-    const statNumbers = document.querySelectorAll(".stat-number");
-    let hasAnimated = false;
+/* --- Burger menyu --- */
+function initBurger() {
+    const burgerBtn = document.getElementById("burgerBtn");
+    const navMenu = document.getElementById("navMenu");
+    if (!burgerBtn || !navMenu) return;
 
-    // Raqamlarni 0 dan berilgan qiymatgacha sanash funksiyasi
-    function animateCounters() {
-        statNumbers.forEach(counter => {
-            const target = +counter.getAttribute("data-target");
-            const duration = 2000; // 2 sekund davomida
-            const stepTime = 20; // Har 20ms da yangilanadi
-            const steps = duration / stepTime;
-            const increment = target / steps;
-            
-            let current = 0;
+    burgerBtn.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+        burgerBtn.classList.toggle("open");
+    });
 
-            const timer = setInterval(() => {
-                current += increment;
-                
-                if (current >= target) {
-                    // Yakuniy qiymatni formatlab chiqarish (masalan: 15,000)
-                    counter.innerText = target.toLocaleString() + "+";
-                    clearInterval(timer);
-                } else {
-                    counter.innerText = Math.ceil(current).toLocaleString();
-                }
-            }, stepTime);
+    navMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+            navMenu.classList.remove("active");
+            burgerBtn.classList.remove("open");
         });
-    }
+    });
+}
 
-    // Ekran skroll qilinib, statistikaga yetganda sanashni boshlash
-    function checkScroll() {
-        if (!statsContainer) return;
+/* --- Tungi rejim --- */
+function initThemeToggle() {
+    const STORAGE_KEY = "imperium-theme";
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return;
 
-        const containerPosition = statsContainer.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.1;
+    const currentTheme = () =>
+        document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 
-        if (containerPosition < screenPosition && !hasAnimated) {
-            animateCounters();
-            hasAnimated = true; // Faqat bir marta ishlashi uchun
+    const paint = (theme) => {
+        const icon = btn.querySelector("i");
+        if (icon) icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+        btn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+        btn.setAttribute("aria-label", theme === "dark" ? "Kunduzgi rejimga o'tish" : "Tungi rejimga o'tish");
+    };
+
+    paint(currentTheme());
+
+    btn.addEventListener("click", () => {
+        const next = currentTheme() === "dark" ? "light" : "dark";
+        if (next === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            document.documentElement.removeAttribute("data-theme");
         }
+        try { localStorage.setItem(STORAGE_KEY, next); } catch (e) { /* muhim emas */ }
+        paint(next);
+    });
+}
+
+/* --- Cheksiz parallax scroll (Lenis + GSAP ScrollTrigger) --- */
+function setupInfiniteParallax() {
+    if (!window.gsap || !window.Lenis) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const wrapper = document.getElementById("ishWrapper");
+    const content = document.getElementById("ishContent");
+    if (!wrapper || !content) return;
+
+    const lenis = new Lenis({
+        infinite: true,
+        wrapper: wrapper,
+        content: content,
+        syncTouch: true,
+    });
+
+    if (window.Snap) {
+        const snap = new Snap(lenis, {
+            type: "mandatory",
+            debounce: 500,
+            duration: 0.9,
+            easing: (t) => 1 - Math.pow(1 - t, 4),
+        });
+        snap.addElements(content.querySelectorAll(".ish-hero"), { align: "start" });
     }
 
-    // Skroll hodisasini tinglash
-    window.addEventListener("scroll", checkScroll);
-    
-    // Agar sahifa yuklanganda statistika allaqachon ekranda bo'lsa
-    checkScroll();
+    ScrollTrigger.scrollerProxy(wrapper, {
+        scrollTop(value) {
+            if (arguments.length) {
+                lenis.scrollTo(value, { immediate: true });
+            } else {
+                return lenis.scroll;
+            }
+        },
+        getBoundingClientRect() {
+            return { top: 0, left: 0, width: wrapper.clientWidth, height: wrapper.clientHeight };
+        },
+        pinType: "transform",
+    });
+
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // Har bir hero uchun rasm parallax animatsiyasi
+    content.querySelectorAll(".ish-hero").forEach((hero) => {
+        const image = hero.querySelector(".ish-hero-image");
+        if (!image) return;
+
+        gsap.fromTo(
+            image,
+            { yPercent: -50 },
+            {
+                yPercent: 50,
+                ease: "none",
+                scrollTrigger: {
+                    scroller: wrapper,
+                    trigger: hero,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                    fastScrollEnd: true,
+                },
+            }
+        );
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initBurger();
+    initThemeToggle();
+    setupInfiniteParallax();
 
     // AI Chat Vidjeti Logikasi (Google Gemini API bilan)
     const toggleBtn = document.getElementById("aiToggleBtn");
@@ -104,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
             chatBody.scrollTop = chatBody.scrollHeight;
 
             try {
-                const systemPrompt = "Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi savollariga faqat o'zbek tilida, qisqa va do'stona javob bering.";
+                const systemPrompt = "Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi qaysi tilda murojaat qilsa (o'zbek, ingliz, rus va h.k.), xuddi shu tilda qisqa va do'stona javob bering.";
 
                 const requestContents = [...conversationHistory, { role: "user", parts: [{ text: text }] }];
 

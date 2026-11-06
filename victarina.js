@@ -343,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
         aiChatBody.scrollTop = aiChatBody.scrollHeight;
 
         try {
-            const systemPrompt = "Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi savollariga faqat o'zbek tilida, qisqa va do'stona javob bering. Siz shuningdek muzey viktorinasi bo'yicha ham yordam berasiz.";
+            const systemPrompt = "Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi qaysi tilda murojaat qilsa (o'zbek, ingliz, rus va h.k.), xuddi shu tilda qisqa va do'stona javob bering. Siz shuningdek muzey viktorinasi bo'yicha ham yordam berasiz.";
             const requestContents = [...conversationHistory, { role: "user", parts: [{ text: text }] }];
 
             const response = await fetch(`/api/gemini`, {

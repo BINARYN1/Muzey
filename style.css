@@ -1197,7 +1197,7 @@ img:hover { filter: grayscale(0%); }
   transition: flex 0.7s cubic-bezier(0.2, 0.75, 0, 1), filter 0.45s ease;
 }
 
-.room-card--rome { --room-image: url("media/imperium-poster.jpg"); }
+.room-card--rome { --room-image: url("images/colosseum_arena.jpg"); }
 /* Avval Wikimedia havolasi ishlatilgan edi, ammo u 404 qaytaradi —
    karta bo'sh ko'rinardi. Papkadagi mahalliy rasmga o'tkazildi. */
 .room-card--egypt { --room-image: url("images/artifact_egypt_temple.jpg"); }
@@ -1241,15 +1241,19 @@ img:hover { filter: grayscale(0%); }
 
 .room-card > a {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 54px;
+  height: 54px;
   align-self: flex-end;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 50%;
+  background: rgba(var(--card-rgb), 0.88);
   color: var(--ink);
-  transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  box-shadow: 4px 4px 0 var(--ink);
+  backdrop-filter: blur(6px);
+  transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease,
+    box-shadow 0.35s cubic-bezier(0.2, 0.75, 0, 1), transform 0.35s cubic-bezier(0.2, 0.75, 0, 1);
 }
 
 /* Havolani butun karta ustiga yoyamiz — foydalanuvchi kichkina strelkani emas,
@@ -1261,28 +1265,35 @@ img:hover { filter: grayscale(0%); }
   z-index: 2;
 }
 
-/* Strelka belgisini ::before orqali chizamiz. Muhim: aylantirish (rotate)
-   <a> ning o'ziga berilmaydi — aks holda <a> o'z ::after'i uchun yangi
-   "containing block" bo'lib qolib, qoplama 42px doiraga qisqarardi va
-   kartani bosib bo'lmasdi. */
-.room-card > a {
-  font-size: 0;
-}
-
-.room-card > a::before {
-  content: "↗";
+/* Font Awesome ikonkasi. Muhim: aylantirish (rotate) <a> ning o'ziga
+   berilmaydi — aks holda <a> o'z ::after'i uchun yangi "containing block"
+   bo'lib qolib, qoplama 42px doiraga qisqarardi va kartani bosib bo'lmasdi. */
+.room-card > a i {
   font-size: 16px;
   line-height: 1;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.2, 0.75, 0, 1);
 }
 
 .room-card:hover > a {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: var(--on-accent);
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0 var(--ink);
 }
 
-.room-card:hover > a::before {
-  transform: rotate(45deg);
+.room-card:hover > a i {
+  transform: rotate(45deg) scale(1.1);
+}
+
+.room-card > a:active {
+  transform: translate(0, 0);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.room-card > a:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 3px;
 }
 
 .room-card {

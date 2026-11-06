@@ -77,22 +77,6 @@
     </div>
   </section>
 
-  <section class="hero-section" id="about">
-    <div class="hero-container">
-      <div class="hero-content">
-        <span class="tagline">YEVROPA SAN'ATI VA GALEREYA TARIXI</span>
-        <h1 class="hero-title">Galereya Olamiga<br><em>sayohat qiling.</em></h1>
-        <p class="hero-description">
-          Europeana API orqali Yevropaning eng sara galereyalari, me'moriy obidalari va madaniy meroslarini real vaqt rejimida o'rganing.
-        </p>
-      </div>
-
-      <div class="hero-window">
-        <div class="window-glow"></div>
-      </div>
-    </div>
-  </section>
-
   <main class="main-container" id="gallery">
     <div class="action-bar">
       <button id="randomBtn" class="btn-dark">
@@ -105,8 +89,13 @@
       </div>
     </div>
 
-    <div id="status">3D eksponatlar yuklanmoqda...</div>
-    <div class="gallery-grid" id="galleryGrid"></div>
+    <div id="status">Eksponatlar yuklanmoqda...</div>
+    <div class="gallery-masonry" id="galleryMasonry"></div>
+    <div class="load-more-wrap">
+      <button id="loadMoreBtn" class="btn-dark" style="display:none;">
+        <i class="fa-solid fa-arrow-down"></i> Ko'proq yuklash
+      </button>
+    </div>
   </main>
 
   <div id="artModal" class="modal">

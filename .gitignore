@@ -1,1 +1,28 @@
+# Maxfiy kalitlar va muhit fayllari (API keys, secrets)
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE va tahrirlovchi sozlamalari
+.vscode/
+.idea/
 .claude/
+*.sublime-project
+*.sublime-workspace
+
+# Operatsion tizim kesh va yordamchi fayllari
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Node va Serverless
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+.vercel
+
+# Log fayllar
+*.log

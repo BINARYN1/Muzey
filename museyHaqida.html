@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IMPERIUM — Muzeylar haqida</title>
-  
+  <title>IMPERIUM — Muzey haqida</title>
+
   <!-- Google Fonts Baloo 2 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,14 +18,14 @@
 </head>
 <body>
 
-  <!-- HEADER (Aynan siz taqdim etgan kod) -->
-  <header class="site-header">
+  <!-- Rasm ustida suzuvchi umumiy sayt headeri -->
+  <header class="site-header ish-floating-header">
     <a class="brand" href="index.html" aria-label="Imperium bosh sahifa">
       <span class="brand-mark">I</span>
       <span><strong>IMPERIUM</strong><small>Raqamli muzey</small></span>
     </a>
     <nav aria-label="Asosiy navigatsiya" id="navMenu">
-      <a href="museyHaqida.html">Muzey haqida</a>
+      <a href="museyHaqida.html" class="ish-active">Muzey haqida</a>
       <a href="3d.html">3D Eksponatlar</a>
       <a href="galereya.html">Galereya</a>
       <a href="victarina.html">Viktorina</a>
@@ -45,94 +45,70 @@
       </button>
     </div>
   </header>
-  <!-- HERO SECTION -->
-  <section class="about-hero">
-    <div class="about-hero-container">
-      <span class="tagline">TARIX VA RAQAMLI KELAJAK KESISHDIGAN MASKAN</span>
-      <h1 class="hero-title">IMPERIUM Muzeyi<br><em>Haqida.</em></h1>
-      <p class="hero-description">
-        IMPERIUM raqamli muzeyi — insoniyatning boy madaniy merosi, qadimiy me'morchilik san'ati va betakror eksponatlarini zamonaviy 3D texnologiyalar orqali bitta platformaga jamlaydi.
-      </p>
+
+  <!-- CHEKSIZ PARALLAX SCROLL — Codrops "Infinite Scroll with Parallax"
+       (Joe Ben Taylor, MIT litsenziya) asosida IMPERIUM uchun moslashtirildi:
+       o'zining rasmlari o'rniga muzeyning uchta davri (Rim/Misr/Uyg'onish)
+       qo'yildi va navigatsiya umumiy site-header bilan almashtirildi. -->
+  <div class="ish-wrapper" id="ishWrapper">
+    <div class="ish-content" id="ishContent">
+
+      <section class="ish-hero">
+        <picture class="ish-hero-image">
+          <img class="ish-hero-bg" src="images/artifact_rome_armor.jpg" alt="" aria-hidden="true">
+          <img class="ish-hero-fg" src="images/artifact_rome_armor.jpg" alt="Qadimgi Rim — imperator dubulg'asi va sovuti" loading="eager">
+        </picture>
+        <div class="ish-hero-caption">
+          <span class="ish-hero-kicker">01 — Qadimgi Rim</span>
+          <h2>Imperatorlar, marmar va abadiylikka intilgan me'morchilik.</h2>
+        </div>
+      </section>
+
+      <section class="ish-hero">
+        <picture class="ish-hero-image">
+          <img class="ish-hero-bg" src="images/artifact_egypt_papyrus.jpg" alt="" aria-hidden="true">
+          <img class="ish-hero-fg" src="images/artifact_egypt_papyrus.jpg" alt="Qadimgi Misr — O'liklar kitobi papirusi" loading="lazy">
+        </picture>
+        <div class="ish-hero-caption">
+          <span class="ish-hero-kicker">02 — Qadimgi Misr</span>
+          <h2>Fir'avnlar, ierogliflar va ming yillik sirlar dunyosi.</h2>
+        </div>
+      </section>
+
+      <section class="ish-hero">
+        <picture class="ish-hero-image">
+          <img class="ish-hero-bg" src="media/eastern_renaissance.jpg" alt="" aria-hidden="true">
+          <img class="ish-hero-fg" src="media/eastern_renaissance.jpg" alt="Sharq Uyg'onish davri — munajjim va qo'lyozmalar" loading="lazy">
+        </picture>
+        <div class="ish-hero-caption">
+          <span class="ish-hero-kicker">03 — Uyg'onish</span>
+          <h2>Inson, tafakkur va go'zallik qayta kashf etilgan davr.</h2>
+        </div>
+      </section>
+
+      <!-- Cheksiz scroll uchun birinchi bo'lim takrori -->
+      <section class="ish-hero" aria-hidden="true">
+        <picture class="ish-hero-image" aria-hidden="true">
+          <img class="ish-hero-bg" src="images/artifact_rome_armor.jpg" alt="" aria-hidden="true">
+          <img class="ish-hero-fg" src="images/artifact_rome_armor.jpg" alt="" aria-hidden="true">
+        </picture>
+        <div class="ish-hero-caption" aria-hidden="true">
+          <span class="ish-hero-kicker">01 — Qadimgi Rim</span>
+          <h2>Imperatorlar, marmar va abadiylikka intilgan me'morchilik.</h2>
+        </div>
+      </section>
+
     </div>
-  </section>
+  </div>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-container" id="about-content">
-    
-    <!-- STATS / STATISTIKA -->
-    <div id="stats-container" class="stats-grid">
-      <div class="stat-card">
-        <h2 class="stat-number" data-target="10000">10,000+</h2>
-        <p>Raqamlashtirilgan eksponatlar</p>
-      </div>
-      <div class="stat-card">
-        <h2 class="stat-number" data-target="50">50+</h2>
-        <p>Jahonaviy hamkor muzeylar</p>
-      </div>
-      <div class="stat-card">
-        <h2>3D</h2>
-        <p>Interaktiv 360° modellar</p>
-      </div>
-    </div>
-
-    <!-- MISSIYA SECTION -->
-    <section class="section-block">
-      <div class="section-title-wrap">
-        <span class="tagline">BIZNING MAQSADIMIZ</span>
-        <h2 class="section-title">Bizning Missiyamiz va Qarashlarimiz</h2>
-      </div>
-      <div class="grid-2col">
-        <div class="text-card">
-          <i class="fa-solid fa-landmark card-icon"></i>
-          <h3>Merosni Saqlash</h3>
-          <p>Qadimiy yodgorliklar va madaniy san'at asarlarini kelajak avlod uchun raqamli formatda saqlab qolish va uning umrini uzaytirish.</p>
-        </div>
-        <div class="text-card">
-          <i class="fa-solid fa-globe card-icon"></i>
-          <h3>Chegarasiz Ziyorat</h3>
-          <p>Dunyoning istalgan nuqtasidan turib, eng mashhur muzey va me'moriy obidalarni 3D rejimida haqiqiy kabi tajriba qilish imkonini yaratish.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- KATTA MUZEYLAR RO'YXATI -->
-    <section class="section-block">
-      <div class="section-title-wrap">
-        <span class="tagline">MADANIY CHINORLAR</span>
-        <h2 class="section-title">Dunyoning Eng Mashhur Muzeylari</h2>
-      </div>
-
-      <div class="museums-grid">
-        <div class="museum-card">
-          <div class="museum-img" style="background-image: url('https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80');"></div>
-          <div class="museum-info">
-            <span class="museum-country"><i class="fa-solid fa-location-dot"></i> Fransiya, Parij</span>
-            <h3 class="museum-name">Luvr Muzeyi (Musée du Louvre)</h3>
-            <p>Dunyodagi eng yirik san'at muzeyi. Mona Liza va ko'plab qadimiy haykallarning uyi.</p>
-          </div>
-        </div>
-
-        <div class="museum-card">
-          <div class="museum-img" style="background-image: url('https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=800&q=80');"></div>
-          <div class="museum-info">
-            <span class="museum-country"><i class="fa-solid fa-location-dot"></i> Buyuk Britaniya, London</span>
-            <h3 class="museum-name">Britaniya Muzeyi (British Museum)</h3>
-            <p>Insoniyat tarixi, san'ati va madaniyatiga bag'ishlangan dunyodagi eng qadimgi muzeylardan biri.</p>
-          </div>
-        </div>
-
-        <div class="museum-card">
-          <div class="museum-img" style="background-image: url('https://images.unsplash.com/photo-1554907984-15263bfd63bd?auto=format&fit=crop&w=800&q=80');"></div>
-          <div class="museum-info">
-            <span class="museum-country"><i class="fa-solid fa-location-dot"></i> Italiya, Rim</span>
-            <h3 class="museum-name">Vatikan Muzeylari</h3>
-            <p>Uyg'onish davri durdonalari va Sistin kapellasi bilan mashhur bo'lgan muqaddas maskan.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
+  <footer class="ish-footer">
+    <nav aria-label="Davrlar bo'yicha tezkor havolalar">
+      <a href="rim.html"><i class="fa-solid fa-shield-halved"></i> <span>Qadimgi Rim</span></a>
+      <a href="misr.html"><i class="fa-solid fa-scroll"></i> <span>Qadimgi Misr</span></a>
+      <a href="imperium_museum_awakening.html"><i class="fa-solid fa-sun"></i> <span>Uyg'onish</span></a>
+      <a href="galereya.html"><i class="fa-solid fa-images"></i> <span>To'liq galereya</span></a>
+    </nav>
+  </footer>
 
   <!-- AI Chat Burchak Vidjeti (Unified Imperium AI) -->
   <div id="aiChatWidget" class="ai-chat-widget">
@@ -168,8 +144,10 @@
     </div>
   </div>
 
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
   <script src="vendor/lenis.min.js"></script>
-  <script src="assets/site.js"></script>
+  <script src="vendor/lenis-snap.min.js"></script>
   <script src="museyHaqida.js"></script>
 </body>
 </html>

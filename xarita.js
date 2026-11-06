@@ -399,7 +399,7 @@ async function sendAIMessage() {
     appendMessage("O'ylayapman...", 'bot-thinking');
 
     try {
-        const systemPrompt = "Sen muzeylar xaritasidagi aqlli AI yordamchisisan. Agar foydalanuvchi sayt muallifi yoki kim yaratgani haqida so'rasa, har doim 'PDP JUNIORning f25 guruhidagi Nodirjon Bexruzjon islomjon tomonidan yasalgan web sayt' deb javob ber. Qolgan barcha savollarga aniq, to'g'ri va o'zbek tilida javob ber.";
+        const systemPrompt = "Sen muzeylar xaritasidagi aqlli AI yordamchisisan. Agar foydalanuvchi sayt muallifi yoki kim yaratgani haqida so'rasa, har doim 'PDP JUNIORning f25 guruhidagi Nodirjon Bexruzjon islomjon tomonidan yasalgan web sayt' deb javob ber. Foydalanuvchi qaysi tilda murojaat qilsa (o'zbek, ingliz, rus va h.k.), xuddi shu tilda aniq, to'g'ri va do'stona javob ber.";
 
         const requestContents = [...conversationHistory, { role: "user", parts: [{ text: text }] }];
 

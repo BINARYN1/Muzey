@@ -1,16 +1,77 @@
 const EUROPEANA_API_KEY = "api2demo";
 const API_URL = "https://api.europeana.eu/record/v2/search.json";
 
-const galleryGrid = document.getElementById('galleryGrid');
 const statusDiv = document.getElementById('status');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const randomBtn = document.getElementById('randomBtn');
+const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+const ROWS_PER_PAGE = 12;
+let currentQuery = "sculpture";
+let currentStart = 1;
+let totalResults = 0;
 
 const modal = document.getElementById('artModal');
 const modal3DContainer = document.getElementById('modal3DContainer');
 const modalCaption = document.getElementById('modalCaption');
 const modalClose = document.getElementById('modalClose');
+
+// ============================================================
+// MASONRY GALEREYA — CSS ustunlari (column-count) yordamida
+// sahifa bilan birga oddiy scroll qilinadigan, to'liq kenglikni
+// egallaydigan Pinterest-uslubidagi panjara. Har bir rasm o'z
+// tabiiy nisbatida (aspect ratio) ko'rinadi, kesilmaydi.
+// ============================================================
+const galleryMasonry = document.getElementById('galleryMasonry');
+
+function resetMasonry() {
+  if (galleryMasonry) galleryMasonry.innerHTML = '';
+}
+
+function openArtModal(title, link3D, imageUrl) {
+  modal.classList.add('active');
+  modalCaption.textContent = title;
+
+  if (link3D && (link3D.includes('sketchfab') || link3D.includes('3d') || link3D.includes('embed'))) {
+    modal3DContainer.innerHTML = `<iframe src="${link3D}" allowfullscreen></iframe>`;
+  } else {
+    modal3DContainer.innerHTML = `<img src="${imageUrl}" alt="${title}">`;
+  }
+}
+
+// Qidiruv natijalarini masonry panjarasiga qo'shish
+function addTilesToWorld(items) {
+  if (!galleryMasonry) return;
+
+  items.forEach(item => {
+    if (!item.edmPreview || item.edmPreview.length === 0) return; // rasmsiz yozuvlar o'tkazib yuboriladi
+    const imageUrl = item.edmPreview[0];
+    const title = item.title && item.title.length > 0 ? item.title[0] : "Yevropa Madaniy Merosi";
+    const link3D = item.edmIsShownAt ? item.edmIsShownAt[0] : null;
+
+    const tile = document.createElement('div');
+    tile.className = 'gallery-tile';
+    tile.style.opacity = '0';
+
+    const img = document.createElement('img');
+    img.alt = title;
+    img.loading = 'lazy';
+    img.onload = () => {
+      requestAnimationFrame(() => {
+        tile.style.transition = 'opacity 0.4s ease';
+        tile.style.opacity = '1';
+      });
+    };
+    img.onerror = () => tile.remove(); // chindan buzilgan rasmlar o'tkazib yuboriladi
+    img.src = imageUrl;
+    tile.appendChild(img);
+
+    tile.addEventListener('click', () => openArtModal(title, link3D, imageUrl));
+
+    galleryMasonry.appendChild(tile);
+  });
+}
 
 // Burger menyu -> assets/site.js
 
@@ -211,68 +272,52 @@ window.filterGalleryCategory = function(category, element) {
 };
 
 // Europeana API orqali eksponatlarni yuklash
-async function fetchEuropeana3D(query = "3D") {
+async function fetchEuropeana3D(query = "3D", { append = false } = {}) {
   try {
-    statusDiv.textContent = "Europeana eksponatlari yuklanmoqda...";
-    galleryGrid.innerHTML = "";
+    if (!append) {
+      currentQuery = query;
+      currentStart = 1;
+      totalResults = 0;
+      resetMasonry();
+      if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+    } else if (loadMoreBtn) {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Yuklanmoqda...`;
+    }
 
-    const url = `${API_URL}?wskey=${EUROPEANA_API_KEY}&query=${encodeURIComponent(query)}&qf=TYPE:3D OR TYPE:IMAGE&reusability=open&rows=12`;
-    
+    statusDiv.textContent = append ? "Ko'proq eksponatlar yuklanmoqda..." : "Europeana eksponatlari yuklanmoqda...";
+
+    const url = `${API_URL}?wskey=${EUROPEANA_API_KEY}&query=${encodeURIComponent(currentQuery)}&qf=TYPE:IMAGE&reusability=open&media=true&thumbnail=true&rows=${ROWS_PER_PAGE}&start=${currentStart}`;
+
     const response = await fetch(url);
     const data = await response.json();
 
     if (!data.items || data.items.length === 0) {
-      statusDiv.textContent = "Afsuski, mos keladigan eksponatlar topilmadi.";
+      statusDiv.textContent = append
+        ? `Natijalar: "${currentQuery}" bo'yicha eksponatlar`
+        : "Afsuski, mos keladigan eksponatlar topilmadi.";
+      if (loadMoreBtn) loadMoreBtn.style.display = 'none';
       return;
     }
 
-    statusDiv.textContent = `Natijalar: "${query}" bo'yicha eksponatlar`;
-    renderCards(data.items);
+    statusDiv.textContent = `Natijalar: "${currentQuery}" bo'yicha eksponatlar`;
+    addTilesToWorld(data.items);
+
+    totalResults = data.totalResults || 0;
+    currentStart += data.items.length;
+
+    if (loadMoreBtn) {
+      loadMoreBtn.style.display = currentStart <= totalResults ? 'inline-flex' : 'none';
+    }
   } catch (error) {
     console.error("Europeana API xatosi:", error);
     statusDiv.textContent = "Xatolik yuz berdi. Internet ulanishini tekshiring.";
+  } finally {
+    if (loadMoreBtn) {
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.innerHTML = `<i class="fa-solid fa-arrow-down"></i> Ko'proq yuklash`;
+    }
   }
-}
-
-// Kartochkalarni chiqarish
-function renderCards(items) {
-  galleryGrid.innerHTML = "";
-
-  items.forEach(item => {
-    const imageUrl = item.edmPreview && item.edmPreview.length > 0 
-      ? item.edmPreview[0] 
-      : (item.edmIsShownBy ? item.edmIsShownBy[0] : 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80');
-
-    const title = item.title && item.title.length > 0 ? item.title[0] : "Yevropa Madaniy Merosi";
-    const country = item.country && item.country.length > 0 ? item.country[0] : "Yevropa";
-    const link3D = item.edmIsShownAt ? item.edmIsShownAt[0] : null;
-
-    const card = document.createElement('div');
-    card.className = 'gallery-card';
-    card.innerHTML = `
-      <span class="badge-3d">3D / ART</span>
-      <div class="card-img-wrapper">
-        <img class="card-img" src="${imageUrl}" alt="${title}">
-      </div>
-      <div class="card-info">
-        <h3 class="card-title">${title}</h3>
-        <p class="card-sub"><i class="fa-solid fa-location-dot"></i> ${country}</p>
-      </div>
-    `;
-
-    card.addEventListener('click', () => {
-      modal.classList.add('active');
-      modalCaption.textContent = title;
-
-      if (link3D && (link3D.includes('sketchfab') || link3D.includes('3d') || link3D.includes('embed'))) {
-        modal3DContainer.innerHTML = `<iframe src="${link3D}" allowfullscreen></iframe>`;
-      } else {
-        modal3DContainer.innerHTML = `<img src="${imageUrl}" alt="${title}">`;
-      }
-    });
-
-    galleryGrid.appendChild(card);
-  });
 }
 
 searchBtn.addEventListener('click', () => {
@@ -294,6 +339,10 @@ randomBtn.addEventListener('click', () => {
   fetchEuropeana3D(randomQuery);
 });
 
+loadMoreBtn?.addEventListener('click', () => {
+  fetchEuropeana3D(currentQuery, { append: true });
+});
+
 modalClose.addEventListener('click', () => {
   modal.classList.remove('active');
   modal3DContainer.innerHTML = '';
@@ -306,7 +355,7 @@ modal.addEventListener('click', (e) => {
   }
 });
 
-fetchEuropeana3D("3D");
+fetchEuropeana3D("sculpture");
 
 // --- AI Chat Vidjeti Logikasi (Google Gemini API bilan) ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -363,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBody.scrollTop = chatBody.scrollHeight;
 
     try {
-      const systemPrompt = "Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi savollariga faqat o'zbek tilida, qisqa va do'stona javob bering. Agar foydalanuvchi biror eksponat, haykal, madaniyat yoki obyekt haqida so'rasa, javobingiz oxiriga albatta [SEARCH: english_keywords] tegini qo'shing (masalan: [SEARCH: Statue] yoki [SEARCH: Chair] yoki [SEARCH: Vase]).";
+      const systemPrompt = "Siz Imperium muzeyining aqlli yordamchisiz. Ushbu veb-sayt PDP JUNIORning F25 guruhidagi Nodirjon, Bexruzjon va Islomjon tomonidan yaratilgan web sayti. Agar foydalanuvchi saytni kim yaratgani yoki mualliflari haqida so'rasa, albatta shu uch xodimni ayting. Foydalanuvchi qaysi tilda murojaat qilsa (o'zbek, ingliz, rus va h.k.), xuddi shu tilda qisqa va do'stona javob bering. Agar foydalanuvchi biror eksponat, haykal, madaniyat yoki obyekt haqida so'rasa, javobingiz oxiriga albatta [SEARCH: english_keywords] tegini qo'shing (masalan: [SEARCH: Statue] yoki [SEARCH: Chair] yoki [SEARCH: Vase]).";
 
       const requestContents = [...conversationHistory, { role: "user", parts: [{ text: text }] }];
 

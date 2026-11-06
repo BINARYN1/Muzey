@@ -128,3 +128,164 @@
     background: var(--border);
     color: var(--card-bg);
 }
+
+/* --- TIL TANLASH (LANGUAGE SWITCHER) --- */
+.lang-selector {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--sans, sans-serif);
+    flex-shrink: 0;
+    z-index: 1002;
+}
+
+.lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 11px;
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    background: transparent;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.lang-btn:hover,
+.lang-selector.open .lang-btn {
+    background: var(--border);
+    color: var(--card-bg);
+}
+
+.lang-btn .lang-globe {
+    font-size: 13px;
+    line-height: 1;
+}
+
+.lang-btn .lang-code {
+    letter-spacing: 0.05em;
+    font-size: 12px;
+}
+
+.lang-btn .lang-chevron {
+    font-size: 9px;
+    transition: transform 0.2s ease;
+    opacity: 0.8;
+}
+
+.lang-selector.open .lang-chevron {
+    transform: rotate(180deg);
+}
+
+.lang-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 150px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border, #111111);
+    border-radius: var(--radius, 6px);
+    box-shadow: 0 8px 24px var(--shadow-color, rgba(0, 0, 0, 0.2));
+    padding: 5px;
+    display: none !important;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 9999999;
+}
+
+.lang-selector.open .lang-dropdown {
+    display: flex !important;
+}
+
+.lang-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.lang-item:hover {
+    background: var(--border);
+    color: var(--card-bg);
+}
+
+.lang-item.active {
+    font-weight: 700;
+    background: var(--border-light, rgba(17, 17, 17, 0.1));
+}
+
+.lang-flag {
+    font-size: 14px;
+    line-height: 1;
+}
+
+@media (max-width: 600px) {
+    .lang-btn {
+        padding: 0 8px;
+        height: 34px;
+        font-size: 11px;
+        gap: 4px;
+    }
+    .lang-btn .lang-chevron {
+        display: none;
+    }
+}
+
+/* Google Translate'ning ortiqcha oyna va iframelarini butunlay yashirish */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-ORHb-OEVmcd.skiptranslate,
+#goog-gt-tt,
+.goog-tooltip,
+.goog-tooltip:hover {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+body {
+    top: 0px !important;
+    position: static !important;
+}
+
+#google_translate_element {
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.goog-text-highlight {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}

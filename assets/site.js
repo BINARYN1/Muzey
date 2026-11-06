@@ -14,6 +14,8 @@
     var burgerBtn = document.getElementById("burgerBtn");
     var navMenu = document.getElementById("navMenu");
     if (!burgerBtn || !navMenu) return;
+    if (burgerBtn.dataset.boundBurger === "true") return;
+    burgerBtn.dataset.boundBurger = "true";
 
     burgerBtn.addEventListener("click", function () {
       navMenu.classList.toggle("active");
@@ -66,6 +68,8 @@
   function initThemeToggle() {
     var btn = document.getElementById("themeToggle");
     if (!btn) return;
+    if (btn.dataset.boundTheme === "true") return;
+    btn.dataset.boundTheme = "true";
 
     paintToggle(btn, currentTheme());
 
@@ -76,32 +80,180 @@
     });
   }
 
+  /* --- Tilni tanlash va Google Translate integratsiyasi --- */
+  var LANG_STORAGE_KEY = "imperium-lang";
+
+  function getSavedLang() {
+    var match = document.cookie.match(/googtrans=\/[^/]+\/([a-z-]+)/i);
+    if (match && match[1]) {
+      return match[1].toLowerCase();
+    }
+    try {
+      return localStorage.getItem(LANG_STORAGE_KEY) || "uz";
+    } catch (e) {
+      return "uz";
+    }
+  }
+
+  function setGoogleTransCookie(lang) {
+    var host = window.location.hostname;
+    var path = "/";
+    if (lang === "uz" || !lang) {
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=" + path + ";";
+      if (host) {
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=" + path + "; domain=" + host + ";";
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=" + path + "; domain=." + host + ";";
+      }
+    } else {
+      var val = "/auto/" + lang;
+      document.cookie = "googtrans=" + val + "; path=" + path + ";";
+      if (host) {
+        document.cookie = "googtrans=" + val + "; path=" + path + "; domain=" + host + ";";
+        document.cookie = "googtrans=" + val + "; path=" + path + "; domain=." + host + ";";
+      }
+    }
+  }
+
+  function changeLanguage(lang) {
+    try {
+      localStorage.setItem(LANG_STORAGE_KEY, lang);
+    } catch (e) {}
+
+    setGoogleTransCookie(lang);
+
+    var combo = document.querySelector(".goog-te-combo");
+    if (combo) {
+      combo.value = lang === "uz" ? "" : lang;
+      combo.dispatchEvent(new Event("change"));
+      if (lang === "uz") {
+        setTimeout(function () {
+          window.location.reload();
+        }, 120);
+      }
+    } else {
+      window.location.reload();
+    }
+  }
+
+  function injectGoogleTranslate() {
+    if (!document.getElementById("google_translate_element")) {
+      var div = document.createElement("div");
+      div.id = "google_translate_element";
+      div.style.display = "none";
+      document.body.appendChild(div);
+    }
+
+    if (!window.googleTranslateElementInit) {
+      window.googleTranslateElementInit = function () {
+        if (window.google && window.google.translate) {
+          new window.google.translate.TranslateElement(
+            {
+              pageLanguage: "uz",
+              includedLanguages: "uz,en,ru,fr,de,tr,ar",
+              autoDisplay: false
+            },
+            "google_translate_element"
+          );
+        }
+      };
+    }
+
+    if (!document.getElementById("google-translate-script")) {
+      var script = document.createElement("script");
+      script.id = "google-translate-script";
+      script.type = "text/javascript";
+      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      document.body.appendChild(script);
+    }
+  }
+
+  function initLanguageSelector() {
+    var headerRight = document.querySelector(".header-right-group");
+    if (!headerRight) return;
+    if (document.getElementById("langSelector")) return;
+
+    var themeToggle = document.getElementById("themeToggle");
+    var currentLang = getSavedLang();
+
+    var langLabels = {
+      uz: "UZ",
+      en: "EN",
+      ru: "RU",
+      fr: "FR",
+      de: "DE",
+      tr: "TR",
+      ar: "AR"
+    };
+
+    var currentLabel = langLabels[currentLang] || currentLang.toUpperCase();
+
+    var selector = document.createElement("div");
+    selector.className = "lang-selector";
+    selector.id = "langSelector";
+    selector.innerHTML =
+      '<button class="lang-btn" id="langBtn" type="button" aria-label="Tilni tanlash" aria-expanded="false">' +
+      '<i class="fa-solid fa-globe lang-globe"></i>' +
+      '<span class="lang-code" id="langCurrentCode">' + currentLabel + '</span>' +
+      '<i class="fa-solid fa-chevron-down lang-chevron"></i>' +
+      '</button>' +
+      '<div class="lang-dropdown" id="langDropdown" role="menu">' +
+      '<button type="button" class="lang-item' + (currentLang === "uz" ? " active" : "") + '" data-lang="uz"><span class="lang-flag">🇺🇿</span> O\'zbekcha</button>' +
+      '<button type="button" class="lang-item' + (currentLang === "en" ? " active" : "") + '" data-lang="en"><span class="lang-flag">🇬🇧</span> English</button>' +
+      '<button type="button" class="lang-item' + (currentLang === "ru" ? " active" : "") + '" data-lang="ru"><span class="lang-flag">🇷🇺</span> Русский</button>' +
+      '<button type="button" class="lang-item' + (currentLang === "fr" ? " active" : "") + '" data-lang="fr"><span class="lang-flag">🇫🇷</span> Français</button>' +
+      '<button type="button" class="lang-item' + (currentLang === "de" ? " active" : "") + '" data-lang="de"><span class="lang-flag">🇩🇪</span> Deutsch</button>' +
+      '<button type="button" class="lang-item' + (currentLang === "tr" ? " active" : "") + '" data-lang="tr"><span class="lang-flag">🇹🇷</span> Türkçe</button>' +
+      '<button type="button" class="lang-item' + (currentLang === "ar" ? " active" : "") + '" data-lang="ar"><span class="lang-flag">🇸🇦</span> العربية</button>' +
+      '</div>';
+
+    if (themeToggle) {
+      headerRight.insertBefore(selector, themeToggle);
+    } else {
+      headerRight.appendChild(selector);
+    }
+
+    var langBtn = selector.querySelector("#langBtn");
+
+    langBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var isOpen = selector.classList.toggle("open");
+      langBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    document.addEventListener("click", function () {
+      selector.classList.remove("open");
+      langBtn.setAttribute("aria-expanded", "false");
+    });
+
+    selector.querySelectorAll(".lang-item").forEach(function (opt) {
+      opt.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var targetLang = this.getAttribute("data-lang");
+        selector.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+        changeLanguage(targetLang);
+      });
+    });
+
+    injectGoogleTranslate();
+  }
+
   /* --- Silliq scroll (Lenis) --- */
   function initSmoothScroll() {
     if (!window.Lenis) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
+    if (document.getElementById("ishWrapper") || window.__skipSiteSmoothScroll) return;
 
     var lenis = new window.Lenis({
-      // DIQQAT: Lenis'da `lerp` berilsa `duration`/`easing` e'tiborga
-      // olinmaydi — ikkalasini birga yozish ma'nosiz. Faqat lerp.
       lerp: 0.1,
       wheelMultiplier: 1,
       smoothWheel: true,
-      // Telefonda barmoq bilan scroll tizimniki bo'lib qolsin —
-      // u yerda brauzerning o'zi allaqachon silliq va tezroq.
       syncTouch: false,
       gestureOrientation: "vertical",
     });
 
     window.imperiumLenis = lenis;
 
-    // Sahifa o'rtasida turib F5 bosilsa, brauzer scroll pozitsiyasini
-    // native usulda tiklaydi. Lenis buni sezmaydi va o'z holati 0 da
-    // qolib ketadi — natijada scroll bilan bog'liq hamma narsa (video,
-    // ScrollTrigger) birinchi g'ildirak harakatigacha eski holatda
-    // turadi. Tiklash `load` dan keyin bo'ladi, shuning uchun o'sha
-    // paytda bir marta tekshirib sinxronlaymiz.
     window.addEventListener(
       "load",
       function () {
@@ -116,8 +268,6 @@
     var ScrollTrigger = window.ScrollTrigger;
 
     if (gsap && ScrollTrigger) {
-      // Bu ulanishsiz ScrollTrigger Lenis'dan orqada qoladi va
-      // nimadur.html dagi gorizontal pin titraydi.
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(function (time) {
         lenis.raf(time * 1000);
@@ -131,12 +281,6 @@
       window.requestAnimationFrame(raf);
     }
 
-    // scroll-behavior o'chirilgani uchun ichki havolalar sakrab
-    // ketardi — ularni Lenis orqali silliq olib boramiz.
-    // Manzilni element sifatida emas, son sifatida beramiz: element
-    // bilan chaqirilganda Lenis o'rinni o'zi o'lchaydi va bu boshqa
-    // scroll amali bilan bir kadrda tushib qolsa noto'g'ri chiqadi.
-    // Header fixed va 90px balandlikda — shuncha joy qoldiramiz.
     document.querySelectorAll('a[href^="#"]').forEach(function (link) {
       link.addEventListener("click", function (event) {
         var id = link.getAttribute("href");
@@ -153,6 +297,7 @@
   function init() {
     initBurger();
     initThemeToggle();
+    initLanguageSelector();
     initSmoothScroll();
   }
 
